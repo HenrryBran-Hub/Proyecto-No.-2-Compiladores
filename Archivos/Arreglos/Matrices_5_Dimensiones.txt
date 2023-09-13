@@ -1,0 +1,72 @@
+print("-------------------------------------")
+print("DECLARACION MATRIZ STRING")
+print("-------------------------------------")
+var matrix1 : [[[[[String]]]]] = [[[[[String]]]]] (repeating: [[[[String]]]]
+(repeating: [[[String]]] (repeating:[[String]] (repeating:[String] (repeating:"OLC2", count:2), count:2), count:3),count:5),count:5)
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES")
+print("-------------------------------------")
+
+for i in 0...4{
+     for j in 0...4{
+           for k in 0...2{
+                 for x in 0...1{
+                       for y in 0...1{
+                              print("Valor en la matriz[" , i , "][" , j ,"][", k  , "][", x , "][" , y , "]:" , matrix1 [i][j][k][x][y]) 
+                        }
+                 }
+           }
+     }
+}
+
+print("-------------------------------------")
+print("CAMBIAMOS ALGUNOS VALORES")
+print("-------------------------------------")
+
+matrix1 [4][2][1][1][0] = "HOLA"
+matrix1 [3][0][1][0][1] = "MUNDO"
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES DESPUES DE LOS CAMBIOS")
+print("-------------------------------------")
+
+for i in 0...4{
+     for j in 0...4{
+           for k in 0...2{
+                 for x in 0...1{
+                       for y in 0...1{
+                              print("Valor en la matriz[" , i , "][" , j ,"][", k  , "][", x , "][" , y , "]:" , matrix1 [i][j][k][x][y]) 
+                        }
+                 }
+           }
+     }
+}
+
+print("-------------------------------------")
+print("CAMBIAMOS ALGUNOS CON ERRORES Y FUNCIONES")
+print("-------------------------------------")
+
+matrix1 [0][0][1][1][1] = String(654897)
+matrix1 [4][3][1][0][0] = 9.6856 //verificar  el archivo de error de la matriz
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES DESPUES DE LOS CAMBIOS")
+print("-------------------------------------")
+
+for i in 0...4{
+     for j in 0...4{
+           for k in 0...2{
+                 for x in 0...1{
+                       for y in 0...1{
+                              print("Valor en la matriz[" , i , "][" , j ,"][", k  , "][", x , "][" , y , "]:" , matrix1 [i][j][k][x][y]) 
+                        }
+                 }
+           }
+     }
+}
+
+print("/////////////////////////////////////////////////////////////////////////////////////////////////")
+
+
+

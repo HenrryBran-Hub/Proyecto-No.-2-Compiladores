@@ -1,0 +1,40 @@
+struct Estudiante{
+    var Nombre: String
+    var Apellido: String
+    var Edad: Int  
+    var Telefono: Int
+
+    func Carrera(_ carrera : String){
+       print("Esta Estudiando la carrera de: ", carrera)
+    }
+
+    func Saludar(){
+       print("Hola Mundo")
+    }
+
+    func Codigo(_ tel : Int) -> String{
+        var phone : String = " codigo de area +502 "  + String(tel)
+        return phone
+    }
+
+    func Globex(_ nota: inout Int) -> String{
+         nota = nota + 10
+        return "Se actualizo la nota"
+    }
+
+}
+
+estudiante1 : Estudiante Estudiante(Nombre:"Henrry", Apellido:"Bran", Edad: 30, Tel:784512329)
+
+estudiante1.Saludar()
+print("Hola! Bienvenido, ", estudiante1.Nombre , " ", estudiante1.Apellido)
+print("Tu Telefono tendra un nuevo cambio:")
+ var mensaje = estudiante1.Codigo(6667895)
+print(mensaje)
+estudiante1.Nombre = "David"
+print("Hola! has Actualizado tus datos:", estudiante1.Nombre , " ", estudiante1.Apellido)
+var nota : Int = 70
+print("Nota del estudiante:", nota)
+mensaje = estudiante1.Globex(&nota)
+print(mensaje)
+print("Nota del estudiante:", nota)

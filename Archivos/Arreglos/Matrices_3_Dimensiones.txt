@@ -1,0 +1,116 @@
+print("-------------------------------------")
+print("DECLARACION MATRIZ STRING")
+print("-------------------------------------")
+var matrix0 : [[[String]]] = [[[String]]] (repeating: [[String]]
+(repeating: [String] (repeating:"OLC2", count:4), count:4), count:7)
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES")
+print("-------------------------------------")
+
+for i in 0...6{
+     for j in 0...3{
+           for k in 0...3{
+                 print("Valor en la matriz[" , i , "][" , j ,"][", k  , "]:" , matrix0 [i][j][k]) 
+           }
+     }
+}
+
+print("-------------------------------------")
+print("CAMBIAMOS ALGUNOS VALORES")
+print("-------------------------------------")
+
+matrix0 [5][3][2] = "HOLA"
+matrix0 [6][0][1] = "MUNDO"
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES DESPUES DE LOS CAMBIOS")
+print("-------------------------------------")
+
+for i in 0...6{
+     for j in 0...3{
+           for k in 0...3{
+                 print("Valor en la matriz[" , i , "][" , j ,"][", k  , "]:" , matrix0 [i][j][k]) 
+           }
+     }
+}
+print("-------------------------------------")
+print("CAMBIAMOS ALGUNOS CON ERRORES Y FUNCIONES")
+print("-------------------------------------")
+
+matrix0 [0][0][0] = String(45.8886)
+matrix0 [6][3][3] = 8.99 //verificar  el archivo de error de la matriz
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES DESPUES DE LOS CAMBIOS")
+print("-------------------------------------")
+
+for i in 0...6{
+     for j in 0...3{
+           for k in 0...3{
+                 print("Valor en la matriz[" , i , "][" , j ,"][", k  , "]:" , matrix0 [i][j][k]) 
+           }
+     }
+}
+
+
+print("/////////////////////////////////////////////////////////////////////////////////////////////////")
+
+
+print("-------------------------------------")
+print("DECLARACION MATRIZ INT")
+print("-------------------------------------")
+var mtx2 : [[[Int]]] = [[[1,2,3],[4,5,6],[7,8,9]],
+[[10,11,12],[13,14,15],[16,17,18]],
+[[19,20,21],[22,23,24],[25,26,27]]]
+
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES")
+print("-------------------------------------")
+
+for i in 0...2{
+     for j in 0...2{
+           for k in 0...2{
+                 print("Valor en la matriz[" , i , "][" , j ,"][", k  , "]:" , mtx2[i][j][k]) 
+           }
+     }
+}
+
+print("-------------------------------------")
+print("CAMBIAMOS ALGUNOS VALORES")
+print("-------------------------------------")
+
+mtx2 [1][1][1] = 80000
+mtx2 [2][0][1] = 70000
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES DESPUES DE LOS CAMBIOS")
+print("-------------------------------------")
+
+for i in 0...2{
+     for j in 0...2{
+           for k in 0...2{
+                 print("Valor en la matriz[" , i , "][" , j ,"][", k  , "]:" , mtx2[i][j][k]) 
+           }
+     }
+}
+
+print("-------------------------------------")
+print("CAMBIAMOS ALGUNOS CON ERRORES Y FUNCIONES")
+print("-------------------------------------")
+
+mtx2 [0][0][0] = Int(45.8886)
+mtx2 [0][1][1] = 8.99 //verificar  el archivo de error de la matriz
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES DESPUES DE LOS CAMBIOS")
+print("-------------------------------------")
+
+for i in 0...2{
+     for j in 0...2{
+           for k in 0...2{
+                 print("Valor en la matriz[" , i , "][" , j ,"][", k  , "]:" , mtx2[i][j][k]) 
+           }
+     }
+}

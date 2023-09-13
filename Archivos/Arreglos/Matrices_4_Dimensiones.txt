@@ -1,0 +1,67 @@
+print("-------------------------------------")
+print("DECLARACION MATRIZ STRING")
+print("-------------------------------------")
+var matrix0 : [[[[String]]]] = [[[[String]]]] (repeating: [[[String]]]
+(repeating: [[String]] (repeating:[String]  (repeating:"OLC2", count:2), count:2), count:3),count:5)
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES")
+print("-------------------------------------")
+
+for i in 0...4{
+     for j in 0...2{
+           for k in 0...1{
+                 for x in 0...1{
+                       print("Valor en la matriz[" , i , "][" , j ,"][", k  , "][", x , "]:" , matrix0 [i][j][k][x]) 
+                 }
+           }
+     }
+}
+
+print("-------------------------------------")
+print("CAMBIAMOS ALGUNOS VALORES")
+print("-------------------------------------")
+
+matrix0 [4][2][1][1] = "HOLA"
+matrix0 [3][0][1][0] = "MUNDO"
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES DESPUES DE LOS CAMBIOS")
+print("-------------------------------------")
+
+for i in 0...4{
+     for j in 0...2{
+           for k in 0...1{
+                 for x in 0...1{
+                       print("Valor en la matriz[" , i , "][" , j ,"][", k  , "][", x , "]:" , matrix0 [i][j][k][x]) 
+                 }
+           }
+     }
+}
+
+
+print("-------------------------------------")
+print("CAMBIAMOS ALGUNOS CON ERRORES Y FUNCIONES")
+print("-------------------------------------")
+
+matrix0 [0][0][1][1] = String(654897)
+matrix0 [3][2][1][0] = 9.6856 //verificar  el archivo de error de la matriz
+
+print("-------------------------------------")
+print("IMPRIMIMOS VALORES DESPUES DE LOS CAMBIOS")
+print("-------------------------------------")
+
+for i in 0...4{
+     for j in 0...2{
+           for k in 0...1{
+                 for x in 0...1{
+                       print("Valor en la matriz[" , i , "][" , j ,"][", k  , "][", x , "]:" , matrix0 [i][j][k][x]) 
+                 }
+           }
+     }
+}
+
+print("/////////////////////////////////////////////////////////////////////////////////////////////////")
+
+
+
