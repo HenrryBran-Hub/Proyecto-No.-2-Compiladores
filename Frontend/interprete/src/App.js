@@ -184,8 +184,8 @@ const App = () => {
         <hr />
         <div className="row">
           <div className="col-md-12 text-center">
-            <button id="ejecutar" className="btn btn-outline-success" onClick={handleEjecutarClick}>Ejecutar</button>
-            <button id="mostrar-reportes" className="btn btn-outline-info" onClick={handleCstClick}>Mostrar Reportes</button>
+            <button id="ejecutar" className="btn btn-outline-success" onClick={handleEjecutarClick}>Compilar</button>
+            <button id="mostrar-reportes" className="btn btn-outline-info" onClick={handleCstClick}>Optimizar</button>
             <button id="simbolos" className="btn btn-outline-warning" onClick={handleSimbolosClick}>Simbolos</button>
             <button id="errores" className="btn btn-outline-danger" onClick={handleErroresClick}>Errores</button>
           </div>
