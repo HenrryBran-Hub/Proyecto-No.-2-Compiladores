@@ -2,6 +2,7 @@ package expressions
 
 import (
 	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
 	"fmt"
 	"strconv"
@@ -20,7 +21,7 @@ func NewOperation(lin int, col int, Op1 interfaces.Expression, Operador string, 
 	return exp
 }
 
-func (o Operation) Ejecutar(ast *environment.AST) environment.Symbol {
+func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) environment.Value {
 	var dominante environment.TipoExpresion
 
 	tabla_dominante := [6][6]environment.TipoExpresion{
@@ -33,378 +34,197 @@ func (o Operation) Ejecutar(ast *environment.AST) environment.Symbol {
 		/*NULL*/ {environment.NULL, environment.NULL, environment.NULL, environment.NULL, environment.NULL, environment.NULL},
 	}
 
-	var op1, op2 environment.Symbol
-	op1 = o.Op_izq.Ejecutar(ast)
-	op2 = o.Op_der.Ejecutar(ast)
-	//quitamos el operador coma
+	var op1, op2, result environment.Value
+	newTemp := gen.NewTemp()
+
 	switch o.Operador {
 	case "+":
 		{
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
 			//validar tipo dominante
-			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
+			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
 			if dominante == environment.INTEGER {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) + op2.Valor.(int)}
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "+")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
 			} else if dominante == environment.FLOAT {
-				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
-				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				num2 := fmt.Sprintf("%.6f", val1+val2)
-				num3, err := strconv.ParseFloat(num2, 64)
-				if err != nil {
-					fmt.Println(err)
-				}
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
-			} else if dominante == environment.STRING {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 + r2}
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "+")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
 			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
+				r1 := fmt.Sprintf("%v", op1.Value)
+				r2 := fmt.Sprintf("%v", op2.Value)
 				Errores := environment.Errores{
 					Descripcion: "No es posible sumar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
 					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
+					Ambito:      ast.ObtenerAmbito(),
 				}
 				ast.ErroresHTML(Errores)
 			}
 		}
 	case "-":
 		{
-			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
-
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			//validar tipo dominante
+			dominante = tabla_dominante[op1.Type][op2.Type]
+			//valida el tipo
 			if dominante == environment.INTEGER {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) - op2.Valor.(int)}
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "-")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
 			} else if dominante == environment.FLOAT {
-				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
-				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				num2 := fmt.Sprintf("%.6f", val1-val2)
-				num3, err := strconv.ParseFloat(num2, 64)
-				if err != nil {
-					fmt.Println(err)
-				}
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "-")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
 			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
+				r1 := fmt.Sprintf("%v", op1.Value)
+				r2 := fmt.Sprintf("%v", op2.Value)
 				Errores := environment.Errores{
-					Descripcion: "No es posible restar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
+					Descripcion: "No es posible sumar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
 					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
+					Ambito:      ast.ObtenerAmbito(),
 				}
 				ast.ErroresHTML(Errores)
 			}
 		}
 	case "*":
 		{
-			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			//validar tipo dominante
+			dominante = tabla_dominante[op1.Type][op2.Type]
+			//valida el tipo
 			if dominante == environment.INTEGER {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) * op2.Valor.(int)}
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "*")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
 			} else if dominante == environment.FLOAT {
-				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
-				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				num2 := fmt.Sprintf("%.6f", val1*val2)
-				num3, err := strconv.ParseFloat(num2, 64)
-				if err != nil {
-					fmt.Println(err)
-				}
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "*")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
 			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
+				r1 := fmt.Sprintf("%v", op1.Value)
+				r2 := fmt.Sprintf("%v", op2.Value)
 				Errores := environment.Errores{
-					Descripcion: "No es posible multiplicar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
+					Descripcion: "No es posible sumar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
 					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
+					Ambito:      ast.ObtenerAmbito(),
 				}
 				ast.ErroresHTML(Errores)
 			}
 		}
 	case "/":
 		{
-			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			//validar tipo dominante
+			dominante = tabla_dominante[op1.Type][op2.Type]
+			//valida el tipo
 			if dominante == environment.INTEGER {
-				if op2.Valor.(int) != 0 {
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) / op2.Valor.(int)}
-				} else {
-					r1 := fmt.Sprintf("%v", op1.Valor)
-					r2 := fmt.Sprintf("%v", op2.Valor)
-					Errores := environment.Errores{
-						Descripcion: "No es posible dividir entre 0, operacion1:" + r1 + ", operacion2:" + r2 + ".",
-						Fila:        strconv.Itoa(op1.Lin),
-						Columna:     strconv.Itoa(op1.Col),
-						Tipo:        "Error Semantico",
-						Ambito:      op1.Scope,
-					}
-					ast.ErroresHTML(Errores)
-				}
-
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "/")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
 			} else if dominante == environment.FLOAT {
-				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
-				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				if val2 != 0 {
-					num2 := fmt.Sprintf("%.6f", val1/val2)
-					num3, err := strconv.ParseFloat(num2, 64)
-					if err != nil {
-						fmt.Println(err)
-					}
-					return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: num3}
-				} else {
-					r1 := fmt.Sprintf("%v", op1.Valor)
-					r2 := fmt.Sprintf("%v", op2.Valor)
-					Errores := environment.Errores{
-						Descripcion: "No es posible dividir entre 0, operacion1:" + r1 + ", operacion2:" + r2 + ".",
-						Fila:        strconv.Itoa(op1.Lin),
-						Columna:     strconv.Itoa(op1.Col),
-						Tipo:        "Error Semantico",
-						Ambito:      op1.Scope,
-					}
-					ast.ErroresHTML(Errores)
-				}
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "/")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
 			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
+				r1 := fmt.Sprintf("%v", op1.Value)
+				r2 := fmt.Sprintf("%v", op2.Value)
 				Errores := environment.Errores{
-					Descripcion: "No es posible dividir los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
+					Descripcion: "No es posible sumar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
 					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
+					Ambito:      ast.ObtenerAmbito(),
 				}
 				ast.ErroresHTML(Errores)
 			}
-
 		}
 	case "%":
 		{
-			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			//validar tipo dominante
+			dominante = tabla_dominante[op1.Type][op2.Type]
+			//valida el tipo
 			if dominante == environment.INTEGER {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: op1.Valor.(int) % op2.Valor.(int)}
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "%")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
+			} else if dominante == environment.FLOAT {
+				gen.AddExpression(newTemp, op1.Value, op2.Value, "%")
+				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result.IntValue = op1.IntValue + op2.IntValue
+				return result
 			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
+				r1 := fmt.Sprintf("%v", op1.Value)
+				r2 := fmt.Sprintf("%v", op2.Value)
 				Errores := environment.Errores{
-					Descripcion: "No es posible modular los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
+					Descripcion: "No es posible sumar los dos valores, operacion1:" + r1 + ", operacion2:" + r2 + ".",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
 					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
+					Ambito:      ast.ObtenerAmbito(),
 				}
 				ast.ErroresHTML(Errores)
 			}
 		}
 	case "<":
 		{
-			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
-			if dominante == environment.INTEGER {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) < op2.Valor.(int)}
-			} else if dominante == environment.FLOAT {
-				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
-				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 < val2}
-			} else if dominante == environment.STRING && (op1.Tipo == op2.Tipo) {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 < r2}
-			} else if dominante == environment.CHARACTER && (op1.Tipo == op2.Tipo) {
-				r1 := rune(fmt.Sprintf("%v", op1.Valor)[0])
-				r2 := rune(fmt.Sprintf("%v", op1.Valor)[0])
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 < r2}
-			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				Errores := environment.Errores{
-					Descripcion: "No es posible comparar los dos valores(<), operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
-				}
-				ast.ErroresHTML(Errores)
-			}
+			return result
 		}
 	case ">":
 		{
-			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
-			if dominante == environment.INTEGER {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) > op2.Valor.(int)}
-			} else if dominante == environment.FLOAT {
-				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
-				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 > val2}
-			} else if dominante == environment.STRING && (op1.Tipo == op2.Tipo) {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 > r2}
-			} else if dominante == environment.CHARACTER && (op1.Tipo == op2.Tipo) {
-				r1 := rune(fmt.Sprintf("%v", op1.Valor)[0])
-				r2 := rune(fmt.Sprintf("%v", op1.Valor)[0])
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 > r2}
-			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				Errores := environment.Errores{
-					Descripcion: "No es posible comparar los dos valores(>), operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
-				}
-				ast.ErroresHTML(Errores)
-			}
+			return result
 		}
 	case "<=":
 		{
-			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
-			if dominante == environment.INTEGER {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) <= op2.Valor.(int)}
-			} else if dominante == environment.FLOAT {
-				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
-				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 <= val2}
-			} else if dominante == environment.STRING && (op1.Tipo == op2.Tipo) {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 <= r2}
-			} else if dominante == environment.CHARACTER && (op1.Tipo == op2.Tipo) {
-				r1 := rune(fmt.Sprintf("%v", op1.Valor)[0])
-				r2 := rune(fmt.Sprintf("%v", op1.Valor)[0])
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 <= r2}
-			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				Errores := environment.Errores{
-					Descripcion: "No es posible comparar los dos valores(<=), operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
-				}
-				ast.ErroresHTML(Errores)
-			}
+			return result
 		}
 	case ">=":
 		{
-			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
-			if dominante == environment.INTEGER {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) >= op2.Valor.(int)}
-			} else if dominante == environment.FLOAT {
-				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
-				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 >= val2}
-			} else if dominante == environment.STRING && (op1.Tipo == op2.Tipo) {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 >= r2}
-			} else if dominante == environment.CHARACTER && (op1.Tipo == op2.Tipo) {
-				r1 := rune(fmt.Sprintf("%v", op1.Valor)[0])
-				r2 := rune(fmt.Sprintf("%v", op1.Valor)[0])
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 >= r2}
-			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				Errores := environment.Errores{
-					Descripcion: "No es posible comparar los dos valores(>=), operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
-				}
-				ast.ErroresHTML(Errores)
-			}
+			return result
 		}
 	case "==":
 		{
-			if op1.Tipo == op2.Tipo {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor == op2.Valor}
-			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				Errores := environment.Errores{
-					Descripcion: "No es posible comparar los dos valores(==), operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
-				}
-				ast.ErroresHTML(Errores)
-			}
+			return result
 		}
 	case "!=":
 		{
-			if op1.Tipo == op2.Tipo {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor != op2.Valor}
-			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				Errores := environment.Errores{
-					Descripcion: "No es posible comparar los dos valores(!=), operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
-				}
-				ast.ErroresHTML(Errores)
-			}
+			return result
 		}
 	case "&&":
 		{
-			if (op1.Tipo == environment.BOOLEAN) && (op2.Tipo == environment.BOOLEAN) {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) && op2.Valor.(bool)}
-			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				Errores := environment.Errores{
-					Descripcion: "Los valores no son compatibles(&&), operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
-				}
-				ast.ErroresHTML(Errores)
-			}
+			return result
 		}
 	case "||":
 		{
-			if (op1.Tipo == environment.BOOLEAN) && (op2.Tipo == environment.BOOLEAN) {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(bool) || op2.Valor.(bool)}
-			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				r2 := fmt.Sprintf("%v", op2.Valor)
-				Errores := environment.Errores{
-					Descripcion: "Los valores no son compatibles(&&), operacion1:" + r1 + ", operacion2:" + r2 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
-				}
-				ast.ErroresHTML(Errores)
-			}
+			return result
 		}
 	case "!":
 		{
-			if op1.Tipo == environment.BOOLEAN {
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: !op1.Valor.(bool)}
-			} else {
-				r1 := fmt.Sprintf("%v", op1.Valor)
-				Errores := environment.Errores{
-					Descripcion: "Los valores no son compatibles(!), operacion1:" + r1 + ".",
-					Fila:        strconv.Itoa(op1.Lin),
-					Columna:     strconv.Itoa(op1.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      op1.Scope,
-				}
-				ast.ErroresHTML(Errores)
-			}
+			return result
 		}
 	}
 
-	var result interface{}
-	return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.NULL, Valor: result}
+	return result
 }

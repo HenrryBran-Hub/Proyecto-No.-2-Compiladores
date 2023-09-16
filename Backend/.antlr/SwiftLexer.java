@@ -1,4 +1,4 @@
-// Generated from c:\Users\Henrr\OneDrive\Escritorio\Compiladores\Proyecto No. 1\Proyecto No. 1\Proyecto 1\Backend\SwiftLexer.g4 by ANTLR 4.9.2
+// Generated from c:\Users\Henrr\OneDrive\Escritorio\Compiladores\Proyecto No. 2\Proyecto No. 2 Compiladores\Backend\SwiftLexer.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
