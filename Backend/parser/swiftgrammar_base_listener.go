@@ -62,6 +62,12 @@ func (s *BaseSwiftGrammarListener) EnterDeclaconstante(ctx *DeclaconstanteContex
 // ExitDeclaconstante is called when production declaconstante is exited.
 func (s *BaseSwiftGrammarListener) ExitDeclaconstante(ctx *DeclaconstanteContext) {}
 
+// EnterAsignacionvariable is called when production asignacionvariable is entered.
+func (s *BaseSwiftGrammarListener) EnterAsignacionvariable(ctx *AsignacionvariableContext) {}
+
+// ExitAsignacionvariable is called when production asignacionvariable is exited.
+func (s *BaseSwiftGrammarListener) ExitAsignacionvariable(ctx *AsignacionvariableContext) {}
+
 // EnterTipodato is called when production tipodato is entered.
 func (s *BaseSwiftGrammarListener) EnterTipodato(ctx *TipodatoContext) {}
 

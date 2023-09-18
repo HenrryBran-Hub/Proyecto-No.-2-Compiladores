@@ -55,6 +55,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result = environment.NewValue(newTemp, true, dominante, false, false, false)
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
+			} else if dominante == environment.STRING {
+				//llamar a generar concatstring
+				gen.GenerateConcatString()
+				//concat
+				gen.AddComment("Concatenando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len() + 1)
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("concatString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				result = environment.NewValue(tmp2, true, dominante, false, false, false)
+				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
 				r2 := fmt.Sprintf("%v", op2.Value)

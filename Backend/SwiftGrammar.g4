@@ -115,13 +115,15 @@ declavarible returns [interfaces.Instruction decvbl]
 // DECLARACION DE CONSTANTES
 declaconstante returns [interfaces.Instruction deccon]
 : LET ID_VALIDO DOS_PUNTOS tipodato IG expr {$deccon = datosprimitivos.NewConstanteDeclaration($LET.line, $LET.pos, $ID_VALIDO.text, $tipodato.tipo, $expr.e)}
-| LET ID_VALIDO IG expr {$deccon = datosprimitivos.NewConstanteDeclaracionSinTipo($LET.line, $LET.pos, $ID_VALIDO.text, $expr.e)};
+| LET ID_VALIDO IG expr {$deccon = datosprimitivos.NewConstanteDeclaracionSinTipo($LET.line, $LET.pos, $ID_VALIDO.text, $expr.e)}
+;
 
 // ASIGNACION DE VARIABLES
 asignacionvariable returns [interfaces.Instruction asgvbl]
 : ID_VALIDO IG expr { $asgvbl = sentencias.NewAsignacionVariable($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
 | ID_VALIDO SUMA expr { $asgvbl = sentencias.NewAsignacionSuma($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
-| ID_VALIDO RESTA expr { $asgvbl = sentencias.NewAsignacionResta($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)};
+| ID_VALIDO RESTA expr { $asgvbl = sentencias.NewAsignacionResta($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)}
+;
 
 // TIPOS DE DATOS
 tipodato returns [environment.TipoExpresion tipo]

@@ -28,6 +28,9 @@ type SwiftGrammarListener interface {
 	// EnterDeclaconstante is called when entering the declaconstante production.
 	EnterDeclaconstante(c *DeclaconstanteContext)
 
+	// EnterAsignacionvariable is called when entering the asignacionvariable production.
+	EnterAsignacionvariable(c *AsignacionvariableContext)
+
 	// EnterTipodato is called when entering the tipodato production.
 	EnterTipodato(c *TipodatoContext)
 
@@ -63,6 +66,9 @@ type SwiftGrammarListener interface {
 
 	// ExitDeclaconstante is called when exiting the declaconstante production.
 	ExitDeclaconstante(c *DeclaconstanteContext)
+
+	// ExitAsignacionvariable is called when exiting the asignacionvariable production.
+	ExitAsignacionvariable(c *AsignacionvariableContext)
 
 	// ExitTipodato is called when exiting the tipodato production.
 	ExitTipodato(c *TipodatoContext)

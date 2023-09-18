@@ -295,7 +295,7 @@ func (g *Generator) GenerateConcatString() {
 		lvl3 := g.NewLabel()
 		lvl4 := g.NewLabel()
 		//se genera la funcion printstring
-		g.Natives.PushBack("void dbrust_concatString() {\n")
+		g.Natives.PushBack("void concatString() {\n")
 		g.Natives.PushBack("\t" + tmp1 + " = H;" + "\n")
 		g.Natives.PushBack("\t" + tmp2 + " = P + 1;" + "\n")
 		g.Natives.PushBack("\t" + tmp4 + " = stack[(int)" + tmp2 + "];" + "\n")

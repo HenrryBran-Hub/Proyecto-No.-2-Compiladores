@@ -2,7 +2,9 @@ package sentencias
 
 import (
 	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"strconv"
 )
 
 type AsignacionResta struct {
@@ -17,41 +19,42 @@ func NewAsignacionResta(lin int, col int, name string, value interfaces.Expressi
 	return AsignacionResta{Lin: lin, Col: col, Name: name, Value: value}
 }
 
-/*
-func (v AsignacionResta) Ejecutar(ast *environment.AST) interface{} {
-	value := v.Value.Ejecutar(ast)
+func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if ast.ObtenerAmbito() == "Global" {
+		gen.MainCodeT()
+	}
+	value := v.Value.Ejecutar(ast, gen)
 	Variable := ast.GetVariable(v.Name)
-	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Tipo {
+	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Type {
 		//valida el tipo
 		if Variable.Symbols.Tipo == environment.INTEGER {
-			val1, _ := Variable.Symbols.Valor.(int)
-			val2, _ := value.Valor.(int)
-			num2 := val1 - val2
+			newTemp := gen.NewTemp()
+			gen.AddGetStack(newTemp, strconv.Itoa(Variable.Symbols.Posicion))
+			newTemp2 := gen.NewTemp()
+			gen.AddExpression(newTemp2, newTemp, value.Value, "-")
+			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp2)
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Valor = num2
+			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
 			return nil
 		} else if Variable.Symbols.Tipo == environment.FLOAT {
-			val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", Variable.Symbols.Valor), 64)
-			val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", value.Valor), 64)
-			num2 := fmt.Sprintf("%.6f", val1-val2)
-			num3, err := strconv.ParseFloat(num2, 64)
-			if err != nil {
-				fmt.Println(err)
-			}
+			newTemp := gen.NewTemp()
+			gen.AddGetStack(newTemp, strconv.Itoa(Variable.Symbols.Posicion))
+			newTemp2 := gen.NewTemp()
+			gen.AddExpression(newTemp2, newTemp, value.Value, "-")
+			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp2)
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Valor = num3
+			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
-			return nil
 		} else {
 			Errores := environment.Errores{
-				Descripcion: "Esta operacion -= solo se puede hacer con datos de tipo Int o Float y la variable que estas intentando hacerlo es de otro tipo.",
-				Fila:        strconv.Itoa(value.Lin),
-				Columna:     strconv.Itoa(value.Col),
+				Descripcion: "Esta operacion += solo se puede hacer con datos de tipo Int o Float y la variable que estas intentando hacerlo es de otro tipo.",
+				Fila:        strconv.Itoa(v.Lin),
+				Columna:     strconv.Itoa(v.Col),
 				Tipo:        "Error Semantico",
 				Ambito:      ast.ObtenerAmbito(),
 			}
@@ -61,30 +64,27 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST) interface{} {
 		}
 	}
 
-	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo != value.Tipo {
+	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo != value.Type {
 		//valida el tipo
-		if Variable.Symbols.Tipo == environment.FLOAT && value.Tipo == environment.INTEGER {
-			val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", Variable.Symbols.Valor), 64)
-			val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", value.Valor), 64)
-			num2 := fmt.Sprintf("%.6f", val1-val2)
-			num3, err := strconv.ParseFloat(num2, 64)
-			if err != nil {
-				fmt.Println(err)
-			}
+		if Variable.Symbols.Tipo == environment.FLOAT && value.Type == environment.INTEGER {
+			newTemp := gen.NewTemp()
+			gen.AddGetStack(newTemp, strconv.Itoa(Variable.Symbols.Posicion))
+			newTemp2 := gen.NewTemp()
+			gen.AddExpression(newTemp2, newTemp, value.Value, "+")
+			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp2)
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Valor = num3
+			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
-			return nil
 		}
 	}
 
-	if Variable.Mutable == false {
+	if !Variable.Mutable {
 		Errores := environment.Errores{
 			Descripcion: "Se ha querido asignar un valor a una constante.",
-			Fila:        strconv.Itoa(value.Lin),
-			Columna:     strconv.Itoa(value.Col),
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
 			Ambito:      ast.ObtenerAmbito(),
 		}
@@ -109,7 +109,7 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST) interface{} {
 	}
 
 	var tipoexpstr2 string
-	switch value.Tipo {
+	switch value.Type {
 	case 0:
 		tipoexpstr2 = "Int"
 	case 1:
@@ -124,11 +124,11 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST) interface{} {
 		tipoexpstr2 = "nil"
 	}
 
-	if Variable.Symbols.Tipo != value.Tipo {
+	if Variable.Symbols.Tipo != value.Type {
 		Errores := environment.Errores{
 			Descripcion: "Se ha querido asignar un valor no correspondiente a el tipo de dato: \nTipo de dato:" + tipoexpstr2 + "\nTipo de Valor:" + tipoexpstr + ".",
-			Fila:        strconv.Itoa(value.Lin),
-			Columna:     strconv.Itoa(value.Col),
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
 			Ambito:      ast.ObtenerAmbito(),
 		}
@@ -139,4 +139,3 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST) interface{} {
 
 	return nil
 }
-*/
