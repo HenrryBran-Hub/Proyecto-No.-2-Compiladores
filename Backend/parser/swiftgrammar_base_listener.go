@@ -56,6 +56,12 @@ func (s *BaseSwiftGrammarListener) EnterDeclavarible(ctx *DeclavaribleContext) {
 // ExitDeclavarible is called when production declavarible is exited.
 func (s *BaseSwiftGrammarListener) ExitDeclavarible(ctx *DeclavaribleContext) {}
 
+// EnterDeclaconstante is called when production declaconstante is entered.
+func (s *BaseSwiftGrammarListener) EnterDeclaconstante(ctx *DeclaconstanteContext) {}
+
+// ExitDeclaconstante is called when production declaconstante is exited.
+func (s *BaseSwiftGrammarListener) ExitDeclaconstante(ctx *DeclaconstanteContext) {}
+
 // EnterTipodato is called when production tipodato is entered.
 func (s *BaseSwiftGrammarListener) EnterTipodato(ctx *TipodatoContext) {}
 

@@ -2,7 +2,9 @@ package datosprimitivos
 
 import (
 	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"strconv"
 )
 
 type ConstanteDeclaracion struct {
@@ -17,15 +19,19 @@ func NewConstanteDeclaration(lin int, col int, name string, tipo environment.Tip
 	return ConstanteDeclaracion{lin, col, name, tipo, value}
 }
 
-/*
-func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST) interface{} {
-	value := v.Value.Ejecutar(ast)
+func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if ast.ObtenerAmbito() == "Global" {
+		gen.MainCodeT()
+	}
+	value := v.Value.Ejecutar(ast, gen)
 	symbol := environment.Symbol{
-		Lin:   v.Lin,
-		Col:   v.Col,
-		Tipo:  v.Type,
-		Valor: value.Valor,
-		Scope: ast.ObtenerAmbito(),
+		Lin:      v.Lin,
+		Col:      v.Col,
+		Tipo:     v.Type,
+		Scope:    ast.ObtenerAmbito(),
+		TipoDato: environment.VARIABLE,
+		Posicion: ast.Lista_Variables.Len(),
+		Valor:    value.Value,
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,
@@ -36,20 +42,20 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 
 	var tipoexp int = -1
 	var tipoexpstr string
-	switch symbol.Valor.(type) {
-	case int:
+	switch value.Type {
+	case 0:
 		tipoexp = 0
 		tipoexpstr = "Int"
-	case float64:
+	case 1:
 		tipoexp = 1
 		tipoexpstr = "Float"
-	case string:
+	case 2:
 		tipoexp = 2
 		tipoexpstr = "String"
-	case bool:
+	case 3:
 		tipoexp = 3
 		tipoexpstr = "Boolean"
-	case rune:
+	case 4:
 		tipoexp = 4
 		tipoexpstr = "Character"
 	default:
@@ -73,6 +79,21 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 		tipoexpstr2 = "nil"
 	}
 
+	if v.Type == 0 && value.Type == 0 && v.Type != environment.BOOLEAN {
+		Variable.Symbols.Tipo = environment.INTEGER
+		tipoexp = 0
+	}
+
+	if v.Type == 1 && tipoexp == 0 {
+		Variable.Symbols.Tipo = environment.FLOAT
+		tipoexp = 1
+	}
+
+	if v.Type == 4 && value.Type == 4 {
+		Variable.Symbols.Tipo = environment.CHARACTER
+		tipoexp = 4
+	}
+
 	if tipoexp != int(Variable.Symbols.Tipo) {
 		Errores := environment.Errores{
 			Descripcion: "Se ha querido asignar un valor no correspondiente a el tipo de dato: \nTipo de dato:" + tipoexpstr2 + "\nTipo de Valor:" + tipoexpstr + ".",
@@ -82,10 +103,38 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		return nil
+		Variable.Symbols.Valor = nil
+		Variable.Symbols.Tipo = environment.INTEGER
 	}
 
-	ast.GuardarVariable(Variable)
-	return nil
+	safe := ast.GuardarVariable(Variable)
+	if safe {
+		gen.AddComment("Declaracion de Constante")
+
+		if value.Type == environment.BOOLEAN {
+			//si no es temp (boolean)
+			newLabel := gen.NewLabel()
+			//add labels
+			for e := value.TrueLabel.Front(); e != nil; e = e.Next() {
+				gen.AddLabel(e.Value.(string))
+			}
+			gen.AddSetStack(strconv.Itoa(symbol.Posicion), "1")
+			gen.AddGoto(newLabel)
+			//add labels
+			for e := value.FalseLabel.Front(); e != nil; e = e.Next() {
+				gen.AddLabel(e.Value.(string))
+			}
+			gen.AddSetStack(strconv.Itoa(symbol.Posicion), "0")
+			gen.AddGoto(newLabel)
+			gen.AddLabel(newLabel)
+			gen.AddBr()
+		} else {
+			//si es temp (num,string,etc)
+			gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
+			gen.AddBr()
+		}
+	}
+
+	gen.MainCodeF()
+	return value
 }
-*/

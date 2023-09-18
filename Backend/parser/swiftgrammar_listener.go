@@ -25,6 +25,9 @@ type SwiftGrammarListener interface {
 	// EnterDeclavarible is called when entering the declavarible production.
 	EnterDeclavarible(c *DeclavaribleContext)
 
+	// EnterDeclaconstante is called when entering the declaconstante production.
+	EnterDeclaconstante(c *DeclaconstanteContext)
+
 	// EnterTipodato is called when entering the tipodato production.
 	EnterTipodato(c *TipodatoContext)
 
@@ -57,6 +60,9 @@ type SwiftGrammarListener interface {
 
 	// ExitDeclavarible is called when exiting the declavarible production.
 	ExitDeclavarible(c *DeclavaribleContext)
+
+	// ExitDeclaconstante is called when exiting the declaconstante production.
+	ExitDeclaconstante(c *DeclaconstanteContext)
 
 	// ExitTipodato is called when exiting the tipodato production.
 	ExitTipodato(c *TipodatoContext)

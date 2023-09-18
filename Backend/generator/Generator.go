@@ -76,6 +76,16 @@ func (g *Generator) NewLabel() string {
 	return "L" + fmt.Sprintf("%v", temp)
 }
 
+// Obtener maincode true
+func (g *Generator) MainCodeT() {
+	g.MainCode = true
+}
+
+// Cambiar maincode false
+func (g *Generator) MainCodeF() {
+	g.MainCode = false
+}
+
 // Añade Label al codigo
 func (g *Generator) AddLabel(Label string) {
 	if g.MainCode {

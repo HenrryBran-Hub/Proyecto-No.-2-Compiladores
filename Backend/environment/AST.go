@@ -249,7 +249,7 @@ func (a *AST) DisminuirAmbito() {
 	a.Lista_Variables_Struct = a.Pila_Variables_Struct.Front().Value.(*list.List)
 }
 
-func (a *AST) GuardarVariable(variable Variable) {
+func (a *AST) GuardarVariable(variable Variable) bool {
 	for e := a.Lista_Variables.Front(); e != nil; e = e.Next() {
 		if e.Value.(Variable).Name == variable.Name {
 			Errores := Errores{
@@ -260,14 +260,15 @@ func (a *AST) GuardarVariable(variable Variable) {
 				Ambito:      variable.Symbols.Scope,
 			}
 			a.ErroresHTML(Errores)
-			return
+			return false
 		}
 	}
 	a.Lista_Variables.PushBack(variable)
 	if variable.Name == "Break" || variable.Name == "Continue" || variable.Name == "Return" || variable.Name == "ReturnExp" {
-		return
+		return true
 	}
 	a.Lista_VariablesHTML.PushBack(variable)
+	return true
 }
 
 func (a *AST) ObtenerAmbito() string {

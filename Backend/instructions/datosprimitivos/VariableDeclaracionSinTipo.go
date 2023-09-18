@@ -20,6 +20,9 @@ func NewVariableDeclaracionSinTipo(lin int, col int, name string, value interfac
 }
 
 func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if ast.ObtenerAmbito() == "Global" {
+		gen.MainCodeT()
+	}
 	value := v.Value.Ejecutar(ast, gen)
 	symbol := environment.Symbol{
 		Lin:      v.Lin,
@@ -37,31 +40,34 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 		TipoSimbolo: "Variable",
 	}
 
-	ast.GuardarVariable(Variable)
-	gen.AddComment("Declaracion de Variable")
+	safe := ast.GuardarVariable(Variable)
+	if safe {
+		gen.AddComment("Declaracion de Variable")
 
-	if value.Type == environment.BOOLEAN {
-		//si no es temp (boolean)
-		newLabel := gen.NewLabel()
-		//add labels
-		for e := value.TrueLabel.Front(); e != nil; e = e.Next() {
-			gen.AddLabel(e.Value.(string))
+		if value.Type == environment.BOOLEAN {
+			//si no es temp (boolean)
+			newLabel := gen.NewLabel()
+			//add labels
+			for e := value.TrueLabel.Front(); e != nil; e = e.Next() {
+				gen.AddLabel(e.Value.(string))
+			}
+			gen.AddSetStack(strconv.Itoa(symbol.Posicion), "1")
+			gen.AddGoto(newLabel)
+			//add labels
+			for e := value.FalseLabel.Front(); e != nil; e = e.Next() {
+				gen.AddLabel(e.Value.(string))
+			}
+			gen.AddSetStack(strconv.Itoa(symbol.Posicion), "0")
+			gen.AddGoto(newLabel)
+			gen.AddLabel(newLabel)
+			gen.AddBr()
+		} else {
+			//si es temp (num,string,etc)
+			gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
+			gen.AddBr()
 		}
-		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "1")
-		gen.AddGoto(newLabel)
-		//add labels
-		for e := value.FalseLabel.Front(); e != nil; e = e.Next() {
-			gen.AddLabel(e.Value.(string))
-		}
-		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "0")
-		gen.AddGoto(newLabel)
-		gen.AddLabel(newLabel)
-		gen.AddBr()
-	} else {
-		//si es temp (num,string,etc)
-		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
-		gen.AddBr()
 	}
 
+	gen.MainCodeF()
 	return value
 }

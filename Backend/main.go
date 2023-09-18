@@ -126,7 +126,7 @@ func ejecutar(code string) string {
 		ConsoleOut = "Existen Errores en el archivo verificar el archivo de Errores HTML"
 	}
 
-	fmt.Println(ConsoleOut)
+	//fmt.Println(ConsoleOut)
 	return ConsoleOut
 }
 
