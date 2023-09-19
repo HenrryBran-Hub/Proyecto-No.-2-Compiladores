@@ -33,14 +33,19 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 		lista.PushBack(valor)
 	}
 
+	gen.AddComment("----------Imprimimos----------")
 	var result environment.Value
 	for e := lista.Front(); e != nil; e = e.Next() {
 		result = e.Value.(environment.Value)
 		if result.Type == environment.INTEGER {
-			gen.AddPrintf("d", "(int)"+fmt.Sprintf("%v", result.Value))
+			newTemp := gen.NewTemp()
+			gen.AddExpression(newTemp, result.Value, "", "")
+			gen.AddPrintf("d", "(int)"+fmt.Sprintf("%v", newTemp))
 			gen.AddPrintf("c", "10")
 			gen.AddBr()
 		} else if result.Type == environment.FLOAT {
+			newTemp := gen.NewTemp()
+			gen.AddExpression(newTemp, result.Value, "", "")
 			gen.AddPrintf("f", fmt.Sprintf("%v", result.Value))
 			gen.AddPrintf("c", "10")
 			gen.AddBr()
@@ -53,8 +58,8 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 			gen.AddPrintf("c", "(char)114")
 			gen.AddPrintf("c", "(char)117")
 			gen.AddPrintf("c", "(char)101")
-			gen.AddGoto(newLabel)
 			gen.AddPrintf("c", "10")
+			gen.AddGoto(newLabel)
 			for i := result.FalseLabel.Front(); i != nil; i = i.Next() {
 				gen.AddLabel(i.Value.(string))
 			}
@@ -63,8 +68,8 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 			gen.AddPrintf("c", "(char)108")
 			gen.AddPrintf("c", "(char)115")
 			gen.AddPrintf("c", "(char)101")
-			gen.AddLabel(newLabel)
 			gen.AddPrintf("c", "10")
+			gen.AddLabel(newLabel)
 			gen.AddBr()
 		} else if result.Type == environment.STRING || result.Type == environment.CHARACTER {
 			//llamar a generar printstring

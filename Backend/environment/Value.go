@@ -1,6 +1,8 @@
 package environment
 
-import list "container/list"
+import (
+	list "container/list"
+)
 
 type Value struct {
 	Value        string
@@ -14,9 +16,10 @@ type Value struct {
 	BreakFlag    bool
 	ContinueFlag bool
 	IntValue     int
+	Val          Variable
 }
 
-func NewValue(Val string, tmp bool, typ TipoExpresion, ret, br, cont bool) Value {
+func NewValue(Val string, tmp bool, typ TipoExpresion, ret, br, cont bool, val Variable) Value {
 	result := Value{
 		Value:        Val,
 		IsTemp:       tmp,
@@ -29,6 +32,7 @@ func NewValue(Val string, tmp bool, typ TipoExpresion, ret, br, cont bool) Value
 		BreakFlag:    br,
 		ContinueFlag: cont,
 		IntValue:     0,
+		Val:          val,
 	}
 	return result
 }

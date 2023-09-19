@@ -38,6 +38,7 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gener
 		Symbols:     symbol,
 		Mutable:     true,
 		TipoSimbolo: "Variable",
+		C3d:         value,
 	}
 
 	var tipoexp int = -1
@@ -113,20 +114,21 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gener
 
 		if value.Type == environment.BOOLEAN {
 			//si no es temp (boolean)
-			newLabel := gen.NewLabel()
+
 			//add labels
 			for e := value.TrueLabel.Front(); e != nil; e = e.Next() {
 				gen.AddLabel(e.Value.(string))
 			}
 			gen.AddSetStack(strconv.Itoa(symbol.Posicion), "1")
+			newLabel := gen.NewLabel()
 			gen.AddGoto(newLabel)
 			//add labels
 			for e := value.FalseLabel.Front(); e != nil; e = e.Next() {
 				gen.AddLabel(e.Value.(string))
 			}
 			gen.AddSetStack(strconv.Itoa(symbol.Posicion), "0")
-			gen.AddGoto(newLabel)
-			gen.AddLabel(newLabel)
+			newLabel2 := gen.NewLabel()
+			gen.AddGoto(newLabel2)
 			gen.AddBr()
 		} else {
 			//si es temp (num,string,etc)

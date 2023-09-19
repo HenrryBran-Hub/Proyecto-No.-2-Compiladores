@@ -1,5 +1,12 @@
 package sentencias
 
+import (
+	"Backend/environment"
+	"Backend/generator"
+	"fmt"
+	"strconv"
+)
+
 type Callid struct {
 	Lin  int
 	Col  int
@@ -11,11 +18,16 @@ func NewCallid(lin int, col int, name string) Callid {
 	return exp
 }
 
-/*
-func (o Callid) Ejecutar(ast *environment.AST) environment.Symbol {
+func (o Callid) Ejecutar(ast *environment.AST, gen *generator.Generator) environment.Value {
+	var result environment.Value
 	variable := ast.GetVariable(o.Name)
+	gen.AddComment("LLamamos la funcion Callid ")
 	if variable != nil {
-		return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: variable.Symbols.Tipo, Valor: variable.Symbols.Valor}
+		if ast.ObtenerAmbito() == "Global" {
+			gen.MainCodeT()
+		}
+		result = environment.NewValue(fmt.Sprintf("%v", variable.Symbols.Valor), true, variable.Symbols.Tipo, false, false, false)
+		return result
 	} else {
 		Errores := environment.Errores{
 			Descripcion: "La variale que esta intentando llamar no existe: \n Variable: " + o.Name,
@@ -24,8 +36,7 @@ func (o Callid) Ejecutar(ast *environment.AST) environment.Symbol {
 			Tipo:        "Error Semantico",
 		}
 		ast.ErroresHTML(Errores)
-		var result interface{}
-		return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.NULL, Valor: result}
+		result = environment.NewValue(fmt.Sprintf("%v", "99999"), true, environment.NULL, false, false, false)
+		return result
 	}
 }
-*/

@@ -199,11 +199,11 @@ expr returns [interfaces.Expression e]
         str := $CHARACTER.text
         $e = expressions.NewPrimitive($CHARACTER.line, $CHARACTER.pos, str[1:len(str)-1], environment.CHARACTER) 
     }
-// |ID_VALIDO
-//     {
-//         id := $ID_VALIDO.text
-//         $e = instructions.NewCallid($ID_VALIDO.line,$ID_VALIDO.pos,id)
-//     }
+|ID_VALIDO
+    {
+        id := $ID_VALIDO.text
+        $e = sentencias.NewCallid($ID_VALIDO.line,$ID_VALIDO.pos,id)
+    }
 |NULO {$e = expressions.NewPrimitive($NULO.line, $NULO.pos, $NULO.text,environment.NULL)}
 // | vectorvacio { $e = $vectorvacio.veemct}
 // | vectorcount { $e = $vectorcount.vecnct}
