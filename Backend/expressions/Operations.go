@@ -47,12 +47,12 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			//valida el tipo
 			if dominante == environment.INTEGER {
 				gen.AddExpression(newTemp, op1.Value, op2.Value, "+")
-				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
 				gen.AddExpression(newTemp, op1.Value, op2.Value, "+")
-				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else if dominante == environment.STRING {
@@ -73,7 +73,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddGetStack(tmp2, "(int)P")
 				gen.AddExpression("P", "P", envSize, "-")
 				gen.AddBr()
-				result = environment.NewValue(tmp2, true, dominante, false, false, false)
+				result = environment.NewValue(tmp2, true, dominante, false, false, false, environment.Variable{})
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
@@ -97,12 +97,12 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			//valida el tipo
 			if dominante == environment.INTEGER {
 				gen.AddExpression(newTemp, op1.Value, op2.Value, "-")
-				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
 				gen.AddExpression(newTemp, op1.Value, op2.Value, "-")
-				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else {
@@ -127,12 +127,12 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			//valida el tipo
 			if dominante == environment.INTEGER {
 				gen.AddExpression(newTemp, op1.Value, op2.Value, "*")
-				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
 				gen.AddExpression(newTemp, op1.Value, op2.Value, "*")
-				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else {
@@ -158,7 +158,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			if dominante == environment.INTEGER {
 				if op2.Value != "0" {
 					gen.AddExpression(newTemp, op1.Value, op2.Value, "/")
-					result = environment.NewValue(newTemp, true, dominante, false, false, false)
+					result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 					result.IntValue = op1.IntValue + op2.IntValue
 					return result
 				} else {
@@ -175,7 +175,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			} else if dominante == environment.FLOAT {
 				if op2.Value != "0" {
 					gen.AddExpression(newTemp, op1.Value, op2.Value, "/")
-					result = environment.NewValue(newTemp, true, dominante, false, false, false)
+					result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 					result.IntValue = op1.IntValue + op2.IntValue
 					return result
 				} else {
@@ -211,12 +211,12 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			//valida el tipo
 			if dominante == environment.INTEGER {
 				gen.AddExpression(newTemp, op1.Value, op2.Value, "%")
-				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
 				gen.AddExpression(newTemp, op1.Value, op2.Value, "%")
-				result = environment.NewValue(newTemp, true, dominante, false, false, false)
+				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else {
@@ -245,7 +245,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddIf(op1.Value, op2.Value, "<", tlabel)
 				gen.AddGoto(flabel)
-				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
 
@@ -256,29 +256,67 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddIf(op1.Value, op2.Value, "<", tlabel)
 				gen.AddGoto(flabel)
-				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
 
 				return result
 			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareString("menor", ">")
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparemenorString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, "<", tlabel)
+				gen.AddIf(tmp2, "0", "==", tlabel)
 				gen.AddGoto(flabel)
-				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
 
 				return result
 			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareString("menor", ">")
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparemenorString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, "<", tlabel)
+				gen.AddIf(tmp2, "0", "==", tlabel)
 				gen.AddGoto(flabel)
-				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
 
@@ -297,7 +335,104 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case ">":
 		{
-			return result
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			//validar tipo dominante
+			dominante = tabla_dominante[op1.Type][op2.Type]
+			//valida el tipo
+			if dominante == environment.INTEGER {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, ">", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+
+				return result
+			} else if dominante == environment.FLOAT {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, ">", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+
+				return result
+			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareString("mayor", "<")
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparemayorString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+
+				return result
+			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareString("mayor", "<")
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparemayorString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+
+				return result
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(<)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
 		}
 	case "<=":
 		{

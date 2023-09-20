@@ -18,6 +18,14 @@ type Generator struct {
 	BreakLabel       string
 	ContinueLabel    string
 	MainCode         bool
+	MenorFlag        bool
+	MayorFlag        bool
+	MenorIgFlag      bool
+	MayorIgFlag      bool
+	DifFlag          bool
+	IgFlag           bool
+	AndFlag          bool
+	OrFlag           bool
 }
 
 func NewGenerator() Generator {
@@ -34,6 +42,14 @@ func NewGenerator() Generator {
 		BreakLabel:       "",
 		ContinueLabel:    "",
 		MainCode:         false,
+		MenorFlag:        true,
+		MayorFlag:        true,
+		MenorIgFlag:      true,
+		MayorIgFlag:      true,
+		DifFlag:          true,
+		IgFlag:           true,
+		AndFlag:          true,
+		OrFlag:           true,
 	}
 	return generator
 }
@@ -323,5 +339,100 @@ func (g *Generator) GenerateConcatString() {
 		g.Natives.PushBack("\treturn;\n")
 		g.Natives.PushBack("}\n\n")
 		g.ConcatStringFlag = false
+	}
+}
+
+func (g *Generator) GenerateCompareString(name, tipo string) {
+	var entrada bool = false
+	switch name {
+	case "menor":
+		if g.MenorFlag {
+			g.MenorFlag = false
+			entrada = true
+		}
+	case "mayor":
+		if g.MayorFlag {
+			g.MayorFlag = false
+			entrada = true
+		}
+	case "menorig":
+		if g.MenorIgFlag {
+			g.MenorIgFlag = false
+			entrada = true
+		}
+	case "mayorig":
+		if g.MayorIgFlag {
+			g.MayorIgFlag = false
+			entrada = true
+		}
+	case "dife":
+		if g.DifFlag {
+			g.DifFlag = false
+			entrada = true
+		}
+	case "igual":
+		if g.IgFlag {
+			g.IgFlag = false
+			entrada = true
+		}
+	case "and":
+		if g.AndFlag {
+			g.AndFlag = false
+			entrada = true
+		}
+	case "or":
+		if g.OrFlag {
+			g.OrFlag = false
+			entrada = true
+		}
+	}
+	if entrada {
+		//generando temporales y etiquetas
+		newTemp1 := g.NewTemp()
+		newTemp2 := g.NewTemp()
+		newTemp3 := g.NewTemp()
+		newTemp4 := g.NewTemp()
+		newTemp5 := g.NewTemp()
+		newTemp6 := g.NewTemp()
+		newLvl1 := g.NewLabel()
+		newLvl2 := g.NewLabel()
+		newLvl3 := g.NewLabel()
+		newLvl4 := g.NewLabel()
+		newLvl5 := g.NewLabel()
+		newLvl6 := g.NewLabel()
+		newLvl7 := g.NewLabel()
+		newLvl8 := g.NewLabel()
+		//se genera la funcion printstring
+		g.Natives.PushBack("void compare" + name + "String() {\n")
+		g.Natives.PushBack("\t" + newTemp1 + " = P + 1;\n")
+		g.Natives.PushBack("\t" + newTemp2 + " = stack[(int)" + newTemp1 + "];\n")
+		g.Natives.PushBack("\t" + newTemp3 + " = P + 2;\n")
+		g.Natives.PushBack("\t" + newTemp4 + " = stack[(int)" + newTemp3 + "];\n")
+		g.Natives.PushBack("\t" + newLvl1 + ":\n")
+		g.Natives.PushBack("\t" + newTemp5 + " = heap[(int)" + newTemp2 + "];\n")
+		g.Natives.PushBack("\t" + newTemp6 + " = heap[(int)" + newTemp4 + "];\n")
+		g.Natives.PushBack("\t" + "stack[(int)P] = 1;" + "\n")
+		g.Natives.PushBack("\tif(" + newTemp5 + " " + tipo + " " + newTemp6 + ") goto " + newLvl2 + ";\n")
+		g.Natives.PushBack("\tgoto " + newLvl3 + ";\n")
+		g.Natives.PushBack("\t" + newLvl2 + ":\n")
+		g.Natives.PushBack("\t\t" + "stack[(int)P] = 0;" + "\n")
+		g.Natives.PushBack("\t\tgoto " + newLvl6 + ";\n")
+		g.Natives.PushBack("\t" + newLvl3 + ":\n")
+		g.Natives.PushBack("\tif(" + newTemp5 + " == -1) goto " + newLvl4 + ";\n")
+		g.Natives.PushBack("\tgoto " + newLvl5 + ";\n")
+		g.Natives.PushBack("\t" + newLvl4 + ":\n")
+		g.Natives.PushBack("\t\tgoto " + newLvl6 + ";\n")
+		g.Natives.PushBack("\t" + newLvl5 + ":\n")
+		g.Natives.PushBack("\tif(" + newTemp6 + " == -1) goto " + newLvl7 + ";\n")
+		g.Natives.PushBack("\tgoto " + newLvl8 + ";\n")
+		g.Natives.PushBack("\t" + newLvl7 + ":\n")
+		g.Natives.PushBack("\t\tgoto " + newLvl6 + ";\n")
+		g.Natives.PushBack("\t" + newLvl8 + ":\n")
+		g.Natives.PushBack("\t" + newTemp2 + " = " + newTemp2 + " + 1;\n")
+		g.Natives.PushBack("\t" + newTemp4 + " = " + newTemp4 + " + 1;\n")
+		g.Natives.PushBack("\tgoto " + newLvl1 + ";\n")
+		g.Natives.PushBack("\t" + newLvl6 + ":\n")
+		g.Natives.PushBack("\treturn;\n")
+		g.Natives.PushBack("}\n\n")
 	}
 }

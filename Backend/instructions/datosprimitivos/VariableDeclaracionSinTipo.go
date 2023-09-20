@@ -40,34 +40,34 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 		TipoSimbolo: "Variable",
 	}
 
-	safe := ast.GuardarVariable(Variable)
-	if safe {
-		gen.AddComment("Declaracion de Variable")
+	gen.AddComment("Declaracion de Variable")
 
-		if value.Type == environment.BOOLEAN {
-			//si no es temp (boolean)
-			newLabel := gen.NewLabel()
-			//add labels
-			for e := value.TrueLabel.Front(); e != nil; e = e.Next() {
-				gen.AddLabel(e.Value.(string))
-			}
-			gen.AddSetStack(strconv.Itoa(symbol.Posicion), "1")
-			gen.AddGoto(newLabel)
-			//add labels
-			for e := value.FalseLabel.Front(); e != nil; e = e.Next() {
-				gen.AddLabel(e.Value.(string))
-			}
-			gen.AddSetStack(strconv.Itoa(symbol.Posicion), "0")
-			gen.AddGoto(newLabel)
-			gen.AddLabel(newLabel)
-			gen.AddBr()
-		} else {
-			//si es temp (num,string,etc)
-			gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
-			gen.AddBr()
+	if value.Type == environment.BOOLEAN {
+		//si no es temp (boolean)
+		newLabel := gen.NewLabel()
+		//add labels
+		for e := value.TrueLabel.Front(); e != nil; e = e.Next() {
+			gen.AddLabel(e.Value.(string))
 		}
+		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "1")
+		gen.AddGoto(newLabel)
+		Variable.TEti = newLabel
+		//add labels
+		for e := value.FalseLabel.Front(); e != nil; e = e.Next() {
+			gen.AddLabel(e.Value.(string))
+		}
+		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "0")
+		gen.AddGoto(newLabel)
+		Variable.FEti = newLabel
+		gen.AddLabel(newLabel)
+		gen.AddBr()
+	} else {
+		//si es temp (num,string,etc)
+		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
+		gen.AddBr()
 	}
 
+	ast.GuardarVariable(Variable)
 	gen.MainCodeF()
 	return value
 }

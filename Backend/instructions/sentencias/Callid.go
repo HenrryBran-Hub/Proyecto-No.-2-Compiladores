@@ -26,7 +26,7 @@ func (o Callid) Ejecutar(ast *environment.AST, gen *generator.Generator) environ
 		if ast.ObtenerAmbito() == "Global" {
 			gen.MainCodeT()
 		}
-		result = environment.NewValue(fmt.Sprintf("%v", variable.Symbols.Valor), true, variable.Symbols.Tipo, false, false, false)
+		result = environment.NewValue(fmt.Sprintf("%v", variable.Symbols.Valor), true, variable.Symbols.Tipo, false, false, false, *variable)
 		return result
 	} else {
 		Errores := environment.Errores{
@@ -36,7 +36,7 @@ func (o Callid) Ejecutar(ast *environment.AST, gen *generator.Generator) environ
 			Tipo:        "Error Semantico",
 		}
 		ast.ErroresHTML(Errores)
-		result = environment.NewValue(fmt.Sprintf("%v", "99999"), true, environment.NULL, false, false, false)
+		result = environment.NewValue(fmt.Sprintf("%v", "99999"), true, environment.NULL, false, false, false, *variable)
 		return result
 	}
 }

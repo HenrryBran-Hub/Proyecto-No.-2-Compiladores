@@ -20,6 +20,7 @@ func NewPrint(lin int, col int, val []interface{}) Print {
 }
 
 func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+
 	lista := list.New()
 	for _, inst := range p.ListaValores {
 		if inst == nil {
@@ -29,30 +30,37 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 		if !ok {
 			continue
 		}
+		if ast.ObtenerAmbito() == "Global" {
+			gen.MainCode = true
+		} else {
+			gen.MainCode = false
+		}
 		valor := instruction.Ejecutar(ast, gen)
 		lista.PushBack(valor)
 	}
-
 	gen.AddComment("----------Imprimimos----------")
 	var result environment.Value
 	for e := lista.Front(); e != nil; e = e.Next() {
 		result = e.Value.(environment.Value)
 		if result.Type == environment.INTEGER {
 			newTemp := gen.NewTemp()
-			gen.AddExpression(newTemp, result.Value, "", "")
+			gen.AddGetStack(newTemp, strconv.Itoa(result.Val.Symbols.Posicion))
 			gen.AddPrintf("d", "(int)"+fmt.Sprintf("%v", newTemp))
 			gen.AddPrintf("c", "10")
 			gen.AddBr()
 		} else if result.Type == environment.FLOAT {
 			newTemp := gen.NewTemp()
-			gen.AddExpression(newTemp, result.Value, "", "")
-			gen.AddPrintf("f", fmt.Sprintf("%v", result.Value))
+			gen.AddGetStack(newTemp, strconv.Itoa(result.Val.Symbols.Posicion))
+			gen.AddPrintf("d", "(int)"+fmt.Sprintf("%v", newTemp))
 			gen.AddPrintf("c", "10")
 			gen.AddBr()
 		} else if result.Type == environment.BOOLEAN {
 			newLabel := gen.NewLabel()
 			for i := result.TrueLabel.Front(); i != nil; i = i.Next() {
 				gen.AddLabel(i.Value.(string))
+			}
+			if result.Val.TEti != "" {
+				gen.AddLabel(result.Val.TEti)
 			}
 			gen.AddPrintf("c", "(char)116")
 			gen.AddPrintf("c", "(char)114")
@@ -62,6 +70,9 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 			gen.AddGoto(newLabel)
 			for i := result.FalseLabel.Front(); i != nil; i = i.Next() {
 				gen.AddLabel(i.Value.(string))
+			}
+			if result.Val.TEti != "" {
+				gen.AddLabel(result.Val.FEti)
 			}
 			gen.AddPrintf("c", "(char)102")
 			gen.AddPrintf("c", "(char)97")
