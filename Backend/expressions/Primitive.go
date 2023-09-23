@@ -60,16 +60,20 @@ func (p Primitive) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		result = environment.NewValue(newTemp, true, p.Tipo, false, false, false, environment.Variable{})
 	} else if p.Tipo == environment.BOOLEAN {
 		gen.AddComment("Primitivo bool")
-		trueLabel := gen.NewLabel()
-		falseLabel := gen.NewLabel()
+
+		tlabel := gen.NewLabel()
+		flabel := gen.NewLabel()
+		aux := ""
 		if p.Valor.(bool) {
-			gen.AddGoto(trueLabel)
+			aux = "1"
 		} else {
-			gen.AddGoto(falseLabel)
+			aux = "0"
 		}
-		result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
-		result.TrueLabel.PushBack(trueLabel)
-		result.FalseLabel.PushBack(falseLabel)
+		result = environment.NewValue(aux, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+		result.TrueLabel.PushBack(tlabel)
+		result.FalseLabel.PushBack(flabel)
+		result.Val.TEti = tlabel
+		result.Val.FEti = flabel
 	} else {
 		gen.AddComment("Primitivo nil")
 		result = environment.NewValue(fmt.Sprintf("%v", p.Valor), false, p.Tipo, false, false, false, environment.Variable{})

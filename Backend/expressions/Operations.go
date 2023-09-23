@@ -248,6 +248,8 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
 
 				return result
 			} else if dominante == environment.FLOAT {
@@ -259,11 +261,13 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
 
 				return result
 			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
-				gen.GenerateCompareString("menor", ">")
+				gen.GenerateCompareMenorString()
 				//concat
 				gen.AddComment("Comparando strings")
 				envSize := strconv.Itoa(ast.Lista_Variables.Len())
@@ -284,16 +288,18 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(tmp2, "0", "==", tlabel)
+				gen.AddIf(tmp2, "1", "==", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
 
 				return result
 			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
-				gen.GenerateCompareString("menor", ">")
+				gen.GenerateCompareMenorString()
 				//concat
 				gen.AddComment("Comparando strings")
 				envSize := strconv.Itoa(ast.Lista_Variables.Len())
@@ -314,11 +320,13 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(tmp2, "0", "==", tlabel)
+				gen.AddIf(tmp2, "1", "==", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
 
 				return result
 			} else {
@@ -349,6 +357,8 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
 
 				return result
 			} else if dominante == environment.FLOAT {
@@ -360,11 +370,13 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
 
 				return result
 			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
-				gen.GenerateCompareString("mayor", "<")
+				gen.GenerateCompareMaryorString()
 				//concat
 				gen.AddComment("Comparando strings")
 				envSize := strconv.Itoa(ast.Lista_Variables.Len())
@@ -390,11 +402,13 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
 
 				return result
 			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
-				gen.GenerateCompareString("mayor", "<")
+				gen.GenerateCompareMaryorString()
 				//concat
 				gen.AddComment("Comparando strings")
 				envSize := strconv.Itoa(ast.Lista_Variables.Len())
@@ -420,11 +434,13 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
 				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
 
 				return result
 			} else {
 				Errores := environment.Errores{
-					Descripcion: "No es posible comparar los dos valores(<)",
+					Descripcion: "No es posible comparar los dos valores(>)",
 					Fila:        strconv.Itoa(o.Lin),
 					Columna:     strconv.Itoa(o.Col),
 					Tipo:        "Error Semantico",
@@ -436,31 +452,767 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "<=":
 		{
-			return result
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			//validar tipo dominante
+			dominante = tabla_dominante[op1.Type][op2.Type]
+			//valida el tipo
+			if dominante == environment.INTEGER {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, "<=", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.FLOAT {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, "<=", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareMenorigString()
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparemenorigString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareMenorigString()
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparemenorigString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(<=)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
 		}
 	case ">=":
 		{
-			return result
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			//validar tipo dominante
+			dominante = tabla_dominante[op1.Type][op2.Type]
+			//valida el tipo
+			if dominante == environment.INTEGER {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, ">=", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.FLOAT {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, ">=", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareMayorigString()
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparemayorigString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareMayorigString()
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparemayorigString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(>=)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
 		}
 	case "==":
 		{
-			return result
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			//validar tipo dominante
+			dominante = tabla_dominante[op1.Type][op2.Type]
+			//valida el tipo
+			if dominante == environment.INTEGER {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.FLOAT {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareIgualString()
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("compareigualString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareIgualString()
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("compareigualString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.BOOLEAN && (op1.Type == op2.Type) {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+				newTemp1 := gen.NewTemp()
+				newTemp3 := gen.NewTemp()
+				newTemp4 := gen.NewTemp()
+				newTemp6 := gen.NewTemp()
+
+				if op1.Val.Name == "" {
+					gen.AddExpression(newTemp1, op1.Value, "", "")
+					gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
+					gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
+				} else {
+					gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.Val.Name == "" {
+					gen.AddExpression(newTemp4, op2.Value, "", "")
+					gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp4)
+					gen.AddGetStack(newTemp6, strconv.Itoa(ast.Lista_Variables.Len()+1))
+				} else {
+					gen.AddGetStack(newTemp6, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+				gen.AddIf(newTemp3, newTemp6, "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(==)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
 		}
 	case "!=":
 		{
-			return result
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			//validar tipo dominante
+			dominante = tabla_dominante[op1.Type][op2.Type]
+			//valida el tipo
+			if dominante == environment.INTEGER {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, "!=", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.FLOAT {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(op1.Value, op2.Value, "!=", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareDifeString()
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparedifeString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
+				//llamar a generar concatstring
+				gen.GenerateCompareDifeString()
+				//concat
+				gen.AddComment("Comparando strings")
+				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				tmp1 := gen.NewTemp()
+				tmp2 := gen.NewTemp()
+				gen.AddExpression(tmp1, "P", envSize, "+")
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op1.Value)
+				gen.AddExpression(tmp1, tmp1, "1", "+")
+				gen.AddSetStack("(int)"+tmp1, op2.Value)
+				gen.AddExpression("P", "P", envSize, "+")
+				gen.AddCall("comparedifeString")
+				gen.AddGetStack(tmp2, "(int)P")
+				gen.AddExpression("P", "P", envSize, "-")
+				gen.AddBr()
+				//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+
+				gen.AddIf(tmp2, "1", "==", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else if dominante == environment.BOOLEAN && (op1.Type == op2.Type) {
+				tlabel := gen.NewLabel()
+				flabel := gen.NewLabel()
+				newTemp1 := gen.NewTemp()
+				newTemp3 := gen.NewTemp()
+				newTemp4 := gen.NewTemp()
+				newTemp6 := gen.NewTemp()
+
+				if op1.Val.Name == "" {
+					gen.AddExpression(newTemp1, op1.Value, "", "")
+					gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
+					gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
+				} else {
+					gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.Val.Name == "" {
+					gen.AddExpression(newTemp4, op2.Value, "", "")
+					gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp4)
+					gen.AddGetStack(newTemp6, strconv.Itoa(ast.Lista_Variables.Len()+1))
+				} else {
+					gen.AddGetStack(newTemp6, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+				gen.AddIf(newTemp3, newTemp6, "!=", tlabel)
+				gen.AddGoto(flabel)
+				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+				result.TrueLabel.PushBack(tlabel)
+				result.FalseLabel.PushBack(flabel)
+				result.Val.FEti = flabel
+				result.Val.TEti = tlabel
+
+				return result
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(!=)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
 		}
 	case "&&":
 		{
+			newTemp := gen.NewTemp()
+			V1 := gen.NewLabel()
+			F1 := gen.NewLabel()
+			V2 := gen.NewLabel()
+			F2 := gen.NewLabel()
+			auxV := gen.NewLabel()
+			auxF := gen.NewLabel()
+
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if op1.Type == environment.BOOLEAN {
+				if op1.Value != "" {
+					gen.AddIf(op1.Value, "1", "==", V1)
+					gen.AddGoto(F1)
+					gen.AddLabel(V1)
+				} else {
+					gen.AddLabel(op1.Val.TEti)
+				}
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(&&)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
+
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			if op2.Type == environment.BOOLEAN {
+				if op1.Value != "" && op2.Value != "" {
+					gen.AddIf(op2.Value, "1", "==", V2)
+					gen.AddGoto(F2)
+
+					gen.AddLabel(V2)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+
+					gen.AddLabel(F2)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+					gen.AddLabel(F1)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+				} else if op1.Value != "" && op2.Value == "" {
+					gen.AddLabel(op2.Val.TEti)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+
+					gen.AddLabel(op2.Val.FEti)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+					gen.AddLabel(F1)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+				} else if op1.Value == "" && op2.Value == "" {
+					gen.AddLabel(op2.Val.TEti)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+
+					gen.AddLabel(op2.Val.FEti)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+					gen.AddLabel(op1.Val.FEti)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+				} else {
+					gen.AddIf(op2.Value, "1", "==", V2)
+					gen.AddGoto(F2)
+
+					gen.AddLabel(V2)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+
+					gen.AddLabel(F2)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+					gen.AddLabel(op1.Val.FEti)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+				}
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(&&)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
+
+			result = environment.NewValue("", true, environment.BOOLEAN, false, false, false, environment.Variable{})
+			result.TrueLabel.PushBack(auxV)
+			result.FalseLabel.PushBack(auxF)
+			result.Val.FEti = auxF
+			result.Val.TEti = auxV
+
 			return result
 		}
 	case "||":
 		{
+			newTemp := gen.NewTemp()
+			V1 := gen.NewLabel()
+			F1 := gen.NewLabel()
+			V2 := gen.NewLabel()
+			F2 := gen.NewLabel()
+			auxV := gen.NewLabel()
+			auxF := gen.NewLabel()
+
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if op1.Type == environment.BOOLEAN {
+				if op1.Value != "" {
+					gen.AddIf(op1.Value, "1", "==", V1)
+					gen.AddGoto(F1)
+					gen.AddLabel(V1)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+					gen.AddLabel(F1)
+				} else {
+					gen.AddLabel(op1.Val.TEti)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+					gen.AddLabel(op1.Val.FEti)
+				}
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(&&)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
+
+			op2 = o.Op_der.Ejecutar(ast, gen)
+			if op2.Type == environment.BOOLEAN {
+				if op1.Value != "" && op2.Value != "" {
+					gen.AddIf(op2.Value, "1", "==", V2)
+					gen.AddGoto(F2)
+
+					gen.AddLabel(V2)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+
+					gen.AddLabel(F2)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+				} else if op1.Value != "" && op2.Value == "" {
+					gen.AddLabel(op2.Val.TEti)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+
+					gen.AddLabel(op2.Val.FEti)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+				} else if op1.Value == "" && op2.Value == "" {
+					gen.AddLabel(op2.Val.TEti)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+
+					gen.AddLabel(op2.Val.FEti)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+
+				} else {
+					gen.AddIf(op2.Value, "1", "==", V2)
+					gen.AddGoto(F2)
+
+					gen.AddLabel(V2)
+					gen.AddExpression(newTemp, "1", "0", "+")
+					gen.AddGoto(auxV)
+
+					gen.AddLabel(F2)
+					gen.AddExpression(newTemp, "0", "0", "+")
+					gen.AddGoto(auxF)
+				}
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(&&)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
+
+			result = environment.NewValue("", true, environment.BOOLEAN, false, false, false, environment.Variable{})
+			result.TrueLabel.PushBack(auxV)
+			result.FalseLabel.PushBack(auxF)
+			result.Val.FEti = auxF
+			result.Val.TEti = auxV
+
 			return result
 		}
 	case "!":
 		{
-			return result
+			op1 = o.Op_izq.Ejecutar(ast, gen)
+			//validar tipo dominante
+
+			if op1.Type == environment.BOOLEAN {
+				newTemp1 := gen.NewTemp()
+				newTemp3 := gen.NewTemp()
+
+				if op1.Val.Name == "" {
+					if op1.Value == "0" {
+						gen.AddExpression(newTemp1, "1", "", "")
+						gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
+						gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
+						result = environment.NewValue("1", true, environment.BOOLEAN, false, false, false, environment.Variable{})
+						result.Val.FEti = op1.Val.FEti
+						result.Val.TEti = op2.Val.TEti
+
+					} else {
+						gen.AddExpression(newTemp1, "0", "", "")
+						gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
+						gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
+						result = environment.NewValue("0", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					}
+				} else {
+					if op1.Value == "0" {
+						gen.AddExpression(newTemp1, "1", "", "")
+						gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
+						gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
+						result = environment.NewValue("1", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					} else {
+						gen.AddExpression(newTemp1, "0", "", "")
+						gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
+						gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
+						result = environment.NewValue("0", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					}
+					gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				return result
+			} else {
+				Errores := environment.Errores{
+					Descripcion: "No es posible comparar los dos valores(!)",
+					Fila:        strconv.Itoa(o.Lin),
+					Columna:     strconv.Itoa(o.Col),
+					Tipo:        "Error Semantico",
+					Ambito:      ast.ObtenerAmbito(),
+				}
+				ast.ErroresHTML(Errores)
+				return result
+			}
 		}
 	}
 

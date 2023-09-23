@@ -56,10 +56,12 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 			gen.AddBr()
 		} else if result.Type == environment.BOOLEAN {
 			newLabel := gen.NewLabel()
+			aux := ""
 			for i := result.TrueLabel.Front(); i != nil; i = i.Next() {
 				gen.AddLabel(i.Value.(string))
+				aux = i.Value.(string)
 			}
-			if result.Val.TEti != "" {
+			if result.Val.TEti != aux {
 				gen.AddLabel(result.Val.TEti)
 			}
 			gen.AddPrintf("c", "(char)116")
@@ -68,10 +70,12 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 			gen.AddPrintf("c", "(char)101")
 			gen.AddPrintf("c", "10")
 			gen.AddGoto(newLabel)
+			aux2 := ""
 			for i := result.FalseLabel.Front(); i != nil; i = i.Next() {
 				gen.AddLabel(i.Value.(string))
+				aux2 = i.Value.(string)
 			}
-			if result.Val.TEti != "" {
+			if result.Val.FEti != aux2 {
 				gen.AddLabel(result.Val.FEti)
 			}
 			gen.AddPrintf("c", "(char)102")
