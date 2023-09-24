@@ -69,7 +69,7 @@ func (p Primitive) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		result = environment.NewValue(aux, false, environment.BOOLEAN, false, false, false, environment.Variable{})
 	} else {
 		gen.AddComment("Primitivo nil")
-		result = environment.NewValue(fmt.Sprintf("%v", p.Valor), false, p.Tipo, false, false, false, environment.Variable{})
+		result = environment.NewValue("9999999", false, p.Tipo, false, false, false, environment.Variable{})
 		result.IntValue = p.Valor.(int)
 	}
 	return result

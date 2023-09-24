@@ -81,17 +81,8 @@ func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator
 		result = environment.NewValue(newTemp, true, v.Type, false, false, false, Variable)
 	} else if v.Type == environment.BOOLEAN {
 		gen.AddComment("Primitivo bool")
-		trueLabel := gen.NewLabel()
-		falseLabel := gen.NewLabel()
-		symbol.Valor = false
-		if symbol.Valor.(bool) {
-			gen.AddGoto(trueLabel)
-		} else {
-			gen.AddGoto(falseLabel)
-		}
-		result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, Variable)
-		result.TrueLabel.PushBack(trueLabel)
-		result.FalseLabel.PushBack(falseLabel)
+		aux := "0"
+		result = environment.NewValue(aux, false, environment.BOOLEAN, false, false, false, environment.Variable{})
 	} else {
 		gen.AddComment("Primitivo nil")
 		result = environment.NewValue(fmt.Sprintf("%v", symbol.Valor), false, v.Type, false, false, false, Variable)

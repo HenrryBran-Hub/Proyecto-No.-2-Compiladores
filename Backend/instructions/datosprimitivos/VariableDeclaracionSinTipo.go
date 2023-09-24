@@ -11,7 +11,6 @@ type VariableDeclaracionSinTipo struct {
 	Lin   int
 	Col   int
 	Name  string
-	Type  environment.TipoExpresion
 	Value interfaces.Expression
 }
 
