@@ -1168,37 +1168,22 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			//validar tipo dominante
 
 			if op1.Type == environment.BOOLEAN {
-				newTemp1 := gen.NewTemp()
-				newTemp3 := gen.NewTemp()
 
 				if op1.Val.Name == "" {
 					if op1.Value == "0" {
-						gen.AddExpression(newTemp1, "1", "", "")
-						gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
-						gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
 						result = environment.NewValue("1", true, environment.BOOLEAN, false, false, false, environment.Variable{})
 						result.Val.FEti = op1.Val.FEti
 						result.Val.TEti = op2.Val.TEti
 
 					} else {
-						gen.AddExpression(newTemp1, "0", "", "")
-						gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
-						gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
 						result = environment.NewValue("0", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 					}
 				} else {
 					if op1.Value == "0" {
-						gen.AddExpression(newTemp1, "1", "", "")
-						gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
-						gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
 						result = environment.NewValue("1", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 					} else {
-						gen.AddExpression(newTemp1, "0", "", "")
-						gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
-						gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
 						result = environment.NewValue("0", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 					}
-					gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
 				}
 
 				return result

@@ -23,11 +23,12 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 	if ast.ObtenerAmbito() == "Global" {
 		gen.MainCodeT()
 	}
+
 	value := v.Value.Ejecutar(ast, gen)
 	symbol := environment.Symbol{
 		Lin:      v.Lin,
 		Col:      v.Col,
-		Tipo:     v.Type,
+		Tipo:     value.Type,
 		Scope:    ast.ObtenerAmbito(),
 		TipoDato: environment.VARIABLE,
 		Posicion: ast.Lista_Variables.Len(),
@@ -43,23 +44,7 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 	gen.AddComment("Declaracion de Variable")
 
 	if value.Type == environment.BOOLEAN {
-		//si no es temp (boolean)
-		newLabel := gen.NewLabel()
-		//add labels
-		for e := value.TrueLabel.Front(); e != nil; e = e.Next() {
-			gen.AddLabel(e.Value.(string))
-		}
-		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "1")
-		gen.AddGoto(newLabel)
-		Variable.TEti = newLabel
-		//add labels
-		for e := value.FalseLabel.Front(); e != nil; e = e.Next() {
-			gen.AddLabel(e.Value.(string))
-		}
-		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "0")
-		gen.AddGoto(newLabel)
-		Variable.FEti = newLabel
-		gen.AddLabel(newLabel)
+		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
 		gen.AddBr()
 	} else {
 		//si es temp (num,string,etc)

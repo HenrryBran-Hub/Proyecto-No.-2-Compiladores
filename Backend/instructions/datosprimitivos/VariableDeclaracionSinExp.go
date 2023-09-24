@@ -30,6 +30,7 @@ func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator
 		Scope:    ast.ObtenerAmbito(),
 		TipoDato: environment.VARIABLE,
 		Posicion: ast.Lista_Variables.Len(),
+		Valor:    999999,
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,
@@ -98,24 +99,8 @@ func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator
 
 	gen.AddComment("Declaracion de Variable")
 
-	if v.Type == environment.BOOLEAN {
-		//si no es temp (boolean)
-		newLabel := gen.NewLabel()
-		//add labels
-		for e := result.TrueLabel.Front(); e != nil; e = e.Next() {
-			gen.AddLabel(e.Value.(string))
-		}
-		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "1")
-		gen.AddGoto(newLabel)
-		Variable.TEti = newLabel
-		//add labels
-		for e := result.FalseLabel.Front(); e != nil; e = e.Next() {
-			gen.AddLabel(e.Value.(string))
-		}
-		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "0")
-		gen.AddGoto(newLabel)
-		Variable.TEti = newLabel
-		gen.AddLabel(newLabel)
+	if result.Type == environment.BOOLEAN {
+		gen.AddSetStack(strconv.Itoa(symbol.Posicion), result.Value)
 		gen.AddBr()
 	} else {
 		//si es temp (num,string,etc)

@@ -27,7 +27,7 @@ func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generat
 	symbol := environment.Symbol{
 		Lin:      v.Lin,
 		Col:      v.Col,
-		Tipo:     v.Type,
+		Tipo:     value.Type,
 		Scope:    ast.ObtenerAmbito(),
 		TipoDato: environment.VARIABLE,
 		Posicion: ast.Lista_Variables.Len(),
@@ -43,23 +43,7 @@ func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generat
 	gen.AddComment("Declaracion de Constante")
 
 	if value.Type == environment.BOOLEAN {
-		//si no es temp (boolean)
-		//add labels
-		for e := value.TrueLabel.Front(); e != nil; e = e.Next() {
-			gen.AddLabel(e.Value.(string))
-		}
-		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "1")
-		newLabel := gen.NewLabel()
-		gen.AddGoto(newLabel)
-		Variable.TEti = newLabel
-		//add labels
-		for e := value.FalseLabel.Front(); e != nil; e = e.Next() {
-			gen.AddLabel(e.Value.(string))
-		}
-		gen.AddSetStack(strconv.Itoa(symbol.Posicion), "0")
-		newLabel2 := gen.NewLabel()
-		gen.AddGoto(newLabel2)
-		Variable.FEti = newLabel2
+		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
 		gen.AddBr()
 	} else {
 		//si es temp (num,string,etc)
