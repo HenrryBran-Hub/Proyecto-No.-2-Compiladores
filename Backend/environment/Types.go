@@ -12,5 +12,5 @@ const (
 	VECTOR                         //6
 	MATRIZ                         //7
 	STRUCT                         //8
-
+	VARIABLE                       //9
 )

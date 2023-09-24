@@ -51,6 +51,8 @@ type Variable struct {
 	Symbols     Symbol
 	Mutable     bool
 	TipoSimbolo string
+	FEti        string
+	TEti        string
 }
 
 type Vector struct {

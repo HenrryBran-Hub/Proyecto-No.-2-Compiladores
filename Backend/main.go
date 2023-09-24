@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
 	"Backend/parser"
 
@@ -98,6 +99,8 @@ func ejecutar(code string) string {
 	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
 	Code := listener.Code
 	var Ast environment.AST
+	var Generator generator.Generator
+	Generator = generator.NewGenerator()
 	Ast.IniciarAmbito()
 	for _, inst := range Code {
 		if inst == nil {
@@ -109,9 +112,22 @@ func ejecutar(code string) string {
 			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
 			continue
 		}
-		instruction.Ejecutar(&Ast)
+		instruction.Ejecutar(&Ast, &Generator)
 	}
-	return Ast.GetPrint()
+
+	var ConsoleOut = ""
+	if Ast.Lista_Errores.Len() == 0 {
+		Generator.GenerateFinalCode()
+		for e := Generator.GetFinalCode().Front(); e != nil; e = e.Next() {
+			valor := e.Value
+			ConsoleOut += valor.(string)
+		}
+	} else {
+		ConsoleOut = "Existen Errores en el archivo verificar el archivo de Errores HTML"
+	}
+
+	//fmt.Println(ConsoleOut)
+	return ConsoleOut
 }
 
 func handleSimbolos(w http.ResponseWriter, r *http.Request) {
@@ -164,6 +180,8 @@ func simbolos(code string) string {
 	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
 	Code := listener.Code
 	var Ast environment.AST
+	var Generator generator.Generator
+	Generator = generator.NewGenerator()
 	Ast.IniciarAmbito()
 	for _, inst := range Code {
 		if inst == nil {
@@ -175,7 +193,7 @@ func simbolos(code string) string {
 			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
 			continue
 		}
-		instruction.Ejecutar(&Ast)
+		instruction.Ejecutar(&Ast, &Generator)
 	}
 
 	Ast.TablaVariablesHTML()
@@ -232,6 +250,8 @@ func errores(code string) string {
 	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
 	Code := listener.Code
 	var Ast environment.AST
+	var Generator generator.Generator
+	Generator = generator.NewGenerator()
 	Ast.IniciarAmbito()
 	for _, inst := range Code {
 		if inst == nil {
@@ -243,7 +263,7 @@ func errores(code string) string {
 			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
 			continue
 		}
-		instruction.Ejecutar(&Ast)
+		instruction.Ejecutar(&Ast, &Generator)
 	}
 
 	if len(errorListener.errors) > 0 {
@@ -313,6 +333,8 @@ func Cst(code string) string {
 	antlr.ParseTreeWalkerDefault.Walk(listener, tree)
 	Code := listener.Code
 	var Ast environment.AST
+	var Generator generator.Generator
+	Generator = generator.NewGenerator()
 	Ast.IniciarAmbito()
 	var contador int = 0
 	for _, inst := range Code {
@@ -325,7 +347,7 @@ func Cst(code string) string {
 			fmt.Printf("Error: inst is not of type interfaces.Instruction (actual type: %T, value: %#v)\n", inst, inst)
 			continue
 		}
-		instruction.Ejecutar(&Ast)
+		instruction.Ejecutar(&Ast, &Generator)
 		contador++
 	}
 
