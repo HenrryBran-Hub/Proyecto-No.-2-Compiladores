@@ -247,6 +247,8 @@ func (g *Generator) GenerateFinalCode() {
 		}
 		tmpDec += ";\n\n"
 		g.FinalCode.PushBack(tmpDec)
+	} else {
+		g.FinalCode.PushBack("\n\n")
 	}
 	//****************** PushBack natives functions
 	if g.Natives.Len() > 0 {

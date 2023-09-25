@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 
 	"github.com/skratchdot/open-golang/open"
 )
@@ -44,6 +45,7 @@ type AST struct {
 	Pila_Variables_Struct  *list.List
 	ListaParametrosStruct  *list.List
 	Lista_Struct_HTML      *list.List
+	PosicionStack          int
 }
 
 type Variable struct {
@@ -197,6 +199,8 @@ func (a *AST) IniciarAmbito() {
 	a.Pila_Variables_Struct.PushBack(a.Lista_Variables_Struct)
 	a.ListaParametrosStruct = list.New()
 	a.Lista_Struct_HTML = list.New()
+
+	a.PosicionStack = 0
 }
 
 func (a *AST) AumentarAmbito(ambito string) {
@@ -266,6 +270,7 @@ func (a *AST) GuardarVariable(variable Variable) {
 		}
 	}
 	a.Lista_Variables.PushBack(variable)
+	a.PosicionStack = a.PosicionStack + 1
 	if variable.Name == "Break" || variable.Name == "Continue" || variable.Name == "Return" || variable.Name == "ReturnExp" {
 		return
 	}
@@ -1168,4 +1173,15 @@ func (a *AST) ActualizarVariableStruc(mariable *VariableStruct) {
 		Ambito:      mariable.Scope,
 	}
 	a.ErroresHTML(Errores)
+}
+
+func (a *AST) IsMain(cadena string) bool {
+	// Convierte la cadena a minúsculas para hacer la búsqueda insensible a mayúsculas
+	cadena = strings.ToLower(cadena)
+
+	// Verifica si la palabra "global" está en la cadena
+	if strings.Contains(cadena, "global") {
+		return true
+	}
+	return false
 }

@@ -80,6 +80,12 @@ func (s *BaseSwiftGrammarListener) EnterExpr(ctx *ExprContext) {}
 // ExitExpr is called when production expr is exited.
 func (s *BaseSwiftGrammarListener) ExitExpr(ctx *ExprContext) {}
 
+// EnterSentenciaifelse is called when production sentenciaifelse is entered.
+func (s *BaseSwiftGrammarListener) EnterSentenciaifelse(ctx *SentenciaifelseContext) {}
+
+// ExitSentenciaifelse is called when production sentenciaifelse is exited.
+func (s *BaseSwiftGrammarListener) ExitSentenciaifelse(ctx *SentenciaifelseContext) {}
+
 // EnterListaexpresions is called when production listaexpresions is entered.
 func (s *BaseSwiftGrammarListener) EnterListaexpresions(ctx *ListaexpresionsContext) {}
 

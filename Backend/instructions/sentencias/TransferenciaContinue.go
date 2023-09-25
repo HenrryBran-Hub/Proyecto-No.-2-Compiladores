@@ -1,5 +1,10 @@
 package sentencias
 
+import (
+	"Backend/environment"
+	"Backend/generator"
+)
+
 type TransferenciaContinue struct {
 	Lin int
 	Col int
@@ -9,8 +14,7 @@ func NewTransferenciaContinue(lin int, col int) TransferenciaContinue {
 	return TransferenciaContinue{Lin: lin, Col: col}
 }
 
-/*
-func (v TransferenciaContinue) Ejecutar(ast *environment.AST) interface{} {
+func (v TransferenciaContinue) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -28,5 +32,3 @@ func (v TransferenciaContinue) Ejecutar(ast *environment.AST) interface{} {
 	ast.GuardarVariable(Variable)
 	return nil
 }
-
-*/

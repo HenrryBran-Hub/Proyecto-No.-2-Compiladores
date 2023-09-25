@@ -41,7 +41,7 @@ instruction returns [interfaces.Instruction inst]
 : declavarible (PUNTOCOMA)? { $inst = $declavarible.decvbl}
 | declaconstante (PUNTOCOMA)? { $inst = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $inst = $asignacionvariable.asgvbl}
-// | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
+| sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
 // | switchcontrol { $inst = $switchcontrol.mySwitch}
 // | whilecontrol { $inst = $whilecontrol.whict}
 // | forcontrol { $inst = $forcontrol.forct}
@@ -80,7 +80,7 @@ instructionint returns [interfaces.Instruction insint]
 : declavarible (PUNTOCOMA)? { $insint = $declavarible.decvbl}
 | declaconstante (PUNTOCOMA)? { $insint = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $insint = $asignacionvariable.asgvbl}
-// | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
+| sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
 // | switchcontrol { $insint = $switchcontrol.mySwitch}
 // | whilecontrol { $insint = $whilecontrol.whict}
 // | forcontrol { $insint = $forcontrol.forct}
@@ -216,11 +216,12 @@ expr returns [interfaces.Expression e]
 // | llamadafuncionstructcontrolret { $e = $llamadafuncionstructcontrolret.llmstrufunret}
 ;
 
-// // CREACION DE IF-ELSE
-// sentenciaifelse returns [interfaces.Instruction myIfElse]
-// : IF expr LLAVEIZQ blockinterno LLAVEDER { $myIfElse = instructions.NewSentenciaIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint)}
-// | IF expr LLAVEIZQ ifop=blockinterno LLAVEDER ELSE LLAVEIZQ elseop=blockinterno LLAVEDER { $myIfElse = instructions.NewSentenciaIfElse($IF.line, $IF.pos, $expr.e, $ifop.blkint , $elseop.blkint)}
-// | IF expr LLAVEIZQ blockinterno LLAVEDER ELSE sentenciaifelse { $myIfElse = instructions.NewSentenciaIfElseIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint, $sentenciaifelse.myIfElse)};
+// CREACION DE IF-ELSE
+sentenciaifelse returns [interfaces.Instruction myIfElse]
+: IF expr LLAVEIZQ blockinterno LLAVEDER { $myIfElse = sentencias.NewSentenciaIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint)}
+//| IF expr LLAVEIZQ ifop=blockinterno LLAVEDER ELSE LLAVEIZQ elseop=blockinterno LLAVEDER { $myIfElse = sentencias.NewSentenciaIfElse($IF.line, $IF.pos, $expr.e, $ifop.blkint , $elseop.blkint)}
+//| IF expr LLAVEIZQ blockinterno LLAVEDER ELSE sentenciaifelse { $myIfElse = sentencias.NewSentenciaIfElseIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint, $sentenciaifelse.myIfElse)}
+;
 
 // // CREACION DEL SWITCH
 // switchcontrol returns [interfaces.Instruction mySwitch]

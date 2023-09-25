@@ -37,6 +37,9 @@ type SwiftGrammarListener interface {
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
 
+	// EnterSentenciaifelse is called when entering the sentenciaifelse production.
+	EnterSentenciaifelse(c *SentenciaifelseContext)
+
 	// EnterListaexpresions is called when entering the listaexpresions production.
 	EnterListaexpresions(c *ListaexpresionsContext)
 
@@ -75,6 +78,9 @@ type SwiftGrammarListener interface {
 
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)
+
+	// ExitSentenciaifelse is called when exiting the sentenciaifelse production.
+	ExitSentenciaifelse(c *SentenciaifelseContext)
 
 	// ExitListaexpresions is called when exiting the listaexpresions production.
 	ExitListaexpresions(c *ListaexpresionsContext)

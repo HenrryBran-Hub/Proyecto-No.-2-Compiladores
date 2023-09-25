@@ -30,7 +30,7 @@ func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generat
 		Tipo:     value.Type,
 		Scope:    ast.ObtenerAmbito(),
 		TipoDato: environment.VARIABLE,
-		Posicion: ast.Lista_Variables.Len(),
+		Posicion: ast.PosicionStack,
 		Valor:    value.Value,
 	}
 	Variable := environment.Variable{
