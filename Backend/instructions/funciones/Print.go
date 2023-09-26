@@ -30,14 +30,14 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 		if !ok {
 			continue
 		}
-		ambito := ast.ObtenerAmbito()
-		if ast.IsMain(ambito) {
-			gen.MainCode = true
+		if !ast.IsMain(ast.ObtenerAmbito()) {
+			gen.MainCodeT()
 		} else {
-			gen.MainCode = false
+			gen.MainCodeF()
 		}
 		valor := instruction.Ejecutar(ast, gen)
 		lista.PushBack(valor)
+
 	}
 	gen.AddComment("----------Imprimimos----------")
 	var result environment.Value

@@ -1,7 +1,10 @@
 package sentencias
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"strconv"
 )
 
 type SentenciaIfElse struct {
@@ -16,19 +19,27 @@ func NewSentenciaIfElse(lin int, col int, expresion interfaces.Expression, Ifop 
 	return SentenciaIfElse{lin, col, expresion, Ifop, Elseop}
 }
 
-/*
-func (v SentenciaIfElse) Ejecutar(ast *environment.AST) interface{} {
-	var condicion environment.Symbol
-	condicion = v.Expresion.Ejecutar(ast)
+func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	condicion := v.Expresion.Ejecutar(ast, gen)
+	ambito := ast.ObtenerAmbito()
+	ambitonuevo := "If-Else" + "-" + ambito
+	ast.AumentarAmbito(ambitonuevo)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
 	var retornable int = 0
 	var reexp environment.Symbol
-	ast.AumentarAmbito("If-Else")
-	if condicion.Tipo == environment.BOOLEAN {
-		var continueflag bool = false
-		breakPosition := -1
-		if condicion.Valor.(bool) {
 
-			for i, inst := range v.Ifop {
+	if condicion.Type == environment.BOOLEAN {
+		gen.AddComment("Estoy dentro de la sentencia if-else")
+		if condicion.Value == "1" || condicion.Value == "0" {
+			vet := gen.NewLabel()
+			fet := gen.NewLabel()
+			exitla := gen.NewLabel()
+			gen.AddIf(condicion.Value, "1", "==", vet)
+			gen.AddGoto(fet)
+			gen.AddLabel(vet)
+			for _, inst := range v.Ifop {
 				if inst == nil {
 					continue
 				}
@@ -36,70 +47,34 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST) interface{} {
 				if !ok {
 					continue
 				}
-				instruction.Ejecutar(ast)
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					breakPosition = i
-					break
+					gen.AddGoto(exitla)
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					breakPosition = i
-					break
+					gen.AddGoto(exitla)
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					breakPosition = i
-					break
+					gen.AddGoto(exitla)
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					continueflag = true
-					breakPosition = i
-					break
+					gen.AddGoto(vet)
 				}
 			}
-
-			if continueflag {
-				for _, inst := range v.Elseop {
-					if inst == nil {
-						continue
-					}
-					instruction, ok := inst.(interfaces.Instruction)
-					if !ok {
-						continue
-					}
-					instruction.Ejecutar(ast)
-					bvari := ast.GetVariable("Break")
-					if bvari != nil {
-						retornable = 1
-						break
-					}
-					rvari := ast.GetVariable("Return")
-					if rvari != nil {
-						retornable = 2
-						break
-					}
-					revari := ast.GetVariable("ReturnExp")
-					if revari != nil {
-						retornable = 3
-						reexp = revari.Symbols
-						break
-					}
-					cvari := ast.GetVariable("Continue")
-					if cvari != nil {
-						continueflag = true
-						break
-					}
-				}
-			}
-
-		} else {
-			for i, inst := range v.Elseop {
+			gen.AddGoto(exitla)
+			gen.AddLabel(fet)
+			for _, inst := range v.Elseop {
 				if inst == nil {
 					continue
 				}
@@ -107,73 +82,190 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST) interface{} {
 				if !ok {
 					continue
 				}
-				instruction.Ejecutar(ast)
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					breakPosition = i
-					break
+					gen.AddGoto(exitla)
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					breakPosition = i
-					break
+					gen.AddGoto(exitla)
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					breakPosition = i
-					break
+					gen.AddGoto(exitla)
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					continueflag = true
-					breakPosition = i
-					break
+					gen.AddGoto(vet)
+				}
+			}
+			gen.AddGoto(exitla)
+			gen.AddLabel(exitla)
+			gen.AddBr()
+		} else if condicion.Value == "" && condicion.Val.TEti != "" {
+			exitl := gen.NewLabel()
+			gen.AddLabel(condicion.Val.TEti)
+
+			for _, inst := range v.Ifop {
+				if inst == nil {
+					continue
+				}
+				instruction, ok := inst.(interfaces.Instruction)
+				if !ok {
+					continue
+				}
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					retornable = 1
+					gen.AddGoto(exitl)
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					retornable = 2
+					reexp = rvari.Symbols
+					gen.AddGoto(exitl)
+				}
+				revari := ast.GetVariable("ReturnExp")
+				if revari != nil {
+					retornable = 3
+					reexp = revari.Symbols
+					gen.AddGoto(exitl)
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					gen.AddGoto(condicion.Val.TEti)
 				}
 			}
 
-			if continueflag {
-				for i := breakPosition; i < len(v.Elseop); i++ {
-					inst := v.Elseop[i]
-					if inst == nil {
-						continue
-					}
-					instruction, ok := inst.(interfaces.Instruction)
-					if !ok {
-						continue
-					}
-					instruction.Ejecutar(ast)
-					bvari := ast.GetVariable("Break")
-					if bvari != nil {
-						retornable = 1
-						break
-					}
-					rvari := ast.GetVariable("Return")
-					if rvari != nil {
-						retornable = 2
-						break
-					}
-					revari := ast.GetVariable("ReturnExp")
-					if revari != nil {
-						retornable = 3
-						reexp = revari.Symbols
-						break
-					}
-					cvari := ast.GetVariable("Continue")
-					if cvari != nil {
-						continueflag = true
-						break
-					}
+			gen.AddGoto(exitl)
+			gen.AddLabel(condicion.Val.FEti)
+			for _, inst := range v.Elseop {
+				if inst == nil {
+					continue
+				}
+				instruction, ok := inst.(interfaces.Instruction)
+				if !ok {
+					continue
+				}
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					retornable = 1
+					gen.AddGoto(exitl)
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					retornable = 2
+					gen.AddGoto(exitl)
+				}
+				revari := ast.GetVariable("ReturnExp")
+				if revari != nil {
+					retornable = 3
+					reexp = revari.Symbols
+					gen.AddGoto(exitl)
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					gen.AddGoto(condicion.Val.FEti)
 				}
 			}
-
+			gen.AddGoto(exitl)
+			gen.AddLabel(exitl)
+			gen.AddBr()
+		} else if condicion.Value != "" && condicion.Val.TEti != "" {
+			exitl := gen.NewLabel()
+			gen.AddLabel(condicion.Val.TEti)
+			for _, inst := range v.Ifop {
+				if inst == nil {
+					continue
+				}
+				instruction, ok := inst.(interfaces.Instruction)
+				if !ok {
+					continue
+				}
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					retornable = 1
+					gen.AddGoto(exitl)
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					retornable = 2
+					gen.AddGoto(exitl)
+				}
+				revari := ast.GetVariable("ReturnExp")
+				if revari != nil {
+					retornable = 3
+					reexp = revari.Symbols
+					gen.AddGoto(exitl)
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					gen.AddLabel(condicion.Val.TEti)
+				}
+			}
+			gen.AddGoto(exitl)
+			gen.AddLabel(condicion.Val.FEti)
+			for _, inst := range v.Elseop {
+				if inst == nil {
+					continue
+				}
+				instruction, ok := inst.(interfaces.Instruction)
+				if !ok {
+					continue
+				}
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					retornable = 1
+					gen.AddGoto(exitl)
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					retornable = 2
+					gen.AddGoto(exitl)
+				}
+				revari := ast.GetVariable("ReturnExp")
+				if revari != nil {
+					retornable = 3
+					reexp = revari.Symbols
+					gen.AddGoto(exitl)
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					gen.AddGoto(condicion.Val.FEti)
+				}
+			}
+			gen.AddGoto(exitl)
+			gen.AddLabel(exitl)
+			gen.AddBr()
 		}
+
 	} else {
 		Errores := environment.Errores{
-			Descripcion: "Se ha querido asignar un valor no correspondiente en la condicion del if-else tiene que ser un tipo boleano.",
+			Descripcion: "Se ha querido asignar un valor no correspondiente en la condicion del if tiene que ser un tipo boleano.",
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
@@ -243,6 +335,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST) interface{} {
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.MainCodeF()
 	return nil
 }
-*/

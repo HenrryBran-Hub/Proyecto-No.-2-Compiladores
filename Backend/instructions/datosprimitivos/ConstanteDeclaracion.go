@@ -20,7 +20,7 @@ func NewConstanteDeclaration(lin int, col int, name string, tipo environment.Tip
 }
 
 func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	if ast.ObtenerAmbito() == "Global" {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)

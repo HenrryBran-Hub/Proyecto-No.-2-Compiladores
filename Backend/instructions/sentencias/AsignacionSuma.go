@@ -20,7 +20,7 @@ func NewAsignacionSuma(lin int, col int, name string, value interfaces.Expressio
 }
 
 func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	if ast.ObtenerAmbito() == "Global" {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
@@ -39,6 +39,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.MainCodeF()
 			return nil
 		} else if Variable.Symbols.Tipo == environment.FLOAT {
 			gen.AddComment("Asignacion de Float")
@@ -52,6 +53,8 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.MainCodeF()
+			return nil
 		} else if Variable.Symbols.Tipo == environment.STRING {
 			//llamar a generar concatstring
 			gen.GenerateConcatString()
@@ -79,6 +82,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Variable.Symbols.Valor = tmp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.MainCodeF()
 			return nil
 		} else {
 			Errores := environment.Errores{
@@ -90,6 +94,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			}
 			ast.ErroresHTML(Errores)
 			Variable.Symbols.Valor = nil
+			gen.MainCodeF()
 			return nil
 		}
 	}
@@ -108,6 +113,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.MainCodeF()
 		}
 	}
 
@@ -120,6 +126,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
+		gen.MainCodeF()
 		return nil
 	}
 
@@ -165,8 +172,10 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		}
 		ast.ErroresHTML(Errores)
 		Variable.Symbols.Valor = nil
+		gen.MainCodeF()
 		return nil
 	}
 
+	gen.MainCodeF()
 	return nil
 }

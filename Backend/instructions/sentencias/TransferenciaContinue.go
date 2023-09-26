@@ -15,6 +15,10 @@ func NewTransferenciaContinue(lin int, col int) TransferenciaContinue {
 }
 
 func (v TransferenciaContinue) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -30,5 +34,6 @@ func (v TransferenciaContinue) Ejecutar(ast *environment.AST, gen *generator.Gen
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.MainCodeF()
 	return nil
 }

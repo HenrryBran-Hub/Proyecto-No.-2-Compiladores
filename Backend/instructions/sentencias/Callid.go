@@ -19,13 +19,13 @@ func NewCallid(lin int, col int, name string) Callid {
 }
 
 func (o Callid) Ejecutar(ast *environment.AST, gen *generator.Generator) environment.Value {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	var result environment.Value
 	variable := ast.GetVariable(o.Name)
 	gen.AddComment("LLamamos la funcion Callid ")
 	if variable != nil {
-		if ast.ObtenerAmbito() == "Global" {
-			gen.MainCodeT()
-		}
 		result = environment.NewValue(fmt.Sprintf("%v", variable.Symbols.Valor), true, variable.Symbols.Tipo, false, false, false, *variable)
 		return result
 	} else {

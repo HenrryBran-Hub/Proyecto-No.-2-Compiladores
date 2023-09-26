@@ -15,6 +15,9 @@ func NewTransferenciaReturn(lin int, col int) TransferenciaReturn {
 }
 
 func (v TransferenciaReturn) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -30,5 +33,6 @@ func (v TransferenciaReturn) Ejecutar(ast *environment.AST, gen *generator.Gener
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.MainCodeF()
 	return nil
 }

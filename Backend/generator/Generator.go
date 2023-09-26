@@ -266,13 +266,13 @@ func (g *Generator) GenerateFinalCode() {
 	}
 	//****************** PushBack main
 	g.FinalCode.PushBack("/*------MAIN------*/\n")
-	g.FinalCode.PushBack("void main() {\n")
+	g.FinalCode.PushBack("int main() {\n")
 	g.FinalCode.PushBack("\tP = 0; H = 0;\n\n")
 	for e := g.Code.Front(); e != nil; e = e.Next() {
 		s := e.Value
 		g.FinalCode.PushBack("\t" + s.(string))
 	}
-	g.FinalCode.PushBack("\n\treturn;\n}\n")
+	g.FinalCode.PushBack("\n\treturn 0;\n}\n")
 }
 
 func (g *Generator) GeneratePrintString() {

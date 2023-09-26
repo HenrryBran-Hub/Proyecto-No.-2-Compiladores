@@ -20,9 +20,10 @@ func NewAsignacionVariable(lin int, col int, name string, value interfaces.Expre
 }
 
 func (v AsignacionVariable) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	if ast.ObtenerAmbito() == "Global" {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+
 	value := v.Value.Ejecutar(ast, gen)
 
 	Variable := ast.GetVariable(v.Name)
@@ -55,6 +56,7 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, gen *generator.Genera
 			Variable.Symbols.Valor = value.Value
 		}
 		ast.ActualizarVariable(Variable)
+		gen.MainCodeF()
 	}
 
 	if !Variable.Mutable {

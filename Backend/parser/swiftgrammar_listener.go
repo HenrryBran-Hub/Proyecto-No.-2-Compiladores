@@ -40,6 +40,15 @@ type SwiftGrammarListener interface {
 	// EnterSentenciaifelse is called when entering the sentenciaifelse production.
 	EnterSentenciaifelse(c *SentenciaifelseContext)
 
+	// EnterContinuee is called when entering the continuee production.
+	EnterContinuee(c *ContinueeContext)
+
+	// EnterBreakk is called when entering the breakk production.
+	EnterBreakk(c *BreakkContext)
+
+	// EnterRetornos is called when entering the retornos production.
+	EnterRetornos(c *RetornosContext)
+
 	// EnterListaexpresions is called when entering the listaexpresions production.
 	EnterListaexpresions(c *ListaexpresionsContext)
 
@@ -81,6 +90,15 @@ type SwiftGrammarListener interface {
 
 	// ExitSentenciaifelse is called when exiting the sentenciaifelse production.
 	ExitSentenciaifelse(c *SentenciaifelseContext)
+
+	// ExitContinuee is called when exiting the continuee production.
+	ExitContinuee(c *ContinueeContext)
+
+	// ExitBreakk is called when exiting the breakk production.
+	ExitBreakk(c *BreakkContext)
+
+	// ExitRetornos is called when exiting the retornos production.
+	ExitRetornos(c *RetornosContext)
 
 	// ExitListaexpresions is called when exiting the listaexpresions production.
 	ExitListaexpresions(c *ListaexpresionsContext)

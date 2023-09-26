@@ -1176,12 +1176,6 @@ func (a *AST) ActualizarVariableStruc(mariable *VariableStruct) {
 }
 
 func (a *AST) IsMain(cadena string) bool {
-	// Convierte la cadena a minúsculas para hacer la búsqueda insensible a mayúsculas
 	cadena = strings.ToLower(cadena)
-
-	// Verifica si la palabra "global" está en la cadena
-	if strings.Contains(cadena, "global") {
-		return true
-	}
-	return false
+	return strings.Contains(cadena, "funcion")
 }

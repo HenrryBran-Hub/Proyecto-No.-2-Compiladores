@@ -15,6 +15,10 @@ func NewTransferenciaBreak(lin int, col int) TransferenciaBreak {
 }
 
 func (v TransferenciaBreak) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -30,5 +34,6 @@ func (v TransferenciaBreak) Ejecutar(ast *environment.AST, gen *generator.Genera
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.MainCodeF()
 	return nil
 }

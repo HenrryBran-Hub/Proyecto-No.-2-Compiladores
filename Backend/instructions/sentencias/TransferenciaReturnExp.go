@@ -18,7 +18,11 @@ func NewTransferenciaReturnExp(lin int, col int, value interfaces.Expression) Tr
 }
 
 func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	value := v.Value.Ejecutar(ast, gen)
+
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -45,5 +49,6 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.MainCodeF()
 	return nil
 }

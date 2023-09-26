@@ -19,13 +19,13 @@ func NewSentenciaIf(lin int, col int, expresion interfaces.Expression, bloque []
 }
 
 func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	condicion := v.Expresion.Ejecutar(ast, gen)
 	ambito := ast.ObtenerAmbito()
 	ambitonuevo := "If" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
-	if ast.IsMain(ambito) {
+	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
-	condicion := v.Expresion.Ejecutar(ast, gen)
 	var retornable int = 0
 	var reexp environment.Symbol
 
@@ -47,25 +47,28 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 					continue
 				}
 				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					break
+					gen.AddGoto(exitla)
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					break
+					gen.AddGoto(exitla)
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					break
+					gen.AddGoto(exitla)
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					continue
+					gen.AddGoto(vet)
 				}
 			}
 			gen.AddGoto(exitla)
@@ -86,26 +89,29 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 					continue
 				}
 				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					break
+					gen.AddGoto(exitl)
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
 					reexp = rvari.Symbols
-					break
+					gen.AddGoto(exitl)
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					break
+					gen.AddGoto(exitl)
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					continue
+					gen.AddGoto(condicion.Val.TEti)
 				}
 			}
 
@@ -126,25 +132,28 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 					continue
 				}
 				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					break
+					gen.AddGoto(exitl)
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					break
+					gen.AddGoto(exitl)
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					break
+					gen.AddGoto(exitl)
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					continue
+					gen.AddLabel(condicion.Val.TEti)
 				}
 			}
 			gen.AddGoto(exitl)
@@ -227,8 +236,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 		}
 		ast.ErroresHTML(Errores)
 	}
-	if ast.IsMain(ambito) {
-		gen.MainCodeF()
-	}
+
+	gen.MainCodeF()
 	return nil
 }

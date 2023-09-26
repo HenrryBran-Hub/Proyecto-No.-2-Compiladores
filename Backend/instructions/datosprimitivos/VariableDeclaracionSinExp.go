@@ -19,10 +19,9 @@ func NewVariableDeclaracionSinExp(lin int, col int, name string, tipo environmen
 }
 
 func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	if ast.ObtenerAmbito() == "Global" {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
-	gen.MainCodeT()
 	symbol := environment.Symbol{
 		Lin:      v.Lin,
 		Col:      v.Col,
@@ -100,6 +99,6 @@ func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator
 	}
 
 	ast.GuardarVariable(Variable)
-	gen.MainCodeT()
+	gen.MainCodeF()
 	return result
 }

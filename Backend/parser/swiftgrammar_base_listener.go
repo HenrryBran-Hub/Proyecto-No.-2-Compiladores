@@ -86,6 +86,24 @@ func (s *BaseSwiftGrammarListener) EnterSentenciaifelse(ctx *SentenciaifelseCont
 // ExitSentenciaifelse is called when production sentenciaifelse is exited.
 func (s *BaseSwiftGrammarListener) ExitSentenciaifelse(ctx *SentenciaifelseContext) {}
 
+// EnterContinuee is called when production continuee is entered.
+func (s *BaseSwiftGrammarListener) EnterContinuee(ctx *ContinueeContext) {}
+
+// ExitContinuee is called when production continuee is exited.
+func (s *BaseSwiftGrammarListener) ExitContinuee(ctx *ContinueeContext) {}
+
+// EnterBreakk is called when production breakk is entered.
+func (s *BaseSwiftGrammarListener) EnterBreakk(ctx *BreakkContext) {}
+
+// ExitBreakk is called when production breakk is exited.
+func (s *BaseSwiftGrammarListener) ExitBreakk(ctx *BreakkContext) {}
+
+// EnterRetornos is called when production retornos is entered.
+func (s *BaseSwiftGrammarListener) EnterRetornos(ctx *RetornosContext) {}
+
+// ExitRetornos is called when production retornos is exited.
+func (s *BaseSwiftGrammarListener) ExitRetornos(ctx *RetornosContext) {}
+
 // EnterListaexpresions is called when production listaexpresions is entered.
 func (s *BaseSwiftGrammarListener) EnterListaexpresions(ctx *ListaexpresionsContext) {}
 
