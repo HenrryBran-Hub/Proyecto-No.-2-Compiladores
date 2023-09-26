@@ -41,7 +41,7 @@ instruction returns [interfaces.Instruction inst]
 : declavarible (PUNTOCOMA)? { $inst = $declavarible.decvbl}
 | declaconstante (PUNTOCOMA)? { $inst = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $inst = $asignacionvariable.asgvbl}
-// | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
+| sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
 // | switchcontrol { $inst = $switchcontrol.mySwitch}
 // | whilecontrol { $inst = $whilecontrol.whict}
 // | forcontrol { $inst = $forcontrol.forct}
@@ -80,14 +80,14 @@ instructionint returns [interfaces.Instruction insint]
 : declavarible (PUNTOCOMA)? { $insint = $declavarible.decvbl}
 | declaconstante (PUNTOCOMA)? { $insint = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $insint = $asignacionvariable.asgvbl}
-// | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
+| sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
 // | switchcontrol { $insint = $switchcontrol.mySwitch}
 // | whilecontrol { $insint = $whilecontrol.whict}
 // | forcontrol { $insint = $forcontrol.forct}
 // | guardcontrol { $insint = $guardcontrol.guct}
-// | continuee (PUNTOCOMA)? { $insint = $continuee.coct}
-// | breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
-// | retornos (PUNTOCOMA)? { $insint = $retornos.rect }
+| continuee (PUNTOCOMA)? { $insint = $continuee.coct}
+| breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
+| retornos (PUNTOCOMA)? { $insint = $retornos.rect }
 // | vectorcontrol (PUNTOCOMA)? { $insint = $vectorcontrol.vect }
 // | vectoragregar  (PUNTOCOMA)? { $insint = $vectoragregar.veadct }
 // | vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
@@ -216,11 +216,12 @@ expr returns [interfaces.Expression e]
 // | llamadafuncionstructcontrolret { $e = $llamadafuncionstructcontrolret.llmstrufunret}
 ;
 
-// // CREACION DE IF-ELSE
-// sentenciaifelse returns [interfaces.Instruction myIfElse]
-// : IF expr LLAVEIZQ blockinterno LLAVEDER { $myIfElse = instructions.NewSentenciaIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint)}
-// | IF expr LLAVEIZQ ifop=blockinterno LLAVEDER ELSE LLAVEIZQ elseop=blockinterno LLAVEDER { $myIfElse = instructions.NewSentenciaIfElse($IF.line, $IF.pos, $expr.e, $ifop.blkint , $elseop.blkint)}
-// | IF expr LLAVEIZQ blockinterno LLAVEDER ELSE sentenciaifelse { $myIfElse = instructions.NewSentenciaIfElseIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint, $sentenciaifelse.myIfElse)};
+// CREACION DE IF-ELSE
+sentenciaifelse returns [interfaces.Instruction myIfElse]
+: IF expr LLAVEIZQ blockinterno LLAVEDER { $myIfElse = sentencias.NewSentenciaIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint)}
+| IF expr LLAVEIZQ ifop=blockinterno LLAVEDER ELSE LLAVEIZQ elseop=blockinterno LLAVEDER { $myIfElse = sentencias.NewSentenciaIfElse($IF.line, $IF.pos, $expr.e, $ifop.blkint , $elseop.blkint)}
+| IF expr LLAVEIZQ blockinterno LLAVEDER ELSE sentenciaifelse { $myIfElse = sentencias.NewSentenciaIfElseIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint, $sentenciaifelse.myIfElse)}
+;
 
 // // CREACION DEL SWITCH
 // switchcontrol returns [interfaces.Instruction mySwitch]
@@ -270,25 +271,25 @@ expr returns [interfaces.Expression e]
 //     $guct = instructions.NewSentenciaGuard($GUARD.line, $GUARD.pos, $expr.e, $blockinterno.blkint)
 // };
 
-// //CREACION DEL CONTINUE
-// continuee returns [interfaces.Instruction coct]
-// : CONTINUE {$coct = instructions.NewTransferenciaContinue($CONTINUE.line, $CONTINUE.pos)};
+//CREACION DEL CONTINUE
+continuee returns [interfaces.Instruction coct]
+: CONTINUE {$coct = sentencias.NewTransferenciaContinue($CONTINUE.line, $CONTINUE.pos)};
 
-// //CREACION DEL BREAK
-// breakk returns [interfaces.Instruction brkct]
-// : BREAK { $brkct = instructions.NewTransferenciaBreak($BREAK.line, $BREAK.pos)};
+//CREACION DEL BREAK
+breakk returns [interfaces.Instruction brkct]
+: BREAK { $brkct = sentencias.NewTransferenciaBreak($BREAK.line, $BREAK.pos)};
 
-// //CREACION DEL RETURN
-// retornos returns [interfaces.Instruction rect]
-// : RETURN op=expr
-// {
-//     $rect = instructions.NewTransferenciaReturnExp($RETURN.line, $RETURN.pos, $op.e);
-// }
-// |RETURN
-// {
-//     $rect = instructions.NewTransferenciaReturn($RETURN.line, $RETURN.pos);
-// }
-// ;
+//CREACION DEL RETURN
+retornos returns [interfaces.Instruction rect]
+: RETURN op=expr
+{
+    $rect = sentencias.NewTransferenciaReturnExp($RETURN.line, $RETURN.pos, $op.e);
+}
+|RETURN
+{
+    $rect = sentencias.NewTransferenciaReturn($RETURN.line, $RETURN.pos);
+}
+;
 
 
 // //CREACION DEL VECTOR 

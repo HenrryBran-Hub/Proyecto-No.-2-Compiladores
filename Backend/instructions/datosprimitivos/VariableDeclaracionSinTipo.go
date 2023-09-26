@@ -11,7 +11,6 @@ type VariableDeclaracionSinTipo struct {
 	Lin   int
 	Col   int
 	Name  string
-	Type  environment.TipoExpresion
 	Value interfaces.Expression
 }
 
@@ -20,10 +19,9 @@ func NewVariableDeclaracionSinTipo(lin int, col int, name string, value interfac
 }
 
 func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	if ast.ObtenerAmbito() == "Global" {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
-
 	value := v.Value.Ejecutar(ast, gen)
 	symbol := environment.Symbol{
 		Lin:      v.Lin,
@@ -31,7 +29,7 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 		Tipo:     value.Type,
 		Scope:    ast.ObtenerAmbito(),
 		TipoDato: environment.VARIABLE,
-		Posicion: ast.Lista_Variables.Len(),
+		Posicion: ast.PosicionStack,
 		Valor:    value.Value,
 	}
 	Variable := environment.Variable{

@@ -1,7 +1,10 @@
 package sentencias
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"strconv"
 )
 
 type SentenciaIf struct {
@@ -15,15 +18,26 @@ func NewSentenciaIf(lin int, col int, expresion interfaces.Expression, bloque []
 	return SentenciaIf{lin, col, expresion, bloque}
 }
 
-/*
-func (v SentenciaIf) Ejecutar(ast *environment.AST) interface{} {
-	var condicion environment.Symbol
-	condicion = v.Expresion.Ejecutar(ast)
+func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	condicion := v.Expresion.Ejecutar(ast, gen)
+	ambito := ast.ObtenerAmbito()
+	ambitonuevo := "If" + "-" + ambito
+	ast.AumentarAmbito(ambitonuevo)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
 	var retornable int = 0
 	var reexp environment.Symbol
-	ast.AumentarAmbito("If")
-	if condicion.Tipo == environment.BOOLEAN {
-		if condicion.Valor.(bool) {
+
+	if condicion.Type == environment.BOOLEAN {
+		gen.AddComment("Estoy dentro de la sentencia if ")
+		if condicion.Value == "1" || condicion.Value == "0" {
+			vet := gen.NewLabel()
+			fet := gen.NewLabel()
+			exitla := gen.NewLabel()
+			gen.AddIf(condicion.Value, "1", "==", vet)
+			gen.AddGoto(fet)
+			gen.AddLabel(vet)
 			for _, inst := range v.slice {
 				if inst == nil {
 					continue
@@ -32,29 +46,123 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST) interface{} {
 				if !ok {
 					continue
 				}
-				instruction.Ejecutar(ast)
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					break
+					gen.AddGoto(exitla)
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					break
+					gen.AddGoto(exitla)
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					break
+					gen.AddGoto(exitla)
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					continue
+					gen.AddGoto(vet)
 				}
 			}
+			gen.AddGoto(exitla)
+			gen.AddLabel(fet)
+			gen.AddGoto(exitla)
+			gen.AddLabel(exitla)
+			gen.AddBr()
+		} else if condicion.Value == "" && condicion.Val.TEti != "" {
+			exitl := gen.NewLabel()
+			gen.AddLabel(condicion.Val.TEti)
+
+			for _, inst := range v.slice {
+				if inst == nil {
+					continue
+				}
+				instruction, ok := inst.(interfaces.Instruction)
+				if !ok {
+					continue
+				}
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					retornable = 1
+					gen.AddGoto(exitl)
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					retornable = 2
+					reexp = rvari.Symbols
+					gen.AddGoto(exitl)
+				}
+				revari := ast.GetVariable("ReturnExp")
+				if revari != nil {
+					retornable = 3
+					reexp = revari.Symbols
+					gen.AddGoto(exitl)
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					gen.AddGoto(condicion.Val.TEti)
+				}
+			}
+
+			gen.AddGoto(exitl)
+			gen.AddLabel(condicion.Val.FEti)
+			gen.AddGoto(exitl)
+			gen.AddLabel(exitl)
+			gen.AddBr()
+		} else if condicion.Value != "" && condicion.Val.TEti != "" {
+			exitl := gen.NewLabel()
+			gen.AddLabel(condicion.Val.TEti)
+			for _, inst := range v.slice {
+				if inst == nil {
+					continue
+				}
+				instruction, ok := inst.(interfaces.Instruction)
+				if !ok {
+					continue
+				}
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					retornable = 1
+					gen.AddGoto(exitl)
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					retornable = 2
+					gen.AddGoto(exitl)
+				}
+				revari := ast.GetVariable("ReturnExp")
+				if revari != nil {
+					retornable = 3
+					reexp = revari.Symbols
+					gen.AddGoto(exitl)
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					gen.AddLabel(condicion.Val.TEti)
+				}
+			}
+			gen.AddGoto(exitl)
+			gen.AddLabel(condicion.Val.FEti)
+			gen.AddGoto(exitl)
+			gen.AddLabel(exitl)
+			gen.AddBr()
 		}
+
 	} else {
 		Errores := environment.Errores{
 			Descripcion: "Se ha querido asignar un valor no correspondiente en la condicion del if tiene que ser un tipo boleano.",
@@ -70,11 +178,12 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST) interface{} {
 	if tamanio > 1 {
 		if retornable == 1 {
 			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  environment.BOOLEAN,
-				Valor: true,
-				Scope: ast.ObtenerAmbito(),
+				Lin:      v.Lin,
+				Col:      v.Col,
+				Tipo:     environment.BOOLEAN,
+				Valor:    true,
+				Scope:    ast.ObtenerAmbito(),
+				Posicion: reexp.Posicion,
 			}
 			Variable := environment.Variable{
 				Name:        "Break",
@@ -127,6 +236,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST) interface{} {
 		}
 		ast.ErroresHTML(Errores)
 	}
+
+	gen.MainCodeF()
 	return nil
 }
-*/

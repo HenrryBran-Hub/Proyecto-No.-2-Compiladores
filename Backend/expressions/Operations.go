@@ -60,7 +60,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateConcatString()
 				//concat
 				gen.AddComment("Concatenando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len() + 1)
+				envSize := strconv.Itoa(ast.PosicionStack + 1)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -270,7 +270,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareMenorString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -302,7 +302,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareMenorString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -379,7 +379,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareMaryorString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -411,7 +411,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareMaryorString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -488,7 +488,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareMenorigString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -520,7 +520,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareMenorigString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -597,7 +597,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareMayorigString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -629,7 +629,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareMayorigString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -706,7 +706,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareIgualString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -738,7 +738,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareIgualString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -775,16 +775,16 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				if op1.Val.Name == "" {
 					gen.AddExpression(newTemp1, op1.Value, "", "")
-					gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
-					gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
+					gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp1)
+					gen.AddGetStack(newTemp3, strconv.Itoa(ast.PosicionStack+1))
 				} else {
 					gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
 				}
 
 				if op2.Val.Name == "" {
 					gen.AddExpression(newTemp4, op2.Value, "", "")
-					gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp4)
-					gen.AddGetStack(newTemp6, strconv.Itoa(ast.Lista_Variables.Len()+1))
+					gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp4)
+					gen.AddGetStack(newTemp6, strconv.Itoa(ast.PosicionStack+1))
 				} else {
 					gen.AddGetStack(newTemp6, strconv.Itoa(op2.Val.Symbols.Posicion))
 				}
@@ -797,6 +797,280 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.Val.TEti = tlabel
 
 				return result
+			} else if dominante == environment.NULL && op1.Type != environment.NULL {
+				if op1.Type == environment.INTEGER {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(op1.Value, op2.Value, "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op1.Type == environment.FLOAT {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(op1.Value, op2.Value, "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op1.Type == environment.STRING {
+					//llamar a generar concatstring
+					gen.GenerateCompareIgualString()
+					//concat
+					gen.AddComment("Comparando strings")
+					envSize := strconv.Itoa(ast.PosicionStack)
+					tmp1 := gen.NewTemp()
+					tmp2 := gen.NewTemp()
+					gen.AddExpression(tmp1, "P", envSize, "+")
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp3 := gen.NewTemp()
+					gen.AddGetStack(temp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+					gen.AddSetStack("(int)"+tmp1, temp3)
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp4 := gen.NewTemp()                //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+					gen.AddAssign(temp4, "H")             //Creamos un nuevo puntero Head para que en este vayan los valores
+					gen.AddSetHeap("(int)H", "-1")        // Agregamos el caracter de escape
+					gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+					gen.AddSetStack("(int)"+tmp1, temp4)
+					gen.AddExpression("P", "P", envSize, "+")
+					gen.AddCall("compareigualString")
+					gen.AddGetStack(tmp2, "(int)P")
+					gen.AddExpression("P", "P", envSize, "-")
+					gen.AddBr()
+					//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(tmp2, "1", "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op1.Type == environment.CHARACTER {
+					//llamar a generar concatstring
+					gen.GenerateCompareIgualString()
+					//concat
+					gen.AddComment("Comparando strings")
+					envSize := strconv.Itoa(ast.PosicionStack)
+					tmp1 := gen.NewTemp()
+					tmp2 := gen.NewTemp()
+					gen.AddExpression(tmp1, "P", envSize, "+")
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp3 := gen.NewTemp()
+					gen.AddGetStack(temp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+					gen.AddSetStack("(int)"+tmp1, temp3)
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp4 := gen.NewTemp()                //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+					gen.AddAssign(temp4, "H")             //Creamos un nuevo puntero Head para que en este vayan los valores
+					gen.AddSetHeap("(int)H", "-1")        // Agregamos el caracter de escape
+					gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+					gen.AddSetStack("(int)"+tmp1, temp4)
+					gen.AddExpression("P", "P", envSize, "+")
+					gen.AddCall("compareigualString")
+					gen.AddGetStack(tmp2, "(int)P")
+					gen.AddExpression("P", "P", envSize, "-")
+					gen.AddBr()
+					//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(tmp2, "1", "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op1.Type == environment.BOOLEAN {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+					newTemp1 := gen.NewTemp()
+					newTemp3 := gen.NewTemp()
+					newTemp4 := gen.NewTemp()
+					newTemp6 := gen.NewTemp()
+
+					if op1.Val.Name == "" {
+						gen.AddExpression(newTemp1, op1.Value, "", "")
+						gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp1)
+						gen.AddGetStack(newTemp3, strconv.Itoa(ast.PosicionStack+1))
+					} else {
+						gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+					}
+
+					if op2.Val.Name == "" {
+						gen.AddExpression(newTemp4, "0", "", "")
+						gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp4)
+						gen.AddGetStack(newTemp6, strconv.Itoa(ast.PosicionStack+1))
+					} else {
+						gen.AddGetStack(newTemp6, strconv.Itoa(op2.Val.Symbols.Posicion))
+					}
+					gen.AddIf(newTemp3, newTemp6, "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				}
+
+			} else if dominante == environment.NULL && op2.Type != environment.NULL {
+				if op2.Type == environment.INTEGER {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(op1.Value, op2.Value, "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op2.Type == environment.FLOAT {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(op1.Value, op2.Value, "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op2.Type == environment.STRING {
+					//llamar a generar concatstring
+					gen.GenerateCompareIgualString()
+					//concat
+					gen.AddComment("Comparando strings")
+					envSize := strconv.Itoa(ast.PosicionStack)
+					tmp1 := gen.NewTemp()
+					tmp2 := gen.NewTemp()
+					gen.AddExpression(tmp1, "P", envSize, "+")
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp3 := gen.NewTemp()
+					gen.AddGetStack(temp3, strconv.Itoa(op2.Val.Symbols.Posicion))
+					gen.AddSetStack("(int)"+tmp1, temp3)
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp4 := gen.NewTemp()                //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+					gen.AddAssign(temp4, "H")             //Creamos un nuevo puntero Head para que en este vayan los valores
+					gen.AddSetHeap("(int)H", "-1")        // Agregamos el caracter de escape
+					gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+					gen.AddSetStack("(int)"+tmp1, temp4)
+					gen.AddExpression("P", "P", envSize, "+")
+					gen.AddCall("compareigualString")
+					gen.AddGetStack(tmp2, "(int)P")
+					gen.AddExpression("P", "P", envSize, "-")
+					gen.AddBr()
+					//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(tmp2, "1", "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op2.Type == environment.CHARACTER {
+					//llamar a generar concatstring
+					gen.GenerateCompareIgualString()
+					//concat
+					gen.AddComment("Comparando strings")
+					envSize := strconv.Itoa(ast.PosicionStack)
+					tmp1 := gen.NewTemp()
+					tmp2 := gen.NewTemp()
+					gen.AddExpression(tmp1, "P", envSize, "+")
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp3 := gen.NewTemp()
+					gen.AddGetStack(temp3, strconv.Itoa(op2.Val.Symbols.Posicion))
+					gen.AddSetStack("(int)"+tmp1, temp3)
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp4 := gen.NewTemp()                //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+					gen.AddAssign(temp4, "H")             //Creamos un nuevo puntero Head para que en este vayan los valores
+					gen.AddSetHeap("(int)H", "-1")        // Agregamos el caracter de escape
+					gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+					gen.AddSetStack("(int)"+tmp1, temp4)
+					gen.AddExpression("P", "P", envSize, "+")
+					gen.AddCall("compareigualString")
+					gen.AddGetStack(tmp2, "(int)P")
+					gen.AddExpression("P", "P", envSize, "-")
+					gen.AddBr()
+					//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(tmp2, "1", "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op2.Type == environment.BOOLEAN {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+					newTemp1 := gen.NewTemp()
+					newTemp3 := gen.NewTemp()
+					newTemp4 := gen.NewTemp()
+					newTemp6 := gen.NewTemp()
+
+					if op1.Val.Name == "" {
+						gen.AddExpression(newTemp1, "0", "", "")
+						gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp1)
+						gen.AddGetStack(newTemp3, strconv.Itoa(ast.PosicionStack+1))
+					} else {
+						gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+					}
+
+					if op2.Val.Name == "" {
+						gen.AddExpression(newTemp4, op2.Value, "", "")
+						gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp4)
+						gen.AddGetStack(newTemp6, strconv.Itoa(ast.PosicionStack+1))
+					} else {
+						gen.AddGetStack(newTemp6, strconv.Itoa(op2.Val.Symbols.Posicion))
+					}
+					gen.AddIf(newTemp3, newTemp6, "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				}
+
 			} else {
 				Errores := environment.Errores{
 					Descripcion: "No es posible comparar los dos valores(==)",
@@ -847,7 +1121,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareDifeString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -879,7 +1153,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.GenerateCompareDifeString()
 				//concat
 				gen.AddComment("Comparando strings")
-				envSize := strconv.Itoa(ast.Lista_Variables.Len())
+				envSize := strconv.Itoa(ast.PosicionStack)
 				tmp1 := gen.NewTemp()
 				tmp2 := gen.NewTemp()
 				gen.AddExpression(tmp1, "P", envSize, "+")
@@ -916,16 +1190,16 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				if op1.Val.Name == "" {
 					gen.AddExpression(newTemp1, op1.Value, "", "")
-					gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp1)
-					gen.AddGetStack(newTemp3, strconv.Itoa(ast.Lista_Variables.Len()+1))
+					gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp1)
+					gen.AddGetStack(newTemp3, strconv.Itoa(ast.PosicionStack+1))
 				} else {
 					gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
 				}
 
 				if op2.Val.Name == "" {
 					gen.AddExpression(newTemp4, op2.Value, "", "")
-					gen.AddSetStack(strconv.Itoa(ast.Lista_Variables.Len()+1), newTemp4)
-					gen.AddGetStack(newTemp6, strconv.Itoa(ast.Lista_Variables.Len()+1))
+					gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp4)
+					gen.AddGetStack(newTemp6, strconv.Itoa(ast.PosicionStack+1))
 				} else {
 					gen.AddGetStack(newTemp6, strconv.Itoa(op2.Val.Symbols.Posicion))
 				}
@@ -938,6 +1212,280 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.Val.TEti = tlabel
 
 				return result
+			} else if dominante == environment.NULL && op1.Type != environment.NULL {
+				if op1.Type == environment.INTEGER {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(op1.Value, op2.Value, "!=", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op1.Type == environment.FLOAT {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(op1.Value, op2.Value, "!=", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op1.Type == environment.STRING {
+					//llamar a generar concatstring
+					gen.GenerateCompareDifeString()
+					//concat
+					gen.AddComment("Comparando strings")
+					envSize := strconv.Itoa(ast.PosicionStack)
+					tmp1 := gen.NewTemp()
+					tmp2 := gen.NewTemp()
+					gen.AddExpression(tmp1, "P", envSize, "+")
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp3 := gen.NewTemp()
+					gen.AddGetStack(temp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+					gen.AddSetStack("(int)"+tmp1, temp3)
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp4 := gen.NewTemp()                //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+					gen.AddAssign(temp4, "H")             //Creamos un nuevo puntero Head para que en este vayan los valores
+					gen.AddSetHeap("(int)H", "-1")        // Agregamos el caracter de escape
+					gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+					gen.AddSetStack("(int)"+tmp1, temp4)
+					gen.AddExpression("P", "P", envSize, "+")
+					gen.AddCall("comparedifeString")
+					gen.AddGetStack(tmp2, "(int)P")
+					gen.AddExpression("P", "P", envSize, "-")
+					gen.AddBr()
+					//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(tmp2, "1", "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op1.Type == environment.CHARACTER {
+					//llamar a generar concatstring
+					gen.GenerateCompareDifeString()
+					//concat
+					gen.AddComment("Comparando strings")
+					envSize := strconv.Itoa(ast.PosicionStack)
+					tmp1 := gen.NewTemp()
+					tmp2 := gen.NewTemp()
+					gen.AddExpression(tmp1, "P", envSize, "+")
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp3 := gen.NewTemp()
+					gen.AddGetStack(temp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+					gen.AddSetStack("(int)"+tmp1, temp3)
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp4 := gen.NewTemp()                //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+					gen.AddAssign(temp4, "H")             //Creamos un nuevo puntero Head para que en este vayan los valores
+					gen.AddSetHeap("(int)H", "-1")        // Agregamos el caracter de escape
+					gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+					gen.AddSetStack("(int)"+tmp1, temp4)
+					gen.AddExpression("P", "P", envSize, "+")
+					gen.AddCall("comparedifeString")
+					gen.AddGetStack(tmp2, "(int)P")
+					gen.AddExpression("P", "P", envSize, "-")
+					gen.AddBr()
+					//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(tmp2, "1", "==", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op1.Type == environment.BOOLEAN {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+					newTemp1 := gen.NewTemp()
+					newTemp3 := gen.NewTemp()
+					newTemp4 := gen.NewTemp()
+					newTemp6 := gen.NewTemp()
+
+					if op1.Val.Name == "" {
+						gen.AddExpression(newTemp1, op1.Value, "", "")
+						gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp1)
+						gen.AddGetStack(newTemp3, strconv.Itoa(ast.PosicionStack+1))
+					} else {
+						gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+					}
+
+					if op2.Val.Name == "" {
+						gen.AddExpression(newTemp4, "0", "", "")
+						gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp4)
+						gen.AddGetStack(newTemp6, strconv.Itoa(ast.PosicionStack+1))
+					} else {
+						gen.AddGetStack(newTemp6, strconv.Itoa(op2.Val.Symbols.Posicion))
+					}
+					gen.AddIf(newTemp3, newTemp6, "!=", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				}
+
+			} else if dominante == environment.NULL && op2.Type != environment.NULL {
+				if op2.Type == environment.INTEGER {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(op1.Value, op2.Value, "!=", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op2.Type == environment.FLOAT {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(op1.Value, op2.Value, "!=", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op2.Type == environment.STRING {
+					//llamar a generar concatstring
+					gen.GenerateCompareDifeString()
+					//concat
+					gen.AddComment("Comparando strings")
+					envSize := strconv.Itoa(ast.PosicionStack)
+					tmp1 := gen.NewTemp()
+					tmp2 := gen.NewTemp()
+					gen.AddExpression(tmp1, "P", envSize, "+")
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp3 := gen.NewTemp()
+					gen.AddGetStack(temp3, strconv.Itoa(op2.Val.Symbols.Posicion))
+					gen.AddSetStack("(int)"+tmp1, temp3)
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp4 := gen.NewTemp()                //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+					gen.AddAssign(temp4, "H")             //Creamos un nuevo puntero Head para que en este vayan los valores
+					gen.AddSetHeap("(int)H", "-1")        // Agregamos el caracter de escape
+					gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+					gen.AddSetStack("(int)"+tmp1, temp4)
+					gen.AddExpression("P", "P", envSize, "+")
+					gen.AddCall("comparedifeString")
+					gen.AddGetStack(tmp2, "(int)P")
+					gen.AddExpression("P", "P", envSize, "-")
+					gen.AddBr()
+					//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(tmp2, "1", "!=", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op2.Type == environment.CHARACTER {
+					//llamar a generar concatstring
+					gen.GenerateCompareDifeString()
+					//concat
+					gen.AddComment("Comparando strings")
+					envSize := strconv.Itoa(ast.PosicionStack)
+					tmp1 := gen.NewTemp()
+					tmp2 := gen.NewTemp()
+					gen.AddExpression(tmp1, "P", envSize, "+")
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp3 := gen.NewTemp()
+					gen.AddGetStack(temp3, strconv.Itoa(op2.Val.Symbols.Posicion))
+					gen.AddSetStack("(int)"+tmp1, temp3)
+					gen.AddExpression(tmp1, tmp1, "1", "+")
+					temp4 := gen.NewTemp()                //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+					gen.AddAssign(temp4, "H")             //Creamos un nuevo puntero Head para que en este vayan los valores
+					gen.AddSetHeap("(int)H", "-1")        // Agregamos el caracter de escape
+					gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+					gen.AddSetStack("(int)"+tmp1, temp4)
+					gen.AddExpression("P", "P", envSize, "+")
+					gen.AddCall("comparedifeString")
+					gen.AddGetStack(tmp2, "(int)P")
+					gen.AddExpression("P", "P", envSize, "-")
+					gen.AddBr()
+					//result = environment.NewValue(tmp2, true, environment.BOOLEAN, false, false, false, environment.Variable{})
+
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+
+					gen.AddIf(tmp2, "1", "!=", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				} else if op2.Type == environment.BOOLEAN {
+					tlabel := gen.NewLabel()
+					flabel := gen.NewLabel()
+					newTemp1 := gen.NewTemp()
+					newTemp3 := gen.NewTemp()
+					newTemp4 := gen.NewTemp()
+					newTemp6 := gen.NewTemp()
+
+					if op1.Val.Name == "" {
+						gen.AddExpression(newTemp1, "0", "", "")
+						gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp1)
+						gen.AddGetStack(newTemp3, strconv.Itoa(ast.PosicionStack+1))
+					} else {
+						gen.AddGetStack(newTemp3, strconv.Itoa(op1.Val.Symbols.Posicion))
+					}
+
+					if op2.Val.Name == "" {
+						gen.AddExpression(newTemp4, op2.Value, "", "")
+						gen.AddSetStack(strconv.Itoa(ast.PosicionStack+1), newTemp4)
+						gen.AddGetStack(newTemp6, strconv.Itoa(ast.PosicionStack+1))
+					} else {
+						gen.AddGetStack(newTemp6, strconv.Itoa(op2.Val.Symbols.Posicion))
+					}
+					gen.AddIf(newTemp3, newTemp6, "!=", tlabel)
+					gen.AddGoto(flabel)
+					result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
+					result.TrueLabel.PushBack(tlabel)
+					result.FalseLabel.PushBack(flabel)
+					result.Val.FEti = flabel
+					result.Val.TEti = tlabel
+
+					return result
+				}
+
 			} else {
 				Errores := environment.Errores{
 					Descripcion: "No es posible comparar los dos valores(!=)",

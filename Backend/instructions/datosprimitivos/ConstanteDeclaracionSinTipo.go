@@ -20,7 +20,7 @@ func NewConstanteDeclaracionSinTipo(lin int, col int, name string, value interfa
 }
 
 func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	if ast.ObtenerAmbito() == "Global" {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
@@ -30,7 +30,7 @@ func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generat
 		Tipo:     value.Type,
 		Scope:    ast.ObtenerAmbito(),
 		TipoDato: environment.VARIABLE,
-		Posicion: ast.Lista_Variables.Len(),
+		Posicion: ast.PosicionStack,
 		Valor:    value.Value,
 	}
 	Variable := environment.Variable{

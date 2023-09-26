@@ -30,13 +30,14 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 		if !ok {
 			continue
 		}
-		if ast.ObtenerAmbito() == "Global" {
-			gen.MainCode = true
+		if !ast.IsMain(ast.ObtenerAmbito()) {
+			gen.MainCodeT()
 		} else {
-			gen.MainCode = false
+			gen.MainCodeF()
 		}
 		valor := instruction.Ejecutar(ast, gen)
 		lista.PushBack(valor)
+
 	}
 	gen.AddComment("----------Imprimimos----------")
 	var result environment.Value
@@ -51,7 +52,7 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 		} else if result.Type == environment.FLOAT {
 			newTemp := gen.NewTemp()
 			gen.AddGetStack(newTemp, strconv.Itoa(result.Val.Symbols.Posicion))
-			gen.AddPrintf("d", "(int)"+fmt.Sprintf("%v", newTemp))
+			gen.AddPrintf("g", fmt.Sprintf("%v", newTemp))
 			gen.AddPrintf("c", "10")
 			gen.AddBr()
 		} else if result.Type == environment.BOOLEAN {
@@ -64,7 +65,9 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 				aux = i.Value.(string)
 			}
 			if result.Val.FEti == "" && aux == "" {
-				gen.AddIf(result.Value, "1", "==", etv)
+				temp := gen.NewTemp()
+				gen.AddGetStack(temp, strconv.Itoa(result.Val.Symbols.Posicion))
+				gen.AddIf(temp, "1", "==", etv)
 				gen.AddGoto(etf)
 			}
 
@@ -106,15 +109,21 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 			//agregar codigo en el main
 			newTemp1 := gen.NewTemp()
 			newTemp2 := gen.NewTemp()
-			size := strconv.Itoa(ast.Lista_Variables.Len())
+			size := strconv.Itoa(ast.PosicionStack)
 			gen.AddExpression(newTemp1, "P", size, "+")     //nuevo temporal en pos vacia
 			gen.AddExpression(newTemp1, newTemp1, "1", "+") //se deja espacio de retorno
-			gen.AddSetStack("(int)"+newTemp1, result.Value) //se coloca string en parametro que se manda
-			gen.AddExpression("P", "P", size, "+")          // cambio de entorno
-			gen.AddCall("printString")                      //Llamada
-			gen.AddGetStack(newTemp2, "(int)P")             //obtencion retorno
-			gen.AddExpression("P", "P", size, "-")          //regreso del entorno
-			gen.AddPrintf("c", "10")                        //salto de linea
+			if result.Value == "201314439" {
+				newTemp3 := gen.NewTemp()
+				gen.AddGetStack(newTemp3, strconv.Itoa(result.Val.Symbols.Posicion))
+				gen.AddSetStack("(int)"+newTemp1, newTemp3) //se coloca string en parametro que se manda
+			} else {
+				gen.AddSetStack("(int)"+newTemp1, result.Value) //se coloca string en parametro que se manda
+			}
+			gen.AddExpression("P", "P", size, "+") // cambio de entorno
+			gen.AddCall("printString")             //Llamada
+			gen.AddGetStack(newTemp2, "(int)P")    //obtencion retorno
+			gen.AddExpression("P", "P", size, "-") //regreso del entorno
+			gen.AddPrintf("c", "10")               //salto de linea
 			gen.AddBr()
 		}
 	}

@@ -20,7 +20,7 @@ func NewAsignacionResta(lin int, col int, name string, value interfaces.Expressi
 }
 
 func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	if ast.ObtenerAmbito() == "Global" {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
@@ -38,6 +38,7 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.MainCodeF()
 			return nil
 		} else if Variable.Symbols.Tipo == environment.FLOAT {
 			newTemp := gen.NewTemp()
@@ -50,6 +51,8 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.MainCodeF()
+			return nil
 		} else {
 			Errores := environment.Errores{
 				Descripcion: "Esta operacion += solo se puede hacer con datos de tipo Int o Float y la variable que estas intentando hacerlo es de otro tipo.",
@@ -60,6 +63,7 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 			}
 			ast.ErroresHTML(Errores)
 			Variable.Symbols.Valor = nil
+			gen.MainCodeF()
 			return nil
 		}
 	}
@@ -77,6 +81,7 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.MainCodeF()
 		}
 	}
 
@@ -89,6 +94,7 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
+		gen.MainCodeF()
 		return nil
 	}
 
@@ -134,8 +140,10 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 		}
 		ast.ErroresHTML(Errores)
 		Variable.Symbols.Valor = nil
+		gen.MainCodeF()
 		return nil
 	}
 
+	gen.MainCodeF()
 	return nil
 }

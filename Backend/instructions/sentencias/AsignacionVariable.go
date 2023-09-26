@@ -20,44 +20,43 @@ func NewAsignacionVariable(lin int, col int, name string, value interfaces.Expre
 }
 
 func (v AsignacionVariable) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	if ast.ObtenerAmbito() == "Global" {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+
 	value := v.Value.Ejecutar(ast, gen)
 
 	Variable := ast.GetVariable(v.Name)
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Type {
 		Variable.Symbols.Lin = v.Lin
 		Variable.Symbols.Col = v.Col
-		Variable.Symbols.Valor = value.Value
+
 		Variable.Symbols.Scope = ast.ObtenerAmbito()
-		ast.ActualizarVariable(Variable)
 
 		gen.AddComment("Asignacion de Variable")
 
 		if value.Type == environment.BOOLEAN {
-			//si no es temp (boolean)
-			newLabel := gen.NewLabel()
-			//add labels
-			for e := value.TrueLabel.Front(); e != nil; e = e.Next() {
-				gen.AddLabel(e.Value.(string))
-			}
+			newlabel := gen.NewLabel()
+			gen.AddLabel(value.Val.TEti)
 			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), "1")
-			gen.AddGoto(newLabel)
-			//add labels
-			for e := value.FalseLabel.Front(); e != nil; e = e.Next() {
-				gen.AddLabel(e.Value.(string))
-			}
+			Variable.Symbols.Valor = "1"
+			gen.AddGoto(newlabel)
+			gen.AddLabel(value.Val.FEti)
 			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), "0")
-			gen.AddGoto(newLabel)
-			gen.AddLabel(newLabel)
+			Variable.Symbols.Valor = "0"
+			gen.AddGoto(newlabel)
+			gen.AddLabel(newlabel)
 			gen.AddBr()
+			Variable.FEti = value.Val.FEti
+			Variable.TEti = value.Val.TEti
 		} else {
 			//si es temp (num,string,etc)
 			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), value.Value)
 			gen.AddBr()
+			Variable.Symbols.Valor = value.Value
 		}
-
+		ast.ActualizarVariable(Variable)
+		gen.MainCodeF()
 	}
 
 	if !Variable.Mutable {

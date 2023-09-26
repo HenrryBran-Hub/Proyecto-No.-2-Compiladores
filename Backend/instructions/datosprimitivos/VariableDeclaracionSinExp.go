@@ -19,18 +19,17 @@ func NewVariableDeclaracionSinExp(lin int, col int, name string, tipo environmen
 }
 
 func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	if ast.ObtenerAmbito() == "Global" {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
-	gen.MainCodeT()
 	symbol := environment.Symbol{
 		Lin:      v.Lin,
 		Col:      v.Col,
 		Tipo:     v.Type,
 		Scope:    ast.ObtenerAmbito(),
 		TipoDato: environment.VARIABLE,
-		Posicion: ast.Lista_Variables.Len(),
-		Valor:    999999,
+		Posicion: ast.PosicionStack,
+		Valor:    201314439,
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,
@@ -81,17 +80,8 @@ func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator
 		result = environment.NewValue(newTemp, true, v.Type, false, false, false, Variable)
 	} else if v.Type == environment.BOOLEAN {
 		gen.AddComment("Primitivo bool")
-		trueLabel := gen.NewLabel()
-		falseLabel := gen.NewLabel()
-		symbol.Valor = false
-		if symbol.Valor.(bool) {
-			gen.AddGoto(trueLabel)
-		} else {
-			gen.AddGoto(falseLabel)
-		}
-		result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, Variable)
-		result.TrueLabel.PushBack(trueLabel)
-		result.FalseLabel.PushBack(falseLabel)
+		aux := "0"
+		result = environment.NewValue(aux, false, environment.BOOLEAN, false, false, false, environment.Variable{})
 	} else {
 		gen.AddComment("Primitivo nil")
 		result = environment.NewValue(fmt.Sprintf("%v", symbol.Valor), false, v.Type, false, false, false, Variable)
@@ -109,6 +99,6 @@ func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator
 	}
 
 	ast.GuardarVariable(Variable)
-	gen.MainCodeT()
+	gen.MainCodeF()
 	return result
 }
