@@ -46,12 +46,50 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
 			if dominante == environment.INTEGER {
-				gen.AddExpression(newTemp, op1.Value, op2.Value, "+")
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddExpression(newTemp, newTemp1, newTemp2, "+")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
-				gen.AddExpression(newTemp, op1.Value, op2.Value, "+")
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddExpression(newTemp, newTemp1, newTemp2, "+")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
@@ -96,12 +134,50 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
 			if dominante == environment.INTEGER {
-				gen.AddExpression(newTemp, op1.Value, op2.Value, "-")
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddExpression(newTemp, newTemp1, newTemp2, "-")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
-				gen.AddExpression(newTemp, op1.Value, op2.Value, "-")
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddExpression(newTemp, newTemp1, newTemp2, "-")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
@@ -126,12 +202,50 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
 			if dominante == environment.INTEGER {
-				gen.AddExpression(newTemp, op1.Value, op2.Value, "*")
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddExpression(newTemp, newTemp1, newTemp2, "*")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
-				gen.AddExpression(newTemp, op1.Value, op2.Value, "*")
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddExpression(newTemp, newTemp1, newTemp2, "*")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
 				return result
@@ -157,7 +271,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			//valida el tipo
 			if dominante == environment.INTEGER {
 				if op2.Value != "0" {
-					gen.AddExpression(newTemp, op1.Value, op2.Value, "/")
+					newTemp1 := gen.NewTemp()
+					newTemp2 := gen.NewTemp()
+
+					if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+						gen.AddAssign(newTemp1, op1.Value)
+					} else if !op1.IsTemp && op1.Value != "" {
+						gen.AddAssign(newTemp1, op1.Value)
+					} else {
+						gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+					}
+
+					if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+						gen.AddAssign(newTemp2, op2.Value)
+					} else if !op2.IsTemp && op2.Value != "" {
+						gen.AddAssign(newTemp2, op2.Value)
+					} else {
+						gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+					}
+
+					gen.AddExpression(newTemp, newTemp1, newTemp2, "/")
 					result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 					result.IntValue = op1.IntValue + op2.IntValue
 					return result
@@ -174,7 +307,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				}
 			} else if dominante == environment.FLOAT {
 				if op2.Value != "0" {
-					gen.AddExpression(newTemp, op1.Value, op2.Value, "/")
+					newTemp1 := gen.NewTemp()
+					newTemp2 := gen.NewTemp()
+
+					if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+						gen.AddAssign(newTemp1, op1.Value)
+					} else if !op1.IsTemp && op1.Value != "" {
+						gen.AddAssign(newTemp1, op1.Value)
+					} else {
+						gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+					}
+
+					if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+						gen.AddAssign(newTemp2, op2.Value)
+					} else if !op2.IsTemp && op2.Value != "" {
+						gen.AddAssign(newTemp2, op2.Value)
+					} else {
+						gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+					}
+
+					gen.AddExpression(newTemp, newTemp1, newTemp2, "/")
 					result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 					result.IntValue = op1.IntValue + op2.IntValue
 					return result
@@ -210,14 +362,50 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
 			if dominante == environment.INTEGER {
-				gen.AddExpression(newTemp, op1.Value, op2.Value, "%")
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddExpression(newTemp, "(int)"+newTemp1, "(int)"+newTemp2, "%")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
-				gen.AddExpression(newTemp, op1.Value, op2.Value, "%")
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddExpression(newTemp, "(int)"+newTemp1, "(int)"+newTemp2, "%")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue + op2.IntValue
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
@@ -242,8 +430,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			if dominante == environment.INTEGER {
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
 
-				gen.AddIf(op1.Value, op2.Value, "<", tlabel)
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, "<", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -255,8 +461,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			} else if dominante == environment.FLOAT {
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
 
-				gen.AddIf(op1.Value, op2.Value, "<", tlabel)
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, "<", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -351,8 +575,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			if dominante == environment.INTEGER {
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
 
-				gen.AddIf(op1.Value, op2.Value, ">", tlabel)
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, ">", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -365,7 +607,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, ">", tlabel)
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, ">", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -461,7 +722,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, "<=", tlabel)
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, "<=", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -474,7 +754,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, "<=", tlabel)
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, "<=", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -570,7 +869,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, ">=", tlabel)
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, ">=", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -583,7 +901,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, ">=", tlabel)
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, ">=", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -679,7 +1016,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, "==", tlabel)
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, "==", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -692,7 +1048,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, "==", tlabel)
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, "==", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -1094,7 +1469,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, "!=", tlabel)
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, "!=", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)
@@ -1107,7 +1501,26 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
 
-				gen.AddIf(op1.Value, op2.Value, "!=", tlabel)
+				newTemp1 := gen.NewTemp()
+				newTemp2 := gen.NewTemp()
+
+				if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else if !op1.IsTemp && op1.Value != "" {
+					gen.AddAssign(newTemp1, op1.Value)
+				} else {
+					gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+				}
+
+				if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else if !op2.IsTemp && op2.Value != "" {
+					gen.AddAssign(newTemp2, op2.Value)
+				} else {
+					gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+				}
+
+				gen.AddIf(newTemp1, newTemp2, "!=", tlabel)
 				gen.AddGoto(flabel)
 				result = environment.NewValue("", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 				result.TrueLabel.PushBack(tlabel)

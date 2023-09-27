@@ -40,6 +40,9 @@ type SwiftGrammarListener interface {
 	// EnterSentenciaifelse is called when entering the sentenciaifelse production.
 	EnterSentenciaifelse(c *SentenciaifelseContext)
 
+	// EnterWhilecontrol is called when entering the whilecontrol production.
+	EnterWhilecontrol(c *WhilecontrolContext)
+
 	// EnterContinuee is called when entering the continuee production.
 	EnterContinuee(c *ContinueeContext)
 
@@ -90,6 +93,9 @@ type SwiftGrammarListener interface {
 
 	// ExitSentenciaifelse is called when exiting the sentenciaifelse production.
 	ExitSentenciaifelse(c *SentenciaifelseContext)
+
+	// ExitWhilecontrol is called when exiting the whilecontrol production.
+	ExitWhilecontrol(c *WhilecontrolContext)
 
 	// ExitContinuee is called when exiting the continuee production.
 	ExitContinuee(c *ContinueeContext)

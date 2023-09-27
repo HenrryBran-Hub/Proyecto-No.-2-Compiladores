@@ -43,7 +43,7 @@ instruction returns [interfaces.Instruction inst]
 | asignacionvariable (PUNTOCOMA)? { $inst = $asignacionvariable.asgvbl}
 | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
 // | switchcontrol { $inst = $switchcontrol.mySwitch}
-// | whilecontrol { $inst = $whilecontrol.whict}
+| whilecontrol { $inst = $whilecontrol.whict}
 // | forcontrol { $inst = $forcontrol.forct}
 // | guardcontrol { $inst = $guardcontrol.guct}
 // | vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
@@ -82,7 +82,7 @@ instructionint returns [interfaces.Instruction insint]
 | asignacionvariable (PUNTOCOMA)? { $insint = $asignacionvariable.asgvbl}
 | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
 // | switchcontrol { $insint = $switchcontrol.mySwitch}
-// | whilecontrol { $insint = $whilecontrol.whict}
+| whilecontrol { $insint = $whilecontrol.whict}
 // | forcontrol { $insint = $forcontrol.forct}
 // | guardcontrol { $insint = $guardcontrol.guct}
 | continuee (PUNTOCOMA)? { $insint = $continuee.coct}
@@ -254,9 +254,9 @@ sentenciaifelse returns [interfaces.Instruction myIfElse]
 //     $blocas=instructions.NewSentenciaSwitchCase($CASE.line ,$CASE.pos, $expr.e, $blockinterno.blkint)
 // };
 
-// // CREACION DEL WHILE
-// whilecontrol returns [interfaces.Instruction whict]
-// : WHILE expr LLAVEIZQ blockinterno LLAVEDER { $whict = instructions.NewSentenciaWhile($WHILE.line, $WHILE.pos, $expr.e, $blockinterno.blkint)};
+// CREACION DEL WHILE
+whilecontrol returns [interfaces.Instruction whict]
+: WHILE expr LLAVEIZQ blockinterno LLAVEDER { $whict = sentencias.NewSentenciaWhile($WHILE.line, $WHILE.pos, $expr.e, $blockinterno.blkint)};
 
 // //CREACION DEL FOR
 // forcontrol returns [interfaces.Instruction forct]

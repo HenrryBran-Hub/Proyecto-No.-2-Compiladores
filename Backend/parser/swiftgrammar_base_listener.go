@@ -86,6 +86,12 @@ func (s *BaseSwiftGrammarListener) EnterSentenciaifelse(ctx *SentenciaifelseCont
 // ExitSentenciaifelse is called when production sentenciaifelse is exited.
 func (s *BaseSwiftGrammarListener) ExitSentenciaifelse(ctx *SentenciaifelseContext) {}
 
+// EnterWhilecontrol is called when production whilecontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterWhilecontrol(ctx *WhilecontrolContext) {}
+
+// ExitWhilecontrol is called when production whilecontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitWhilecontrol(ctx *WhilecontrolContext) {}
+
 // EnterContinuee is called when production continuee is entered.
 func (s *BaseSwiftGrammarListener) EnterContinuee(ctx *ContinueeContext) {}
 
