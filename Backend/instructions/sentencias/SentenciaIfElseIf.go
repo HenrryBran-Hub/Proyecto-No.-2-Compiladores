@@ -4,7 +4,6 @@ import (
 	"Backend/environment"
 	"Backend/generator"
 	"Backend/interfaces"
-	"fmt"
 	"strconv"
 )
 
@@ -121,7 +120,6 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generat
 			gen.AddLabel(exitla)
 			gen.AddBr()
 		} else if condicion.Value == "" && condicion.Val.TEti != "" {
-			fmt.Println("Condicion 2 if-else-if-else")
 			exitl := gen.NewLabel()
 			gen.AddLabel(condicion.Val.TEti)
 			for _, inst := range v.Ifop {

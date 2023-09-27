@@ -4,7 +4,6 @@ import (
 	"Backend/environment"
 	"Backend/generator"
 	"Backend/interfaces"
-	"fmt"
 	"strconv"
 )
 
@@ -34,7 +33,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 	if condicion.Type == environment.BOOLEAN {
 		gen.AddComment("Estoy dentro de la sentencia if ")
 		if condicion.Value == "1" || condicion.Value == "0" {
-			fmt.Println("condicion 1 if")
 			vet := gen.NewLabel()
 			fet := gen.NewLabel()
 			exitla := gen.NewLabel()
@@ -89,7 +87,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 			gen.AddLabel(exitla)
 			gen.AddBr()
 		} else if condicion.Value == "" && condicion.Val.TEti != "" {
-			fmt.Println("condicion 2 if")
 			exitl := gen.NewLabel()
 			gen.AddLabel(condicion.Val.TEti)
 
@@ -142,7 +139,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 			gen.AddLabel(exitl)
 			gen.AddBr()
 		} else if condicion.Value != "" && condicion.Val.TEti != "" {
-			fmt.Println("condicion 3 if")
 			exitl := gen.NewLabel()
 			gen.AddLabel(condicion.Val.TEti)
 			for _, inst := range v.slice {

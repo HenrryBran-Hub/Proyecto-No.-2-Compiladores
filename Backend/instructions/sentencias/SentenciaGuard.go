@@ -1,7 +1,10 @@
 package sentencias
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"strconv"
 )
 
 type SentenciaGuard struct {
@@ -15,131 +18,246 @@ func NewSentenciaGuard(lin int, col int, expresion interfaces.Expression, bloque
 	return SentenciaGuard{lin, col, expresion, bloque}
 }
 
-/*
-func (v SentenciaGuard) Ejecutar(ast *environment.AST) interface{} {
-	ultimoValor := v.slice[len(v.slice)-1]
-	instType := reflect.TypeOf(ultimoValor).String()
-	if instType == "instructions.TransferenciaContinue" || instType == "instructions.TransferenciaBreak" || instType == "instructions.TransferenciaReturn" || instType == "instructions.TransferenciaReturnExp" {
-		var condicion environment.Symbol
-		condicion = v.Expresion.Ejecutar(ast)
-		if condicion.Tipo == environment.BOOLEAN {
-			var retornable int = 0
-			var reexp environment.Symbol
-			ast.AumentarAmbito("Guard")
-			if condicion.Valor.(bool) == false {
-				for _, inst := range v.slice {
-					if inst == nil {
-						continue
+func (v SentenciaGuard) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	condicion := v.Expresion.Ejecutar(ast, gen)
+	ambito := ast.ObtenerAmbito()
+	ambitonuevo := "If" + "-" + ambito
+	ast.AumentarAmbito(ambitonuevo)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
+	var retornable int = 0
+	var reexp environment.Symbol
+	var errorgeneral int = 0
+
+	if condicion.Type == environment.BOOLEAN {
+		gen.AddComment("Estoy dentro de la sentencia guard ")
+		if condicion.Value == "1" || condicion.Value == "0" {
+			vet := gen.NewLabel()
+			fet := gen.NewLabel()
+			exitla := gen.NewLabel()
+			gen.AddIf(condicion.Value, "1", "==", fet)
+			gen.AddGoto(vet)
+			gen.AddLabel(fet)
+			for _, inst := range v.slice {
+				if inst == nil {
+					continue
+				}
+				instruction, ok := inst.(interfaces.Instruction)
+				if !ok {
+					continue
+				}
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					retornable = 1
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
 					}
-					instruction, ok := inst.(interfaces.Instruction)
-					if !ok {
-						continue
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					retornable = 2
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
 					}
-					instruction.Ejecutar(ast)
-					bvari := ast.GetVariable("Break")
-					if bvari != nil {
-						retornable = 1
-						break
+				}
+				revari := ast.GetVariable("ReturnExp")
+				if revari != nil {
+					retornable = 3
+					reexp = revari.Symbols
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
 					}
-					rvari := ast.GetVariable("Return")
-					if rvari != nil {
-						retornable = 2
-						break
-					}
-					revari := ast.GetVariable("ReturnExp")
-					if revari != nil {
-						retornable = 3
-						reexp = revari.Symbols
-						break
-					}
-					cvari := ast.GetVariable("Continue")
-					if cvari != nil {
-						continue
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
 					}
 				}
 			}
-			ast.DisminuirAmbito()
-			tamanio := ast.Pila_Variables.Len()
-			if tamanio > 1 {
-				if retornable == 1 {
-					symbol := environment.Symbol{
-						Lin:   v.Lin,
-						Col:   v.Col,
-						Tipo:  environment.BOOLEAN,
-						Valor: true,
-						Scope: ast.ObtenerAmbito(),
-					}
-					Variable := environment.Variable{
-						Name:        "Break",
-						Symbols:     symbol,
-						Mutable:     false,
-						TipoSimbolo: "Sentencia de Transferencia",
-					}
-					ast.GuardarVariable(Variable)
+
+			gen.AddGoto(exitla)
+			gen.AddLabel(vet)
+			gen.AddGoto(exitla)
+			gen.AddLabel(exitla)
+			gen.AddBr()
+		} else if condicion.Value == "" && condicion.Val.TEti != "" {
+			exitl := gen.NewLabel()
+			gen.AddLabel(condicion.Val.FEti)
+
+			for _, inst := range v.slice {
+				if inst == nil {
+					continue
 				}
-				if retornable == 2 {
-					symbol := environment.Symbol{
-						Lin:   v.Lin,
-						Col:   v.Col,
-						Tipo:  environment.BOOLEAN,
-						Valor: true,
-						Scope: ast.ObtenerAmbito(),
-					}
-					Variable := environment.Variable{
-						Name:        "Return",
-						Symbols:     symbol,
-						Mutable:     false,
-						TipoSimbolo: "Sentencia de Transferencia",
-					}
-					ast.GuardarVariable(Variable)
+				instruction, ok := inst.(interfaces.Instruction)
+				if !ok {
+					continue
 				}
-				if retornable == 3 {
-					symbol := environment.Symbol{
-						Lin:   v.Lin,
-						Col:   v.Col,
-						Tipo:  reexp.Tipo,
-						Valor: reexp.Valor,
-						Scope: ast.ObtenerAmbito(),
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					retornable = 1
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
 					}
-					Variable := environment.Variable{
-						Name:        "ReturnExp",
-						Symbols:     symbol,
-						Mutable:     false,
-						TipoSimbolo: "Sentencia de Transferencia",
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					retornable = 2
+					reexp = rvari.Symbols
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
 					}
-					ast.GuardarVariable(Variable)
+				}
+				revari := ast.GetVariable("ReturnExp")
+				if revari != nil {
+					retornable = 3
+					reexp = revari.Symbols
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 			}
-			if tamanio == 1 && retornable == 3 {
-				Errores := environment.Errores{
-					Descripcion: "Estas retornando un valor fuera de una funcion",
-					Fila:        strconv.Itoa(v.Lin),
-					Columna:     strconv.Itoa(v.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      ast.ObtenerAmbito(),
+
+			gen.AddGoto(exitl)
+			gen.AddLabel(condicion.Val.TEti)
+			gen.AddGoto(exitl)
+			gen.AddLabel(exitl)
+			gen.AddBr()
+		} else if condicion.Value != "" && condicion.Val.TEti != "" {
+			exitl := gen.NewLabel()
+			gen.AddLabel(condicion.Val.FEti)
+			for _, inst := range v.slice {
+				if inst == nil {
+					continue
 				}
-				ast.ErroresHTML(Errores)
+				instruction, ok := inst.(interfaces.Instruction)
+				if !ok {
+					continue
+				}
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
+				bvari := ast.GetVariable("Break")
+				if bvari != nil {
+					retornable = 1
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
+				}
+				rvari := ast.GetVariable("Return")
+				if rvari != nil {
+					retornable = 2
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
+				}
+				revari := ast.GetVariable("ReturnExp")
+				if revari != nil {
+					retornable = 3
+					reexp = revari.Symbols
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
+				}
+				cvari := ast.GetVariable("Continue")
+				if cvari != nil {
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
+				}
 			}
-		} else {
-			Errores := environment.Errores{
-				Descripcion: "Se ha querido asignar un valor no correspondiente en la condicion del guard tiene que ser un tipo boleano.",
-				Fila:        strconv.Itoa(v.Lin),
-				Columna:     strconv.Itoa(v.Col),
-				Tipo:        "Error Semantico",
-				Ambito:      ast.ObtenerAmbito(),
-			}
-			ast.ErroresHTML(Errores)
+
+			gen.AddGoto(exitl)
+			gen.AddLabel(condicion.Val.TEti)
+			gen.AddGoto(exitl)
+			gen.AddLabel(exitl)
+			gen.AddBr()
 		}
+
 	} else {
 		Errores := environment.Errores{
-			Descripcion: "El Guard tiene que finalizar con break,continue,return. otro tipo de valor no es admitido",
+			Descripcion: "Se ha querido asignar un valor no correspondiente en la condicion del if tiene que ser un tipo boleano.",
 			Fila:        strconv.Itoa(v.Lin),
 			Columna:     strconv.Itoa(v.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      "Guard",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+	}
+	ast.DisminuirAmbito()
+	tamanio := ast.Pila_Variables.Len()
+	if tamanio > 1 {
+		if retornable == 2 {
+			symbol := environment.Symbol{
+				Lin:   v.Lin,
+				Col:   v.Col,
+				Tipo:  environment.BOOLEAN,
+				Valor: true,
+				Scope: ast.ObtenerAmbito(),
+			}
+			Variable := environment.Variable{
+				Name:        "Return",
+				Symbols:     symbol,
+				Mutable:     false,
+				TipoSimbolo: "Sentencia de Transferencia",
+			}
+			ast.GuardarVariable(Variable)
+		}
+		if retornable == 3 {
+			symbol := environment.Symbol{
+				Lin:   v.Lin,
+				Col:   v.Col,
+				Tipo:  reexp.Tipo,
+				Valor: reexp.Valor,
+				Scope: ast.ObtenerAmbito(),
+			}
+			Variable := environment.Variable{
+				Name:        "ReturnExp",
+				Symbols:     symbol,
+				Mutable:     false,
+				TipoSimbolo: "Sentencia de Transferencia",
+			}
+			ast.GuardarVariable(Variable)
+		}
+	}
+	if tamanio == 1 && retornable == 3 {
+		Errores := environment.Errores{
+			Descripcion: "Estas retornando un valor fuera de una funcion",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+	}
+
+	gen.MainCodeF()
+
+	if errorgeneral == 1 {
+		Errores := environment.Errores{
+			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
 	}
 	return nil
 }
-*/

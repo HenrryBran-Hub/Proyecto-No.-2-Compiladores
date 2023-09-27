@@ -45,7 +45,7 @@ instruction returns [interfaces.Instruction inst]
 // | switchcontrol { $inst = $switchcontrol.mySwitch}
 | whilecontrol { $inst = $whilecontrol.whict}
 // | forcontrol { $inst = $forcontrol.forct}
-// | guardcontrol { $inst = $guardcontrol.guct}
+| guardcontrol { $inst = $guardcontrol.guct}
 // | vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
 // | vectoragregar  { $inst = $vectoragregar.veadct }
 // | vectorremover  { $inst = $vectorremover.vermct }
@@ -84,7 +84,7 @@ instructionint returns [interfaces.Instruction insint]
 // | switchcontrol { $insint = $switchcontrol.mySwitch}
 | whilecontrol { $insint = $whilecontrol.whict}
 // | forcontrol { $insint = $forcontrol.forct}
-// | guardcontrol { $insint = $guardcontrol.guct}
+| guardcontrol { $insint = $guardcontrol.guct}
 | continuee (PUNTOCOMA)? { $insint = $continuee.coct}
 | breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
 | retornos (PUNTOCOMA)? { $insint = $retornos.rect }
@@ -264,12 +264,13 @@ whilecontrol returns [interfaces.Instruction whict]
 // | FOR op1=ID_VALIDO IN op2=ID_VALIDO LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForId($FOR.line, $FOR.pos, $op1.text, $op2.text, $blockinterno.blkint)}
 // | FOR ID_VALIDO IN expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForCadena($FOR.line, $FOR.pos, $ID_VALIDO.text, $expr.e, $blockinterno.blkint)};
  
-//  //CREACION DE GUARD
-// guardcontrol returns [interfaces.Instruction guct]
-// :GUARD expr ELSE LLAVEIZQ blockinterno LLAVEDER  
-// { 
-//     $guct = instructions.NewSentenciaGuard($GUARD.line, $GUARD.pos, $expr.e, $blockinterno.blkint)
-// };
+ //CREACION DE GUARD
+guardcontrol returns [interfaces.Instruction guct]
+:GUARD expr ELSE LLAVEIZQ blockinterno LLAVEDER  
+{ 
+    $guct = sentencias.NewSentenciaGuard($GUARD.line, $GUARD.pos, $expr.e, $blockinterno.blkint)
+}
+;
 
 //CREACION DEL CONTINUE
 continuee returns [interfaces.Instruction coct]

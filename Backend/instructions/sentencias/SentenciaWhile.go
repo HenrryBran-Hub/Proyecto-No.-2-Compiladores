@@ -4,7 +4,6 @@ import (
 	"Backend/environment"
 	"Backend/generator"
 	"Backend/interfaces"
-	"fmt"
 	"strconv"
 )
 
@@ -46,7 +45,6 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 	if condicion.Type == environment.BOOLEAN {
 		gen.AddComment("Estoy dentro de la sentencia while ")
 		if condicion.Value == "1" || condicion.Value == "0" {
-			fmt.Print("Entramos condicion1\n")
 			newlabelr := gen.NewLabel()
 			gen.AddLabel(newlabelr)
 			newtemp1 := gen.NewTemp()
@@ -87,7 +85,6 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			gen.AddLabel(exitla)
 			gen.AddBr()
 		} else if condicion.Value == "" && condicion.Val.TEti != "" {
-			fmt.Print("Entramos condicion2\n")
 			gen.AddLabel(condicion.Val.TEti)
 
 			for _, inst := range v.slice {
@@ -123,7 +120,6 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			gen.AddLabel(exitla)
 			gen.AddBr()
 		} else if condicion.Value != "" && condicion.Val.TEti != "" {
-			fmt.Print("Entramos condicion3\n")
 			gen.AddLabel(condicion.Val.TEti)
 
 			for _, inst := range v.slice {
