@@ -36,17 +36,9 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, gen *generator.Genera
 		gen.AddComment("Asignacion de Variable")
 
 		if value.Type == environment.BOOLEAN {
-			newlabel := gen.NewLabel()
-			gen.AddLabel(value.Val.TEti)
-			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), "1")
-			Variable.Symbols.Valor = "1"
-			gen.AddGoto(newlabel)
-			gen.AddLabel(value.Val.FEti)
-			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), "0")
-			Variable.Symbols.Valor = "0"
-			gen.AddGoto(newlabel)
-			gen.AddLabel(newlabel)
+			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), value.Value)
 			gen.AddBr()
+			Variable.Symbols.Valor = value.Value
 			Variable.FEti = value.Val.FEti
 			Variable.TEti = value.Val.TEti
 		} else {

@@ -46,6 +46,7 @@ type AST struct {
 	ListaParametrosStruct  *list.List
 	Lista_Struct_HTML      *list.List
 	PosicionStack          int
+	Lista_Tranferencias    *list.List
 }
 
 type Variable struct {
@@ -142,6 +143,12 @@ type Parametrostruct struct {
 	Symbolo Symbol
 }
 
+type SentenciasdeTransferencia struct {
+	Scope  string
+	ETrue  string
+	EFalse string
+}
+
 func NewAST(inst []interface{}, print string, err string) AST {
 	ast := AST{Instructions: inst, Print: print, Errors: err, Id: 0, Dot: "graph{ \n graph [bgcolor=lightgray, fontname=\"Arial\", fontsize=12]; \n"}
 	return ast
@@ -201,6 +208,7 @@ func (a *AST) IniciarAmbito() {
 	a.Lista_Struct_HTML = list.New()
 
 	a.PosicionStack = 0
+	a.Lista_Tranferencias = list.New()
 }
 
 func (a *AST) AumentarAmbito(ambito string) {
@@ -1178,4 +1186,9 @@ func (a *AST) ActualizarVariableStruc(mariable *VariableStruct) {
 func (a *AST) IsMain(cadena string) bool {
 	cadena = strings.ToLower(cadena)
 	return strings.Contains(cadena, "funcion")
+}
+
+func (a *AST) IsTempT(cadena string) bool {
+	cadena = strings.ToLower(cadena)
+	return strings.Contains(cadena, "t")
 }

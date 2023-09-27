@@ -28,6 +28,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 	}
 	var retornable int = 0
 	var reexp environment.Symbol
+	var errorgeneral int = 0
 
 	if condicion.Type == environment.BOOLEAN {
 		gen.AddComment("Estoy dentro de la sentencia if ")
@@ -53,24 +54,33 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					gen.AddGoto(exitla)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					gen.AddGoto(exitla)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					gen.AddGoto(exitla)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					gen.AddGoto(vet)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 			}
+
 			gen.AddGoto(exitla)
 			gen.AddLabel(fet)
 			gen.AddGoto(exitla)
@@ -95,23 +105,31 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					gen.AddGoto(exitl)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
 					reexp = rvari.Symbols
-					gen.AddGoto(exitl)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					gen.AddGoto(exitl)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					gen.AddGoto(condicion.Val.TEti)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 			}
 
@@ -138,24 +156,33 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					gen.AddGoto(exitl)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					gen.AddGoto(exitl)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					gen.AddGoto(exitl)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					gen.AddLabel(condicion.Val.TEti)
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 			}
+
 			gen.AddGoto(exitl)
 			gen.AddLabel(condicion.Val.FEti)
 			gen.AddGoto(exitl)
@@ -176,23 +203,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 	ast.DisminuirAmbito()
 	tamanio := ast.Pila_Variables.Len()
 	if tamanio > 1 {
-		if retornable == 1 {
-			symbol := environment.Symbol{
-				Lin:      v.Lin,
-				Col:      v.Col,
-				Tipo:     environment.BOOLEAN,
-				Valor:    true,
-				Scope:    ast.ObtenerAmbito(),
-				Posicion: reexp.Posicion,
-			}
-			Variable := environment.Variable{
-				Name:        "Break",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
 		if retornable == 2 {
 			symbol := environment.Symbol{
 				Lin:   v.Lin,
@@ -238,5 +248,16 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 	}
 
 	gen.MainCodeF()
+
+	if errorgeneral == 1 {
+		Errores := environment.Errores{
+			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+	}
 	return nil
 }

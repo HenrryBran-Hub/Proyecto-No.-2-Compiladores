@@ -22,7 +22,9 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
-
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -48,6 +50,8 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		gen.AddBr()
 	}
 
+	etiquetas := ast.Lista_Tranferencias.Back().Value.(environment.SentenciasdeTransferencia)
+	gen.AddGoto(etiquetas.EFalse)
 	ast.GuardarVariable(Variable)
 	gen.MainCodeF()
 	return nil
