@@ -40,8 +40,20 @@ type SwiftGrammarListener interface {
 	// EnterSentenciaifelse is called when entering the sentenciaifelse production.
 	EnterSentenciaifelse(c *SentenciaifelseContext)
 
+	// EnterSwitchcontrol is called when entering the switchcontrol production.
+	EnterSwitchcontrol(c *SwitchcontrolContext)
+
+	// EnterBlockcase is called when entering the blockcase production.
+	EnterBlockcase(c *BlockcaseContext)
+
+	// EnterBloquecase is called when entering the bloquecase production.
+	EnterBloquecase(c *BloquecaseContext)
+
 	// EnterWhilecontrol is called when entering the whilecontrol production.
 	EnterWhilecontrol(c *WhilecontrolContext)
+
+	// EnterGuardcontrol is called when entering the guardcontrol production.
+	EnterGuardcontrol(c *GuardcontrolContext)
 
 	// EnterContinuee is called when entering the continuee production.
 	EnterContinuee(c *ContinueeContext)
@@ -94,8 +106,20 @@ type SwiftGrammarListener interface {
 	// ExitSentenciaifelse is called when exiting the sentenciaifelse production.
 	ExitSentenciaifelse(c *SentenciaifelseContext)
 
+	// ExitSwitchcontrol is called when exiting the switchcontrol production.
+	ExitSwitchcontrol(c *SwitchcontrolContext)
+
+	// ExitBlockcase is called when exiting the blockcase production.
+	ExitBlockcase(c *BlockcaseContext)
+
+	// ExitBloquecase is called when exiting the bloquecase production.
+	ExitBloquecase(c *BloquecaseContext)
+
 	// ExitWhilecontrol is called when exiting the whilecontrol production.
 	ExitWhilecontrol(c *WhilecontrolContext)
+
+	// ExitGuardcontrol is called when exiting the guardcontrol production.
+	ExitGuardcontrol(c *GuardcontrolContext)
 
 	// ExitContinuee is called when exiting the continuee production.
 	ExitContinuee(c *ContinueeContext)
