@@ -47,6 +47,8 @@ type AST struct {
 	Lista_Struct_HTML      *list.List
 	PosicionStack          int
 	Lista_Tranferencias    *list.List
+	Lista_Switch_Case      *list.List
+	Lista_Switch_Case_Eti  *list.List
 }
 
 type Variable struct {
@@ -209,6 +211,10 @@ func (a *AST) IniciarAmbito() {
 
 	a.PosicionStack = 0
 	a.Lista_Tranferencias = list.New()
+
+	a.Lista_Switch_Case = list.New()
+	a.Lista_Switch_Case_Eti = list.New()
+
 }
 
 func (a *AST) AumentarAmbito(ambito string) {

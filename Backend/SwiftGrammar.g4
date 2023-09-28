@@ -42,7 +42,7 @@ instruction returns [interfaces.Instruction inst]
 | declaconstante (PUNTOCOMA)? { $inst = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $inst = $asignacionvariable.asgvbl}
 | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
-// | switchcontrol { $inst = $switchcontrol.mySwitch}
+| switchcontrol { $inst = $switchcontrol.mySwitch}
 | whilecontrol { $inst = $whilecontrol.whict}
 // | forcontrol { $inst = $forcontrol.forct}
 | guardcontrol { $inst = $guardcontrol.guct}
@@ -81,7 +81,7 @@ instructionint returns [interfaces.Instruction insint]
 | declaconstante (PUNTOCOMA)? { $insint = $declaconstante.deccon}
 | asignacionvariable (PUNTOCOMA)? { $insint = $asignacionvariable.asgvbl}
 | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
-// | switchcontrol { $insint = $switchcontrol.mySwitch}
+| switchcontrol { $insint = $switchcontrol.mySwitch}
 | whilecontrol { $insint = $whilecontrol.whict}
 // | forcontrol { $insint = $forcontrol.forct}
 | guardcontrol { $insint = $guardcontrol.guct}
@@ -223,36 +223,38 @@ sentenciaifelse returns [interfaces.Instruction myIfElse]
 | IF expr LLAVEIZQ blockinterno LLAVEDER ELSE sentenciaifelse { $myIfElse = sentencias.NewSentenciaIfElseIf($IF.line, $IF.pos, $expr.e, $blockinterno.blkint, $sentenciaifelse.myIfElse)}
 ;
 
-// // CREACION DEL SWITCH
-// switchcontrol returns [interfaces.Instruction mySwitch]
-// : SWITCH expr LLAVEIZQ blockcase (DEFAULT DOS_PUNTOS blockinterno)? LLAVEDER 
-// {
-//     if ($DEFAULT != nil) {
-//         $mySwitch = instructions.NewSentenciaSwitchDefault($SWITCH.line, $SWITCH.pos, $expr.e, $blockcase.blkcase, $blockinterno.blkint)
-//     } else {
-//         $mySwitch = instructions.NewSentenciaSwitch($SWITCH.line, $SWITCH.pos, $expr.e, $blockcase.blkcase)
-//     }
-// };
+// CREACION DEL SWITCH
+switchcontrol returns [interfaces.Instruction mySwitch]
+: SWITCH expr LLAVEIZQ blockcase (DEFAULT DOS_PUNTOS blockinterno)? LLAVEDER 
+{
+    if ($DEFAULT != nil) {
+        $mySwitch = sentencias.NewSentenciaSwitchDefault($SWITCH.line, $SWITCH.pos, $expr.e, $blockcase.blkcase, $blockinterno.blkint)
+    } else {
+        $mySwitch = sentencias.NewSentenciaSwitch($SWITCH.line, $SWITCH.pos, $expr.e, $blockcase.blkcase)
+    }
+}
+;
 
-// blockcase returns [[]interface{} blkcase]
-// @init{
-//     $blkcase = []interface{}{}
-//     var listInt []IBloquecaseContext
-// }
-// : blocas+=bloquecase+
-// {
-//     listInt = localctx.(*BlockcaseContext).GetBlocas()
-//     for _, e := range listInt {
-//         $blkcase = append($blkcase, e.GetBlocas())
-//     }
-// }
-// ;
+blockcase returns [[]interface{} blkcase]
+@init{
+    $blkcase = []interface{}{}
+    var listInt []IBloquecaseContext
+}
+: blocas+=bloquecase+
+{
+    listInt = localctx.(*BlockcaseContext).GetBlocas()
+    for _, e := range listInt {
+        $blkcase = append($blkcase, e.GetBlocas())
+    }
+}
+;
 
-// bloquecase returns [interfaces.Instruction blocas]
-// : CASE expr DOS_PUNTOS blockinterno 
-// {
-//     $blocas=instructions.NewSentenciaSwitchCase($CASE.line ,$CASE.pos, $expr.e, $blockinterno.blkint)
-// };
+bloquecase returns [interfaces.Instruction blocas]
+: CASE expr DOS_PUNTOS blockinterno 
+{
+    $blocas=sentencias.NewSentenciaSwitchCase($CASE.line ,$CASE.pos, $expr.e, $blockinterno.blkint)
+}
+;
 
 // CREACION DEL WHILE
 whilecontrol returns [interfaces.Instruction whict]
