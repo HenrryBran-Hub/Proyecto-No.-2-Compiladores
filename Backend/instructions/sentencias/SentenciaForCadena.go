@@ -35,11 +35,12 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Genera
 	if cadena.Type == environment.VECTOR || cadena.Type == environment.STRING {
 		newTemp := gen.NewTemp()
 		symbol := environment.Symbol{
-			Lin:   v.Lin,
-			Col:   v.Col,
-			Tipo:  environment.CHARACTER,
-			Valor: newTemp,
-			Scope: ast.ObtenerAmbito(),
+			Lin:      v.Lin,
+			Col:      v.Col,
+			Tipo:     environment.CHARACTER,
+			Valor:    newTemp,
+			Scope:    ast.ObtenerAmbito(),
+			Posicion: ast.PosicionStack,
 		}
 		Variable := environment.Variable{
 			Name:        v.Id,

@@ -263,7 +263,7 @@ whilecontrol returns [interfaces.Instruction whict]
 //CREACION DEL FOR
 forcontrol returns [interfaces.Instruction forct]
 : FOR ID_VALIDO IN left=expr RANGO right=expr LLAVEIZQ blockinterno LLAVEDER { $forct = sentencias.NewSentenciaForRango($FOR.line, $FOR.pos, $ID_VALIDO.text, $left.e, $right.e,$blockinterno.blkint)}
-// | FOR op1=ID_VALIDO IN op2=ID_VALIDO LLAVEIZQ blockinterno LLAVEDER { $forct = sentencias.NewSentenciaForId($FOR.line, $FOR.pos, $op1.text, $op2.text, $blockinterno.blkint)}
+| FOR op1=ID_VALIDO IN op2=ID_VALIDO LLAVEIZQ blockinterno LLAVEDER { $forct = sentencias.NewSentenciaForId($FOR.line, $FOR.pos, $op1.text, $op2.text, $blockinterno.blkint)}
 | FOR ID_VALIDO IN expr LLAVEIZQ blockinterno LLAVEDER { $forct = sentencias.NewSentenciaForCadena($FOR.line, $FOR.pos, $ID_VALIDO.text, $expr.e, $blockinterno.blkint)}
 ;
  
