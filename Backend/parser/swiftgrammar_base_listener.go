@@ -110,6 +110,12 @@ func (s *BaseSwiftGrammarListener) EnterWhilecontrol(ctx *WhilecontrolContext) {
 // ExitWhilecontrol is called when production whilecontrol is exited.
 func (s *BaseSwiftGrammarListener) ExitWhilecontrol(ctx *WhilecontrolContext) {}
 
+// EnterForcontrol is called when production forcontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterForcontrol(ctx *ForcontrolContext) {}
+
+// ExitForcontrol is called when production forcontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitForcontrol(ctx *ForcontrolContext) {}
+
 // EnterGuardcontrol is called when production guardcontrol is entered.
 func (s *BaseSwiftGrammarListener) EnterGuardcontrol(ctx *GuardcontrolContext) {}
 

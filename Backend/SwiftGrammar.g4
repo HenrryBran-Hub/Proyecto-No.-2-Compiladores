@@ -44,7 +44,7 @@ instruction returns [interfaces.Instruction inst]
 | sentenciaifelse { $inst = $sentenciaifelse.myIfElse}
 | switchcontrol { $inst = $switchcontrol.mySwitch}
 | whilecontrol { $inst = $whilecontrol.whict}
-// | forcontrol { $inst = $forcontrol.forct}
+| forcontrol { $inst = $forcontrol.forct}
 | guardcontrol { $inst = $guardcontrol.guct}
 // | vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
 // | vectoragregar  { $inst = $vectoragregar.veadct }
@@ -83,7 +83,7 @@ instructionint returns [interfaces.Instruction insint]
 | sentenciaifelse { $insint = $sentenciaifelse.myIfElse}
 | switchcontrol { $insint = $switchcontrol.mySwitch}
 | whilecontrol { $insint = $whilecontrol.whict}
-// | forcontrol { $insint = $forcontrol.forct}
+| forcontrol { $insint = $forcontrol.forct}
 | guardcontrol { $insint = $guardcontrol.guct}
 | continuee (PUNTOCOMA)? { $insint = $continuee.coct}
 | breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
@@ -260,11 +260,12 @@ bloquecase returns [interfaces.Instruction blocas]
 whilecontrol returns [interfaces.Instruction whict]
 : WHILE expr LLAVEIZQ blockinterno LLAVEDER { $whict = sentencias.NewSentenciaWhile($WHILE.line, $WHILE.pos, $expr.e, $blockinterno.blkint)};
 
-// //CREACION DEL FOR
-// forcontrol returns [interfaces.Instruction forct]
-// : FOR ID_VALIDO IN left=expr RANGO right=expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForRango($FOR.line, $FOR.pos, $ID_VALIDO.text, $left.e, $right.e,$blockinterno.blkint)}
-// | FOR op1=ID_VALIDO IN op2=ID_VALIDO LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForId($FOR.line, $FOR.pos, $op1.text, $op2.text, $blockinterno.blkint)}
-// | FOR ID_VALIDO IN expr LLAVEIZQ blockinterno LLAVEDER { $forct = instructions.NewSentenciaForCadena($FOR.line, $FOR.pos, $ID_VALIDO.text, $expr.e, $blockinterno.blkint)};
+//CREACION DEL FOR
+forcontrol returns [interfaces.Instruction forct]
+: FOR ID_VALIDO IN left=expr RANGO right=expr LLAVEIZQ blockinterno LLAVEDER { $forct = sentencias.NewSentenciaForRango($FOR.line, $FOR.pos, $ID_VALIDO.text, $left.e, $right.e,$blockinterno.blkint)}
+| FOR op1=ID_VALIDO IN op2=ID_VALIDO LLAVEIZQ blockinterno LLAVEDER { $forct = sentencias.NewSentenciaForId($FOR.line, $FOR.pos, $op1.text, $op2.text, $blockinterno.blkint)}
+| FOR ID_VALIDO IN expr LLAVEIZQ blockinterno LLAVEDER { $forct = sentencias.NewSentenciaForCadena($FOR.line, $FOR.pos, $ID_VALIDO.text, $expr.e, $blockinterno.blkint)}
+;
  
  //CREACION DE GUARD
 guardcontrol returns [interfaces.Instruction guct]

@@ -147,5 +147,7 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 
 	ast.Lista_Switch_Case.Remove(ast.Lista_Switch_Case.Back())
 	ast.Lista_Switch_Case_Eti.Remove(ast.Lista_Switch_Case_Eti.Back())
+	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
+
 	return nil
 }
