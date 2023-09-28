@@ -52,6 +52,9 @@ type SwiftGrammarListener interface {
 	// EnterWhilecontrol is called when entering the whilecontrol production.
 	EnterWhilecontrol(c *WhilecontrolContext)
 
+	// EnterForcontrol is called when entering the forcontrol production.
+	EnterForcontrol(c *ForcontrolContext)
+
 	// EnterGuardcontrol is called when entering the guardcontrol production.
 	EnterGuardcontrol(c *GuardcontrolContext)
 
@@ -117,6 +120,9 @@ type SwiftGrammarListener interface {
 
 	// ExitWhilecontrol is called when exiting the whilecontrol production.
 	ExitWhilecontrol(c *WhilecontrolContext)
+
+	// ExitForcontrol is called when exiting the forcontrol production.
+	ExitForcontrol(c *ForcontrolContext)
 
 	// ExitGuardcontrol is called when exiting the guardcontrol production.
 	ExitGuardcontrol(c *GuardcontrolContext)

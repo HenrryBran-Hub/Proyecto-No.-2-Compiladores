@@ -1,7 +1,10 @@
 package sentencias
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"strconv"
 )
 
 type SentenciaForRango struct {
@@ -17,13 +20,24 @@ func NewSentenciaForRango(lin int, col int, id string, left interfaces.Expressio
 	return SentenciaForRango{lin, col, id, left, right, bloque}
 }
 
-/*
-func (v SentenciaForRango) Ejecutar(ast *environment.AST) interface{} {
-	var left, right environment.Symbol
-	left = v.Left.Ejecutar(ast)
-	right = v.Right.Ejecutar(ast)
+func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	ambito := ast.ObtenerAmbito()
+	ambitonuevo := "Switch" + "-" + ambito
+	ast.AumentarAmbito(ambitonuevo)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
+	var left, right environment.Value
+	left = v.Left.Ejecutar(ast, gen)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
+	right = v.Right.Ejecutar(ast, gen)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
 
-	if left.Tipo != environment.INTEGER && right.Tipo != environment.INTEGER {
+	if left.Type != environment.INTEGER || right.Type != environment.INTEGER {
 		Errores := environment.Errores{
 			Descripcion: "El rango de for solo admite valores de tipo Int",
 			Fila:        strconv.Itoa(v.Lin),
@@ -32,87 +46,146 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST) interface{} {
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		return nil
-	}
-
-	if left.Valor.(int) > right.Valor.(int) {
-		Errores := environment.Errores{
-			Descripcion: "El rango de for tiene que ser el lado izquierdo (<=) derecho no mayor",
-			Fila:        strconv.Itoa(v.Lin),
-			Columna:     strconv.Itoa(v.Col),
-			Tipo:        "Error Semantico",
-			Ambito:      ast.ObtenerAmbito(),
-		}
-		ast.ErroresHTML(Errores)
+		gen.MainCodeF()
 		return nil
 	}
 
 	symbol := environment.Symbol{
-		Lin:   v.Lin,
-		Col:   v.Col,
-		Tipo:  environment.INTEGER,
-		Valor: left.Valor,
-		Scope: ast.ObtenerAmbito(),
+		Lin:      v.Lin,
+		Col:      v.Col,
+		Tipo:     environment.INTEGER,
+		Valor:    left.Value,
+		Scope:    ast.ObtenerAmbito(),
+		Posicion: ast.PosicionStack,
+		TipoDato: environment.VARIABLE,
 	}
+
 	Variable := environment.Variable{
 		Name:        v.Id,
 		Symbols:     symbol,
 		Mutable:     true,
 		TipoSimbolo: "Variable",
 	}
-	ast.AumentarAmbito("For Rango")
+	ast.GuardarVariable(Variable)
+	gen.AddSetStack(strconv.Itoa(symbol.Posicion), left.Value)
+	gen.AddBr()
+
 	var retornable int = 0
 	var reexp environment.Symbol
-	ast.GuardarVariable(Variable)
-	for i := left.Valor.(int); i <= right.Valor.(int); i++ {
-		for _, inst := range v.slice {
-			if inst == nil {
-				continue
-			}
-			instruction, ok := inst.(interfaces.Instruction)
-			if !ok {
-				continue
-			}
-			instruction.Ejecutar(ast)
-			bvari := ast.GetVariable("Break")
-			if bvari != nil {
-				retornable = 1
-				break
-			}
-			rvari := ast.GetVariable("Return")
-			if rvari != nil {
-				retornable = 2
-				break
-			}
-			revari := ast.GetVariable("ReturnExp")
-			if revari != nil {
-				retornable = 3
-				reexp = revari.Symbols
-				break
-			}
-			cvari := ast.GetVariable("Continue")
-			if cvari != nil {
-				continue
-			}
-		}
-		if retornable == 1 || retornable == 2 || retornable == 3 {
-			break
-		}
-		vari := ast.GetVariable(v.Id)
-		symbol := environment.Symbol{
-			Lin:   vari.Symbols.Lin,
-			Col:   vari.Symbols.Col,
-			Tipo:  environment.INTEGER,
-			Valor: vari.Symbols.Valor.(int) + 1,
-		}
-		Variable := environment.Variable{
-			Name:        vari.Name,
-			Symbols:     symbol,
-			Mutable:     true,
-			TipoSimbolo: "Variable",
-		}
-		ast.ActualizarVariable(&Variable)
+	var errorgeneral int = 0
+	looptl := gen.NewLabel()
+	exitla := gen.NewLabel()
+	transferencia := environment.SentenciasdeTransferencia{
+		Scope:  ambitonuevo,
+		ETrue:  looptl,
+		EFalse: exitla,
 	}
+	ast.Lista_Tranferencias.PushBack(transferencia)
+	ast.Lista_For_Rango.PushBack(Variable)
+
+	op1 := left
+	op2 := right
+	tlabel := gen.NewLabel()
+	flabel := gen.NewLabel()
+	tlabel2 := gen.NewLabel()
+	flabel2 := gen.NewLabel()
+	newTemp1 := gen.NewTemp()
+	newTemp2 := gen.NewTemp()
+
+	if op1.IsTemp && ast.IsTempT(op1.Value) && op1.Val.Name == "" {
+		gen.AddAssign(newTemp1, op1.Value)
+	} else if !op1.IsTemp && op1.Value != "" {
+		gen.AddAssign(newTemp1, op1.Value)
+	} else {
+		gen.AddGetStack(newTemp1, strconv.Itoa(op1.Val.Symbols.Posicion))
+	}
+
+	if op2.IsTemp && ast.IsTempT(op2.Value) && op2.Val.Name == "" {
+		gen.AddAssign(newTemp2, op2.Value)
+	} else if !op2.IsTemp && op2.Value != "" {
+		gen.AddAssign(newTemp2, op2.Value)
+	} else {
+		gen.AddGetStack(newTemp2, strconv.Itoa(op2.Val.Symbols.Posicion))
+	}
+
+	gen.AddIf(newTemp1, newTemp2, "<=", tlabel)
+	gen.AddGoto(flabel)
+	gen.AddLabel(tlabel)
+	gen.AddLabel(looptl)
+	newTemp3 := gen.NewTemp()
+	gen.AddGetStack(newTemp3, strconv.Itoa(Variable.Symbols.Posicion))
+	gen.AddIf(newTemp3, newTemp2, "<=", tlabel2)
+	gen.AddGoto(flabel2)
+	gen.AddLabel(tlabel2)
+	for _, inst := range v.slice {
+		if inst == nil {
+			continue
+		}
+		instruction, ok := inst.(interfaces.Instruction)
+		if !ok {
+			continue
+		}
+		instruction.Ejecutar(ast, gen)
+		if !ast.IsMain(ambitonuevo) {
+			gen.MainCodeT()
+		}
+		bvari := ast.GetVariable("Break")
+		if bvari != nil {
+			retornable = 1
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
+		}
+		rvari := ast.GetVariable("Return")
+		if rvari != nil {
+			retornable = 2
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
+		}
+		revari := ast.GetVariable("ReturnExp")
+		if revari != nil {
+			retornable = 3
+			reexp = revari.Symbols
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
+		}
+		cvari := ast.GetVariable("Continue")
+		if cvari != nil {
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
+		}
+	}
+	newTemp4 := gen.NewTemp()
+	gen.AddGetStack(newTemp4, strconv.Itoa(Variable.Symbols.Posicion))
+	newTemp5 := gen.NewTemp()
+	gen.AddExpression(newTemp5, newTemp4, "1", "+")
+	gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp5)
+	gen.AddGoto(looptl)
+	gen.AddLabel(flabel2)
+	gen.AddGoto(exitla)
+	gen.AddLabel(flabel)
+	gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+	gen.AddPrintf("c", "(char)69")  // E
+	gen.AddPrintf("c", "(char)114") // r
+	gen.AddPrintf("c", "(char)114") // r
+	gen.AddPrintf("c", "(char)111") // o
+	gen.AddPrintf("c", "(char)114") // r
+	gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+	gen.AddPrintf("c", "(char)82")  // R
+	gen.AddPrintf("c", "(char)97")  // a
+	gen.AddPrintf("c", "(char)110") // n
+	gen.AddPrintf("c", "(char)103") // g
+	gen.AddPrintf("c", "(char)111") // o
+	gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+	gen.AddPrintf("c", "(char)70")  // F
+	gen.AddPrintf("c", "(char)111") // o
+	gen.AddPrintf("c", "(char)114") // r
+	gen.AddGoto(exitla)
+	gen.AddLabel(exitla)
+
 	ast.DisminuirAmbito()
 	tamanio := ast.Pila_Variables.Len()
 	if tamanio > 1 {
@@ -158,6 +231,21 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST) interface{} {
 		}
 		ast.ErroresHTML(Errores)
 	}
+
+	gen.MainCodeF()
+
+	if errorgeneral == 1 {
+		Errores := environment.Errores{
+			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+	}
+
+	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
+	ast.Lista_For_Rango.Remove(ast.Lista_For_Rango.Back())
 	return nil
 }
-*/

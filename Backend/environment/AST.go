@@ -49,6 +49,7 @@ type AST struct {
 	Lista_Tranferencias    *list.List
 	Lista_Switch_Case      *list.List
 	Lista_Switch_Case_Eti  *list.List
+	Lista_For_Rango        *list.List
 }
 
 type Variable struct {
@@ -214,6 +215,8 @@ func (a *AST) IniciarAmbito() {
 
 	a.Lista_Switch_Case = list.New()
 	a.Lista_Switch_Case_Eti = list.New()
+
+	a.Lista_For_Rango = list.New()
 
 }
 
