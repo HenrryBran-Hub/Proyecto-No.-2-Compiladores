@@ -2,6 +2,8 @@ package datoscompuestos
 
 import (
 	"Backend/environment"
+	"Backend/generator"
+	"container/list"
 )
 
 type ArregloDeclaracionSinLista struct {
@@ -15,9 +17,12 @@ func NewArregloDeclaracionSinLista(lin int, col int, name string, tipo environme
 	return ArregloDeclaracionSinLista{lin, col, name, tipo}
 }
 
-/*
-func (v ArregloDeclaracionSinLista) Ejecutar(ast *environment.AST) interface{} {
+func (v ArregloDeclaracionSinLista) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	listavalores := list.New()
+	listavalorespt := list.New()
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -30,10 +35,11 @@ func (v ArregloDeclaracionSinLista) Ejecutar(ast *environment.AST) interface{} {
 		Symbols:     symbol,
 		Mutable:     true,
 		Elements:    listavalores,
+		ElementsPt:  listavalorespt,
 		TipoSimbolo: "Vector",
 	}
 
 	ast.GuardarArreglo(vector)
+	gen.MainCodeF()
 	return nil
 }
-*/
