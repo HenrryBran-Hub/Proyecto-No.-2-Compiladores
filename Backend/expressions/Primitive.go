@@ -24,7 +24,6 @@ func (p Primitive) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 	if p.Tipo == environment.INTEGER {
 		gen.AddComment("Primitivo Int")
 		result = environment.NewValue(fmt.Sprintf("%v", p.Valor), false, p.Tipo, false, false, false, environment.Variable{})
-		result.IntValue = p.Valor.(int)
 	} else if p.Tipo == environment.FLOAT {
 		gen.AddComment("Primitivo Float")
 		result = environment.NewValue(fmt.Sprintf("%v", p.Valor), false, p.Tipo, false, false, false, environment.Variable{})

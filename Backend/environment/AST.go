@@ -67,6 +67,7 @@ type Vector struct {
 	Mutable     bool
 	TipoSimbolo string
 	Elements    *list.List
+	ElementsPt  *list.List
 }
 
 type Matriz struct {
@@ -316,6 +317,7 @@ func (a *AST) GuardarArreglo(vector Vector) {
 			return
 		}
 	}
+	a.PosicionStack = a.PosicionStack + 1
 	a.Lista_Arreglos.PushBack(vector)
 	a.Lista_VectorHTML.PushBack(vector)
 }

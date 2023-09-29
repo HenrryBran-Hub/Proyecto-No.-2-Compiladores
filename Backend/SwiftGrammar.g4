@@ -46,7 +46,7 @@ instruction returns [interfaces.Instruction inst]
 | whilecontrol { $inst = $whilecontrol.whict}
 | forcontrol { $inst = $forcontrol.forct}
 | guardcontrol { $inst = $guardcontrol.guct}
-// | vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
+| vectorcontrol (PUNTOCOMA)? { $inst = $vectorcontrol.vect }
 // | vectoragregar  { $inst = $vectoragregar.veadct }
 // | vectorremover  { $inst = $vectorremover.vermct }
 | printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
@@ -88,7 +88,7 @@ instructionint returns [interfaces.Instruction insint]
 | continuee (PUNTOCOMA)? { $insint = $continuee.coct}
 | breakk (PUNTOCOMA)? { $insint = $breakk.brkct}
 | retornos (PUNTOCOMA)? { $insint = $retornos.rect }
-// | vectorcontrol (PUNTOCOMA)? { $insint = $vectorcontrol.vect }
+| vectorcontrol (PUNTOCOMA)? { $insint = $vectorcontrol.vect }
 // | vectoragregar  (PUNTOCOMA)? { $insint = $vectoragregar.veadct }
 // | vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
 | printstmt (PUNTOCOMA)? { $insint = $printstmt.prnt}
@@ -296,35 +296,36 @@ retornos returns [interfaces.Instruction rect]
 ;
 
 
-// //CREACION DEL VECTOR 
-// vectorcontrol returns [interfaces.Instruction vect]
-// : VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ blockparams CORCHDER { $vect = instructions.NewArregloDeclaracionLista($VAR.line ,$VAR.pos, $ID_VALIDO.text , $tipodato.tipo, $blockparams.blkpar)}
+//CREACION DEL VECTOR 
+vectorcontrol returns [interfaces.Instruction vect]
+: VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ blockparams CORCHDER { $vect = datoscompuestos.NewArregloDeclaracionLista($VAR.line ,$VAR.pos, $ID_VALIDO.text , $tipodato.tipo, $blockparams.blkpar)}
 // | VAR ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG CORCHIZQ CORCHDER { $vect = instructions.NewArregloDeclaracionSinLista($VAR.line ,$VAR.pos, $ID_VALIDO.text , $tipodato.tipo)}
-// | VAR prin=ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG secu=ID_VALIDO { $vect = instructions.NewArregloDeclaracionId($VAR.line ,$VAR.pos, $prin.text , $tipodato.tipo, $secu.text)};
+// | VAR prin=ID_VALIDO DOS_PUNTOS CORCHIZQ tipodato CORCHDER IG secu=ID_VALIDO { $vect = instructions.NewArregloDeclaracionId($VAR.line ,$VAR.pos, $prin.text , $tipodato.tipo, $secu.text)}
+;
 
-// blockparams returns [[]interface{} blkpar]
-// @init{
-//     $blkpar = []interface{}{}
-//     var listInt []IBloqueparamsContext
-// }
-// : blopas+=bloqueparams+
-// {
-//     listInt = localctx.(*BlockparamsContext).GetBlopas()
-//     for _, e := range listInt {
-//         $blkpar = append($blkpar, e.GetBlopas())
-//     }
-// }
-// ;
+blockparams returns [[]interface{} blkpar]
+@init{
+    $blkpar = []interface{}{}
+    var listInt []IBloqueparamsContext
+}
+: blopas+=bloqueparams+
+{
+    listInt = localctx.(*BlockparamsContext).GetBlopas()
+    for _, e := range listInt {
+        $blkpar = append($blkpar, e.GetBlopas())
+    }
+}
+;
 
-// bloqueparams returns [interfaces.Expression blopas]
-// : COMA expr 
-// {
-//     $blopas = instructions.NewArregloParametros($COMA.line ,$COMA.pos, $expr.e)
-// }
-// | expr 
-// {
-//     $blopas = instructions.NewArregloParametro($expr.e)
-// };
+bloqueparams returns [interfaces.Expression blopas]
+: COMA expr 
+{
+    $blopas = datoscompuestos.NewArregloParametros($COMA.line ,$COMA.pos, $expr.e)
+}
+| expr 
+{
+    $blopas = datoscompuestos.NewArregloParametro($expr.e)
+};
 
 // vectoragregar returns [interfaces.Instruction veadct]
 // : ID_VALIDO PUNTO APPEND PARIZQ expr PARDER { $veadct = instructions.NewArregloAppend($ID_VALIDO.text , $expr.e)}
@@ -333,7 +334,8 @@ retornos returns [interfaces.Instruction rect]
 // { $veadct = instructions.NewMatrizAsignacionList($ID_VALIDO.text, $op1.e, $op2.e, $listamatrizaddsubs.blklimatas, $op3.e) }
 // | ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER IG op3=expr
 // { $veadct = instructions.NewMatrizAsignacion($ID_VALIDO.text, $op1.e, $op2.e, $op3.e) } 
-// |ID_VALIDO CORCHIZQ pop=expr CORCHDER IG sop=expr { $veadct = instructions.NewArregloAppendExp($ID_VALIDO.text , $pop.e, $sop.e)};
+// |ID_VALIDO CORCHIZQ pop=expr CORCHDER IG sop=expr { $veadct = instructions.NewArregloAppendExp($ID_VALIDO.text , $pop.e, $sop.e)}
+// ;
 
 // vectorremover returns [interfaces.Instruction vermct]
 // : ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER  { $vermct = instructions.NewArregloRemoveLast($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)}

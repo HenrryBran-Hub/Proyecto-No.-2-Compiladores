@@ -16,7 +16,10 @@ func NewArregloParametro(op interfaces.Expression) ArregloParametro {
 }
 
 func (o ArregloParametro) Ejecutar(ast *environment.AST, gen *generator.Generator) environment.Value {
-	var op environment.Value
-	op = o.Op.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	op := o.Op.Ejecutar(ast, gen)
+	gen.MainCodeF()
 	return op
 }
