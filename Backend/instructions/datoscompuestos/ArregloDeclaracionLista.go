@@ -2,6 +2,10 @@ package datoscompuestos
 
 import (
 	"Backend/environment"
+	"Backend/generator"
+	"Backend/interfaces"
+	"container/list"
+	"strconv"
 )
 
 type ArregloDeclaracionLista struct {
@@ -16,8 +20,10 @@ func NewArregloDeclaracionLista(lin int, col int, name string, tipo environment.
 	return ArregloDeclaracionLista{lin, col, name, tipo, values}
 }
 
-/*
-func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST) interface{} {
+func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	listavalores := list.New()
 	for _, inst := range v.Lista {
 		if inst == nil {
@@ -27,17 +33,20 @@ func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST) interface{} {
 		if !ok {
 			continue
 		}
-		values := instruction.Ejecutar(ast)
+		values := instruction.Ejecutar(ast, gen)
+		if !ast.IsMain(ast.ObtenerAmbito()) {
+			gen.MainCodeT()
+		}
 		listavalores.PushBack(values)
 	}
 
 	for e := listavalores.Front(); e != nil; e = e.Next() {
-		symbol := e.Value.(environment.Symbol)
-		if symbol.Tipo != v.Type {
+		symbol := e.Value.(environment.Value)
+		if symbol.Type != v.Type {
 			Errores := environment.Errores{
 				Descripcion: "Existen parametros que no son compatibles con el tipo de arreglo definido",
-				Fila:        strconv.Itoa(symbol.Lin),
-				Columna:     strconv.Itoa(symbol.Col),
+				Fila:        strconv.Itoa(symbol.Val.Symbols.Lin),
+				Columna:     strconv.Itoa(symbol.Val.Symbols.Lin),
 				Tipo:        "Error Semantico",
 				Ambito:      ast.ObtenerAmbito(),
 			}
@@ -53,15 +62,30 @@ func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST) interface{} {
 		Valor: nil,
 		Scope: ast.ObtenerAmbito(),
 	}
+
+	gen.AddComment("Declaracion de Vector")
+
+	listavalorespunteros := list.New()
+	for e := listavalores.Front(); e != nil; e = e.Next() {
+		value := e.Value.(environment.Value)
+		newTemp := gen.NewTemp()
+		gen.AddAssign(newTemp, "H")           //Creamos un nuevo puntero Head para que en este vayan los valores
+		gen.AddSetHeap("(int)H", value.Value) // Agregamos el caracter de escape
+		gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+		gen.AddBr()
+		listavalorespunteros.PushBack(newTemp)
+	}
+
 	vector := environment.Vector{
 		Name:        v.Name,
 		Symbols:     symbol,
 		Mutable:     true,
 		Elements:    listavalores,
+		ElementsPt:  listavalorespunteros,
 		TipoSimbolo: "Vector",
 	}
 
 	ast.GuardarArreglo(vector)
+	gen.MainCodeF()
 	return nil
 }
-*/

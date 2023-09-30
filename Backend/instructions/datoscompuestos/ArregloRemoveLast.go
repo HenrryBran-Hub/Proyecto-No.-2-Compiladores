@@ -1,5 +1,11 @@
 package datoscompuestos
 
+import (
+	"Backend/environment"
+	"Backend/generator"
+	"strconv"
+)
+
 type ArregloRemoveLast struct {
 	Line   int
 	Col    int
@@ -10,8 +16,7 @@ func NewArregloRemoveLast(line, col int, remove string) ArregloRemoveLast {
 	return ArregloRemoveLast{line, col, remove}
 }
 
-/*
-func (v ArregloRemoveLast) Ejecutar(ast *environment.AST) interface{} {
+func (v ArregloRemoveLast) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	Remove := ast.GetArreglo(v.Remove)
 	if Remove == nil {
 		Errores := environment.Errores{
@@ -41,7 +46,11 @@ func (v ArregloRemoveLast) Ejecutar(ast *environment.AST) interface{} {
 		Remove.Elements.Remove(lastElement)
 	}
 
+	lastElementpt := Remove.ElementsPt.Back()
+	if lastElementpt != nil {
+		Remove.ElementsPt.Remove(lastElementpt)
+	}
+
 	ast.ActualizarArreglo(v.Remove, Remove)
 	return nil
 }
-*/

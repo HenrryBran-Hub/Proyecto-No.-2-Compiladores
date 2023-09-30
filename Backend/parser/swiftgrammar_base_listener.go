@@ -140,6 +140,36 @@ func (s *BaseSwiftGrammarListener) EnterRetornos(ctx *RetornosContext) {}
 // ExitRetornos is called when production retornos is exited.
 func (s *BaseSwiftGrammarListener) ExitRetornos(ctx *RetornosContext) {}
 
+// EnterVectorcontrol is called when production vectorcontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterVectorcontrol(ctx *VectorcontrolContext) {}
+
+// ExitVectorcontrol is called when production vectorcontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitVectorcontrol(ctx *VectorcontrolContext) {}
+
+// EnterBlockparams is called when production blockparams is entered.
+func (s *BaseSwiftGrammarListener) EnterBlockparams(ctx *BlockparamsContext) {}
+
+// ExitBlockparams is called when production blockparams is exited.
+func (s *BaseSwiftGrammarListener) ExitBlockparams(ctx *BlockparamsContext) {}
+
+// EnterBloqueparams is called when production bloqueparams is entered.
+func (s *BaseSwiftGrammarListener) EnterBloqueparams(ctx *BloqueparamsContext) {}
+
+// ExitBloqueparams is called when production bloqueparams is exited.
+func (s *BaseSwiftGrammarListener) ExitBloqueparams(ctx *BloqueparamsContext) {}
+
+// EnterVectoragregar is called when production vectoragregar is entered.
+func (s *BaseSwiftGrammarListener) EnterVectoragregar(ctx *VectoragregarContext) {}
+
+// ExitVectoragregar is called when production vectoragregar is exited.
+func (s *BaseSwiftGrammarListener) ExitVectoragregar(ctx *VectoragregarContext) {}
+
+// EnterVectorremover is called when production vectorremover is entered.
+func (s *BaseSwiftGrammarListener) EnterVectorremover(ctx *VectorremoverContext) {}
+
+// ExitVectorremover is called when production vectorremover is exited.
+func (s *BaseSwiftGrammarListener) ExitVectorremover(ctx *VectorremoverContext) {}
+
 // EnterListaexpresions is called when production listaexpresions is entered.
 func (s *BaseSwiftGrammarListener) EnterListaexpresions(ctx *ListaexpresionsContext) {}
 

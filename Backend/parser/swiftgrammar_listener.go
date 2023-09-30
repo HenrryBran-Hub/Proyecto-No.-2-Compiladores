@@ -67,6 +67,21 @@ type SwiftGrammarListener interface {
 	// EnterRetornos is called when entering the retornos production.
 	EnterRetornos(c *RetornosContext)
 
+	// EnterVectorcontrol is called when entering the vectorcontrol production.
+	EnterVectorcontrol(c *VectorcontrolContext)
+
+	// EnterBlockparams is called when entering the blockparams production.
+	EnterBlockparams(c *BlockparamsContext)
+
+	// EnterBloqueparams is called when entering the bloqueparams production.
+	EnterBloqueparams(c *BloqueparamsContext)
+
+	// EnterVectoragregar is called when entering the vectoragregar production.
+	EnterVectoragregar(c *VectoragregarContext)
+
+	// EnterVectorremover is called when entering the vectorremover production.
+	EnterVectorremover(c *VectorremoverContext)
+
 	// EnterListaexpresions is called when entering the listaexpresions production.
 	EnterListaexpresions(c *ListaexpresionsContext)
 
@@ -135,6 +150,21 @@ type SwiftGrammarListener interface {
 
 	// ExitRetornos is called when exiting the retornos production.
 	ExitRetornos(c *RetornosContext)
+
+	// ExitVectorcontrol is called when exiting the vectorcontrol production.
+	ExitVectorcontrol(c *VectorcontrolContext)
+
+	// ExitBlockparams is called when exiting the blockparams production.
+	ExitBlockparams(c *BlockparamsContext)
+
+	// ExitBloqueparams is called when exiting the bloqueparams production.
+	ExitBloqueparams(c *BloqueparamsContext)
+
+	// ExitVectoragregar is called when exiting the vectoragregar production.
+	ExitVectoragregar(c *VectoragregarContext)
+
+	// ExitVectorremover is called when exiting the vectorremover production.
+	ExitVectorremover(c *VectorremoverContext)
 
 	// ExitListaexpresions is called when exiting the listaexpresions production.
 	ExitListaexpresions(c *ListaexpresionsContext)

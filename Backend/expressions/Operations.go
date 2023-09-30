@@ -155,7 +155,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "-")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue + op2.IntValue
+				result.IntValue = op1.IntValue - op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
 				newTemp1 := gen.NewTemp()
@@ -179,7 +179,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "-")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue + op2.IntValue
+				result.IntValue = op1.IntValue - op2.IntValue
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
@@ -223,7 +223,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "*")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue + op2.IntValue
+				result.IntValue = op1.IntValue * op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
 				newTemp1 := gen.NewTemp()
@@ -247,7 +247,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "*")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue + op2.IntValue
+				result.IntValue = op1.IntValue * op2.IntValue
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
@@ -292,7 +292,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 					gen.AddExpression(newTemp, newTemp1, newTemp2, "/")
 					result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-					result.IntValue = op1.IntValue + op2.IntValue
+					result.IntValue = op1.IntValue / op2.IntValue
 					return result
 				} else {
 					Errores := environment.Errores{
@@ -328,7 +328,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 					gen.AddExpression(newTemp, newTemp1, newTemp2, "/")
 					result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-					result.IntValue = op1.IntValue + op2.IntValue
+					result.IntValue = op1.IntValue / op2.IntValue
 					return result
 				} else {
 					Errores := environment.Errores{
@@ -383,6 +383,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, "(int)"+newTemp1, "(int)"+newTemp2, "%")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
+				result.IntValue = op1.IntValue % op2.IntValue
 				return result
 			} else if dominante == environment.FLOAT {
 				newTemp1 := gen.NewTemp()
@@ -406,6 +407,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, "(int)"+newTemp1, "(int)"+newTemp2, "%")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
+				result.IntValue = op1.IntValue % op2.IntValue
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
