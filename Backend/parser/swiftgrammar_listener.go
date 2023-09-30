@@ -76,6 +76,12 @@ type SwiftGrammarListener interface {
 	// EnterBloqueparams is called when entering the bloqueparams production.
 	EnterBloqueparams(c *BloqueparamsContext)
 
+	// EnterVectoragregar is called when entering the vectoragregar production.
+	EnterVectoragregar(c *VectoragregarContext)
+
+	// EnterVectorremover is called when entering the vectorremover production.
+	EnterVectorremover(c *VectorremoverContext)
+
 	// EnterListaexpresions is called when entering the listaexpresions production.
 	EnterListaexpresions(c *ListaexpresionsContext)
 
@@ -153,6 +159,12 @@ type SwiftGrammarListener interface {
 
 	// ExitBloqueparams is called when exiting the bloqueparams production.
 	ExitBloqueparams(c *BloqueparamsContext)
+
+	// ExitVectoragregar is called when exiting the vectoragregar production.
+	ExitVectoragregar(c *VectoragregarContext)
+
+	// ExitVectorremover is called when exiting the vectorremover production.
+	ExitVectorremover(c *VectorremoverContext)
 
 	// ExitListaexpresions is called when exiting the listaexpresions production.
 	ExitListaexpresions(c *ListaexpresionsContext)

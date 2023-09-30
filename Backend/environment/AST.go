@@ -415,6 +415,7 @@ func (a *AST) ActualizarArreglo(nombre string, nuevoValor *Vector) {
 					if i.Value.(Vector).Name == nombre && i.Value.(Vector).Mutable && i.Value.(Vector).Symbols.Scope == nuevoValor.Symbols.Scope {
 						vectorj := i.Value.(Vector)
 						vectorj.Elements = nuevoValor.Elements
+						vectorj.ElementsPt = nuevoValor.ElementsPt
 					}
 				}
 				return
@@ -577,8 +578,8 @@ func (a *AST) TablaVariablesHTML() {
 
 		var acumulado string
 		for element := vector.Elements.Front(); element != nil; element = element.Next() {
-			symbolo := element.Value.(Symbol)
-			stringValue := fmt.Sprintf("%v", symbolo.Valor)
+			symbolo := element.Value.(Value)
+			stringValue := fmt.Sprintf("%v", symbolo.Value)
 			acumulado += stringValue
 			if element.Next() != nil {
 				acumulado += ","
