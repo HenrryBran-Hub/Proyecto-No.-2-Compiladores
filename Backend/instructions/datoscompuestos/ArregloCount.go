@@ -1,5 +1,11 @@
 package datoscompuestos
 
+import (
+	"Backend/environment"
+	"Backend/generator"
+	"strconv"
+)
+
 type ArregloCount struct {
 	Line   int
 	Col    int
@@ -10,9 +16,14 @@ func NewArregloCount(line, col int, vcount string) ArregloCount {
 	return ArregloCount{line, col, vcount}
 }
 
-/*
-func (v ArregloCount) Ejecutar(ast *environment.AST) environment.Symbol {
+func (v ArregloCount) Ejecutar(ast *environment.AST, gen *generator.Generator) environment.Value {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	VCount := ast.GetArreglo(v.VCount)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	if VCount == nil {
 		Errores := environment.Errores{
 			Descripcion: "El arreglo que esta intentando ver si esta vacio no existe: \n Arreglo: " + v.VCount,
@@ -22,9 +33,26 @@ func (v ArregloCount) Ejecutar(ast *environment.AST) environment.Symbol {
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		return environment.Symbol{Lin: v.Line, Col: v.Col, Tipo: environment.NULL, Valor: nil}
+		return environment.NewValue("0", false, environment.NULL, false, false, false, environment.Variable{})
 	}
 
-	return environment.Symbol{Lin: v.Line, Col: v.Col, Tipo: environment.INTEGER, Valor: VCount.Elements.Len()}
+	symbol := environment.Symbol{
+		Lin:      v.Line,
+		Col:      v.Col,
+		Tipo:     VCount.Symbols.Tipo,
+		Scope:    VCount.Symbols.Scope,
+		TipoDato: environment.VECTOR,
+		Posicion: VCount.Symbols.Posicion,
+	}
+	Variable := environment.Variable{
+		Name:        VCount.Name,
+		Symbols:     symbol,
+		Mutable:     false,
+		TipoSimbolo: "Vector",
+	}
+
+	newTemp := gen.NewTemp()
+	gen.AddAssign(newTemp, strconv.Itoa(VCount.Elements.Len()))
+	gen.AddSetStack(strconv.Itoa(VCount.Symbols.Posicion), newTemp)
+	return environment.NewValue(strconv.Itoa(VCount.Elements.Len()), false, environment.INTEGER, false, false, false, Variable)
 }
-*/

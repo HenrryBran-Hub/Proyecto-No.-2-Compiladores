@@ -1,7 +1,11 @@
 package datoscompuestos
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"fmt"
+	"strconv"
 )
 
 type ArregloAccess struct {
@@ -15,8 +19,7 @@ func NewArregloAccess(line, col int, vaccess string, pos interfaces.Expression) 
 	return ArregloAccess{line, col, vaccess, pos}
 }
 
-/*
-func (v ArregloAccess) Ejecutar(ast *environment.AST) environment.Symbol {
+func (v ArregloAccess) Ejecutar(ast *environment.AST, gen *generator.Generator) environment.Value {
 	VAccess := ast.GetArreglo(v.VAccess)
 	if VAccess == nil {
 		Errores := environment.Errores{
@@ -27,7 +30,7 @@ func (v ArregloAccess) Ejecutar(ast *environment.AST) environment.Symbol {
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		return environment.Symbol{Lin: v.Line, Col: v.Col, Tipo: environment.NULL, Valor: nil}
+		return environment.NewValue("0", false, environment.NULL, false, false, false, environment.Variable{})
 	}
 
 	if VAccess.Elements.Len() == 0 {
@@ -39,12 +42,17 @@ func (v ArregloAccess) Ejecutar(ast *environment.AST) environment.Symbol {
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		return environment.Symbol{Lin: v.Line, Col: v.Col, Tipo: environment.NULL, Valor: nil}
+		return environment.NewValue("0", false, environment.NULL, false, false, false, environment.Variable{})
 	}
 
-	Posicion := v.Pos.Ejecutar(ast)
-
-	if Posicion.Tipo != environment.INTEGER {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	Posicion := v.Pos.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	if Posicion.Type != environment.INTEGER {
 		Errores := environment.Errores{
 			Descripcion: "El valor de posicion tiene que ser entero o tipo int" + v.VAccess,
 			Fila:        strconv.Itoa(v.Line),
@@ -53,11 +61,11 @@ func (v ArregloAccess) Ejecutar(ast *environment.AST) environment.Symbol {
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		return environment.Symbol{Lin: v.Line, Col: v.Col, Tipo: environment.NULL, Valor: nil}
+		return environment.NewValue("0", false, environment.NULL, false, false, false, environment.Variable{})
 	}
 
-	if Posicion.Valor.(int) > VAccess.Elements.Len() || Posicion.Valor.(int) < 0 {
-		if Posicion.Valor.(int) > VAccess.Elements.Len() {
+	if Posicion.IntValue > VAccess.Elements.Len() || Posicion.IntValue < 0 {
+		if Posicion.IntValue > VAccess.Elements.Len() {
 			Errores := environment.Errores{
 				Descripcion: "Esta ingresando un valor mayor que el tamaño del vector" + v.VAccess,
 				Fila:        strconv.Itoa(v.Line),
@@ -76,19 +84,40 @@ func (v ArregloAccess) Ejecutar(ast *environment.AST) environment.Symbol {
 			}
 			ast.ErroresHTML(Errores)
 		}
-		return environment.Symbol{Lin: v.Line, Col: v.Col, Tipo: environment.NULL, Valor: nil}
+		return environment.NewValue("0", false, environment.NULL, false, false, false, environment.Variable{})
 	}
 
-	var eVAccess *list.Element
-	for e, i := VAccess.Elements.Front(), 0; e != nil; e, i = e.Next(), i+1 {
-		if i == Posicion.Valor {
-			eVAccess = e
+	e := VAccess.Elements.Front()
+	ee := VAccess.ElementsPt.Front()
+	for i := 0; e != nil && ee != nil; i++ {
+		if i == Posicion.IntValue {
 			break
+		} else {
+			e = e.Next()
+			ee = ee.Next()
 		}
 	}
 
-	data := eVAccess.Value.(environment.Symbol)
+	symbol := environment.Symbol{
+		Lin:      v.Line,
+		Col:      v.Col,
+		Tipo:     VAccess.Symbols.Tipo,
+		Scope:    VAccess.Symbols.Scope,
+		TipoDato: environment.VECTOR,
+		Posicion: VAccess.Symbols.Posicion,
+	}
+	Variable := environment.Variable{
+		Name:        VAccess.Name,
+		Symbols:     symbol,
+		Mutable:     false,
+		TipoSimbolo: "Vector",
+	}
 
-	return environment.Symbol{Lin: v.Line, Col: v.Col, Tipo: data.Tipo, Valor: data.Valor}
+	fmt.Printf("Valor element: \n%v\n", e.Value)
+	fmt.Printf("Valor elementpt: \n%v\n", ee.Value)
+
+	newTemp := gen.NewTemp()
+	gen.AddGetHeap(newTemp, "(int)"+ee.Value.(string))
+	gen.AddSetStack(strconv.Itoa(VAccess.Symbols.Posicion), newTemp)
+	return environment.NewValue(newTemp, false, VAccess.Symbols.Tipo, false, false, false, Variable)
 }
-*/

@@ -205,9 +205,9 @@ expr returns [interfaces.Expression e]
         $e = sentencias.NewCallid($ID_VALIDO.line,$ID_VALIDO.pos,id)
     }
 |NULO {$e = expressions.NewPrimitive($NULO.line, $NULO.pos, $NULO.text,environment.NULL)}
-// | vectorvacio { $e = $vectorvacio.veemct}
-// | vectorcount { $e = $vectorcount.vecnct}
-// | vectoraccess { $e = $vectoraccess.vepposct}
+| vectorvacio { $e = $vectorvacio.veemct}
+| vectorcount { $e = $vectorcount.vecnct}
+| vectoraccess { $e = $vectoraccess.vepposct}
 // | intembebida { $e = $intembebida.intemb}
 // | floatembebida { $e = $floatembebida.floemb}
 // | stringembebida { $e = $stringembebida.stremb}
@@ -339,21 +339,22 @@ vectoragregar returns [interfaces.Instruction veadct]
 
 vectorremover returns [interfaces.Instruction vermct]
 : ID_VALIDO PUNTO REMOVELAST PARIZQ PARDER  { $vermct = datoscompuestos.NewArregloRemoveLast($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)}
-// | ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expr PARDER { $vermct = instructions.NewArregloRemovePos($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text, $expr.e)}
+| ID_VALIDO PUNTO REMOVE PARIZQ AT DOS_PUNTOS expr PARDER { $vermct = datoscompuestos.NewArregloRemovePos($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text, $expr.e)}
 ;
 
-// vectorvacio returns [interfaces.Expression veemct]
-// : ID_VALIDO PUNTO ISEMPTY { $veemct = instructions.NewArregloIsEmpty($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)};
+vectorvacio returns [interfaces.Expression veemct]
+: ID_VALIDO PUNTO ISEMPTY { $veemct = datoscompuestos.NewArregloIsEmpty($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)};
 
-// vectorcount returns [interfaces.Expression vecnct]
-// : ID_VALIDO PUNTO COUNT { $vecnct = instructions.NewArregloCount($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)};
+vectorcount returns [interfaces.Expression vecnct]
+: ID_VALIDO PUNTO COUNT { $vecnct = datoscompuestos.NewArregloCount($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)};
 
-// vectoraccess returns [interfaces.Expression vepposct]
+vectoraccess returns [interfaces.Expression vepposct]
 // : ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER listamatrizaddsubs
 // { $vepposct = instructions.NewMatrizObtencionList($ID_VALIDO.text, $op1.e, $op2.e, $listamatrizaddsubs.blklimatas) }
 // | ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER 
 // { $vepposct = instructions.NewMatrizObtencion($ID_VALIDO.text, $op1.e, $op2.e) } 
-// |ID_VALIDO CORCHIZQ expr CORCHDER { $vepposct = instructions.NewArregloAccess($CORCHDER.line, $CORCHDER.pos, $ID_VALIDO.text, $expr.e)};
+: ID_VALIDO CORCHIZQ expr CORCHDER { $vepposct = datoscompuestos.NewArregloAccess($CORCHDER.line, $CORCHDER.pos, $ID_VALIDO.text, $expr.e)}
+;
 
 // //CREACION DE MATRICES
 // matrizcontrol returns [interfaces.Instruction matct]

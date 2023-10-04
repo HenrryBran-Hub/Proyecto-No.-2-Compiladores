@@ -24,11 +24,12 @@ func (v ArregloDeclaracionSinLista) Ejecutar(ast *environment.AST, gen *generato
 	listavalores := list.New()
 	listavalorespt := list.New()
 	symbol := environment.Symbol{
-		Lin:   v.Lin,
-		Col:   v.Col,
-		Tipo:  v.Type,
-		Valor: nil,
-		Scope: ast.ObtenerAmbito(),
+		Lin:      v.Lin,
+		Col:      v.Col,
+		Tipo:     v.Type,
+		Valor:    nil,
+		Scope:    ast.ObtenerAmbito(),
+		Posicion: ast.PosicionStack,
 	}
 	vector := environment.Vector{
 		Name:        v.Name,

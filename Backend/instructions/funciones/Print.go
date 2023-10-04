@@ -39,6 +39,11 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 		lista.PushBack(valor)
 
 	}
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	} else {
+		gen.MainCodeF()
+	}
 	gen.AddComment("----------Imprimimos----------")
 	var result environment.Value
 	for e := lista.Front(); e != nil; e = e.Next() {
@@ -128,5 +133,6 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 		}
 	}
 
+	gen.MainCodeF()
 	return result
 }

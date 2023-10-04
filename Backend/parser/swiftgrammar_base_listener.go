@@ -170,6 +170,24 @@ func (s *BaseSwiftGrammarListener) EnterVectorremover(ctx *VectorremoverContext)
 // ExitVectorremover is called when production vectorremover is exited.
 func (s *BaseSwiftGrammarListener) ExitVectorremover(ctx *VectorremoverContext) {}
 
+// EnterVectorvacio is called when production vectorvacio is entered.
+func (s *BaseSwiftGrammarListener) EnterVectorvacio(ctx *VectorvacioContext) {}
+
+// ExitVectorvacio is called when production vectorvacio is exited.
+func (s *BaseSwiftGrammarListener) ExitVectorvacio(ctx *VectorvacioContext) {}
+
+// EnterVectorcount is called when production vectorcount is entered.
+func (s *BaseSwiftGrammarListener) EnterVectorcount(ctx *VectorcountContext) {}
+
+// ExitVectorcount is called when production vectorcount is exited.
+func (s *BaseSwiftGrammarListener) ExitVectorcount(ctx *VectorcountContext) {}
+
+// EnterVectoraccess is called when production vectoraccess is entered.
+func (s *BaseSwiftGrammarListener) EnterVectoraccess(ctx *VectoraccessContext) {}
+
+// ExitVectoraccess is called when production vectoraccess is exited.
+func (s *BaseSwiftGrammarListener) ExitVectoraccess(ctx *VectoraccessContext) {}
+
 // EnterListaexpresions is called when production listaexpresions is entered.
 func (s *BaseSwiftGrammarListener) EnterListaexpresions(ctx *ListaexpresionsContext) {}
 

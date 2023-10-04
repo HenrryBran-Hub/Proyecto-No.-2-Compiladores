@@ -1,7 +1,0 @@
-digraph CST {
-125[label="125" , shape=box, style="filled,rounded", fillcolor="#F4A460"];
-126[label="Instrucciones" , shape=box, style="filled,rounded", fillcolor="#F4A460"];
-126->125;
-127[label="Root" , shape=box, style="filled,rounded", fillcolor="#F4A460"];
-127->126;
-}
