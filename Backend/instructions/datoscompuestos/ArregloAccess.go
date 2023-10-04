@@ -4,7 +4,6 @@ import (
 	"Backend/environment"
 	"Backend/generator"
 	"Backend/interfaces"
-	"fmt"
 	"strconv"
 )
 
@@ -112,9 +111,6 @@ func (v ArregloAccess) Ejecutar(ast *environment.AST, gen *generator.Generator) 
 		Mutable:     false,
 		TipoSimbolo: "Vector",
 	}
-
-	fmt.Printf("Valor element: \n%v\n", e.Value)
-	fmt.Printf("Valor elementpt: \n%v\n", ee.Value)
 
 	newTemp := gen.NewTemp()
 	gen.AddGetHeap(newTemp, "(int)"+ee.Value.(string))

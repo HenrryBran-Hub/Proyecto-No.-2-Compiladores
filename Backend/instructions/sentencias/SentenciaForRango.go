@@ -22,7 +22,7 @@ func NewSentenciaForRango(lin int, col int, id string, left interfaces.Expressio
 
 func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	ambito := ast.ObtenerAmbito()
-	ambitonuevo := "Switch" + "-" + ambito
+	ambitonuevo := "for" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()

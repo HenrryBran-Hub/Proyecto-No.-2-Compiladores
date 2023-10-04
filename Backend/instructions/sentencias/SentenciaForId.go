@@ -21,12 +21,12 @@ func NewSentenciaForId(lin int, col int, id string, id2 string, bloque []interfa
 
 func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	variables := ast.GetVariable(v.Id2)
-	//arreglos := ast.GetArreglo(v.Id2)
+	arreglos := ast.GetArreglo(v.Id2)
 	var errorgeneral int = 0
 	if variables != nil {
 		if variables.Symbols.Tipo == environment.STRING {
 			ambito := ast.ObtenerAmbito()
-			ambitonuevo := "Switch" + "-" + ambito
+			ambitonuevo := "for" + "-" + ambito
 			ast.AumentarAmbito(ambitonuevo)
 			if !ast.IsMain(ambitonuevo) {
 				gen.MainCodeT()
@@ -198,41 +198,15 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			ast.ErroresHTML(Errores)
 			return nil
 		}
-	} else {
-		Errores := environment.Errores{
-			Descripcion: "El id ingresado no pertenece ni a una variable ni aun vector",
-			Fila:        strconv.Itoa(v.Lin),
-			Columna:     strconv.Itoa(v.Col),
-			Tipo:        "Error Semantico",
-			Ambito:      ast.ObtenerAmbito(),
-		}
-		ast.ErroresHTML(Errores)
-		return nil
 	}
 
-	gen.MainCodeF()
-
-	if errorgeneral == 1 {
-		Errores := environment.Errores{
-			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
-			Fila:        strconv.Itoa(v.Lin),
-			Columna:     strconv.Itoa(v.Col),
-			Tipo:        "Error Semantico",
-			Ambito:      ast.ObtenerAmbito(),
-		}
-		ast.ErroresHTML(Errores)
-	}
-
-	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
-	ast.Lista_For_Rango.Remove(ast.Lista_For_Rango.Back())
-
-	return nil
-}
-
-/*
 	if arreglos != nil {
-
-		ast.AumentarAmbito("For Cadena")
+		ambito := ast.ObtenerAmbito()
+		ambitonuevo := "for" + "-" + ambito
+		ast.AumentarAmbito(ambitonuevo)
+		if !ast.IsMain(ambitonuevo) {
+			gen.MainCodeT()
+		}
 		symbol := environment.Symbol{
 			Lin:   v.Lin,
 			Col:   v.Col,
@@ -246,29 +220,35 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Mutable:     true,
 			TipoSimbolo: "Variable",
 		}
+
 		var retornable int = 0
 		var reexp environment.Symbol
-		ast.GuardarVariable(Variable)
 
+		looptl := gen.NewLabel()
+		exitla := gen.NewLabel()
+		transferencia := environment.SentenciasdeTransferencia{
+			Scope:  ambitonuevo,
+			ETrue:  looptl,
+			EFalse: exitla,
+		}
+		ast.Lista_Tranferencias.PushBack(transferencia)
+		ast.Lista_For_Rango.PushBack(Variable)
+
+		tmp := gen.NewTemp()
+		tmp2 := gen.NewTemp()
+
+		gen.AddBr()
+
+		gen.AddLabel(looptl)
+		ast.GuardarVariable(Variable)
 		for i := arreglos.Elements.Front(); i != nil; i = i.Next() {
 			vari := ast.GetVariable(v.Id)
-			cade := i.Value.(environment.Symbol).Valor
-			symbol := environment.Symbol{
-				Lin:   vari.Symbols.Lin,
-				Col:   vari.Symbols.Col,
-				Tipo:  arreglos.Symbols.Tipo,
-				Valor: cade,
-				Scope: ast.ObtenerAmbito(),
-			}
-			Variable := environment.Variable{
-				Name:        vari.Name,
-				Symbols:     symbol,
-				Mutable:     true,
-				TipoSimbolo: "Variable",
-			}
-			ast.ActualizarVariable(&Variable)
-			Variable.Mutable = false
-			ast.ActualizarVariable(&Variable)
+			valor := i.Value.(environment.Value)
+			vari.Symbols.Valor = valor.Value
+			gen.AddAssign(tmp, valor.Value)
+			gen.AddGetHeap(tmp2, "(int)"+tmp)
+			gen.AddSetStack(strconv.Itoa(arreglos.Symbols.Posicion), tmp2)
+			ast.ActualizarVariable(vari)
 			for _, inst := range v.slice {
 				if inst == nil {
 					continue
@@ -277,29 +257,44 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 				if !ok {
 					continue
 				}
-				instruction.Ejecutar(ast)
+				instruction.Ejecutar(ast, gen)
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				bvari := ast.GetVariable("Break")
 				if bvari != nil {
 					retornable = 1
-					break
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					break
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
 					reexp = revari.Symbols
-					break
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 				cvari := ast.GetVariable("Continue")
 				if cvari != nil {
-					continue
+					if ast.Lista_Tranferencias.Len() == 0 {
+						errorgeneral = 1
+					}
 				}
 			}
 		}
+
+		gen.AddBr()
+		gen.AddGoto(exitla)
+		gen.AddLabel(exitla)
 
 		ast.DisminuirAmbito()
 		tamanio := ast.Pila_Variables.Len()
@@ -348,4 +343,33 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			ast.ErroresHTML(Errores)
 		}
 
-		}*/
+	} else {
+		Errores := environment.Errores{
+			Descripcion: "El id ingresado no a una variable tipo string",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+		return nil
+	}
+
+	gen.MainCodeF()
+
+	if errorgeneral == 1 {
+		Errores := environment.Errores{
+			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+	}
+
+	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
+	ast.Lista_For_Rango.Remove(ast.Lista_For_Rango.Back())
+
+	return nil
+}
