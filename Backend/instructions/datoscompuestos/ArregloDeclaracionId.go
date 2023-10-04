@@ -66,11 +66,12 @@ func (v ArregloDeclaracionId) Ejecutar(ast *environment.AST, gen *generator.Gene
 	}
 
 	symbol := environment.Symbol{
-		Lin:   v.Lin,
-		Col:   v.Col,
-		Tipo:  v.Type,
-		Valor: nil,
-		Scope: ast.ObtenerAmbito(),
+		Lin:      v.Lin,
+		Col:      v.Col,
+		Tipo:     v.Type,
+		Valor:    nil,
+		Scope:    ast.ObtenerAmbito(),
+		Posicion: ast.PosicionStack,
 	}
 	vector := environment.Vector{
 		Name:        v.Prin,

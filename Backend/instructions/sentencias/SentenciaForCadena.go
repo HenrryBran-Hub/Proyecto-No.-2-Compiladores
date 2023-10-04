@@ -21,7 +21,7 @@ func NewSentenciaForCadena(lin int, col int, id string, expre interfaces.Express
 
 func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	ambito := ast.ObtenerAmbito()
-	ambitonuevo := "Switch" + "-" + ambito
+	ambitonuevo := "For" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()

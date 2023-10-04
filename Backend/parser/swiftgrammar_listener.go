@@ -82,6 +82,15 @@ type SwiftGrammarListener interface {
 	// EnterVectorremover is called when entering the vectorremover production.
 	EnterVectorremover(c *VectorremoverContext)
 
+	// EnterVectorvacio is called when entering the vectorvacio production.
+	EnterVectorvacio(c *VectorvacioContext)
+
+	// EnterVectorcount is called when entering the vectorcount production.
+	EnterVectorcount(c *VectorcountContext)
+
+	// EnterVectoraccess is called when entering the vectoraccess production.
+	EnterVectoraccess(c *VectoraccessContext)
+
 	// EnterListaexpresions is called when entering the listaexpresions production.
 	EnterListaexpresions(c *ListaexpresionsContext)
 
@@ -165,6 +174,15 @@ type SwiftGrammarListener interface {
 
 	// ExitVectorremover is called when exiting the vectorremover production.
 	ExitVectorremover(c *VectorremoverContext)
+
+	// ExitVectorvacio is called when exiting the vectorvacio production.
+	ExitVectorvacio(c *VectorvacioContext)
+
+	// ExitVectorcount is called when exiting the vectorcount production.
+	ExitVectorcount(c *VectorcountContext)
+
+	// ExitVectoraccess is called when exiting the vectoraccess production.
+	ExitVectoraccess(c *VectoraccessContext)
 
 	// ExitListaexpresions is called when exiting the listaexpresions production.
 	ExitListaexpresions(c *ListaexpresionsContext)

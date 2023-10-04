@@ -1,7 +1,11 @@
 package datoscompuestos
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"container/list"
+	"strconv"
 )
 
 type ArregloRemovePos struct {
@@ -15,8 +19,7 @@ func NewArregloRemovePos(line, col int, remove string, pos interfaces.Expression
 	return ArregloRemovePos{line, col, remove, pos}
 }
 
-/*
-func (v ArregloRemovePos) Ejecutar(ast *environment.AST) interface{} {
+func (v ArregloRemovePos) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	Remove := ast.GetArreglo(v.Remove)
 	if Remove == nil {
 		Errores := environment.Errores{
@@ -41,9 +44,15 @@ func (v ArregloRemovePos) Ejecutar(ast *environment.AST) interface{} {
 		ast.ErroresHTML(Errores)
 	}
 
-	Posicion := v.Pos.Ejecutar(ast)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	Posicion := v.Pos.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 
-	if Posicion.Tipo != environment.INTEGER {
+	if Posicion.Type != environment.INTEGER {
 		Errores := environment.Errores{
 			Descripcion: "El valor de posicion tiene que ser entero o tipo int" + v.Remove,
 			Fila:        strconv.Itoa(v.Line),
@@ -52,11 +61,12 @@ func (v ArregloRemovePos) Ejecutar(ast *environment.AST) interface{} {
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
+		gen.MainCodeF()
 		return nil
 	}
 
-	if Posicion.Valor.(int) > Remove.Elements.Len() || Posicion.Valor.(int) < 0 {
-		if Posicion.Valor.(int) > Remove.Elements.Len() {
+	if Posicion.IntValue > Remove.Elements.Len() || Posicion.IntValue < 0 {
+		if Posicion.IntValue > Remove.Elements.Len() {
 			Errores := environment.Errores{
 				Descripcion: "Esta ingresando un valor mayor que el tamaño del vector" + v.Remove,
 				Fila:        strconv.Itoa(v.Line),
@@ -75,20 +85,29 @@ func (v ArregloRemovePos) Ejecutar(ast *environment.AST) interface{} {
 			}
 			ast.ErroresHTML(Errores)
 		}
+		gen.MainCodeF()
 		return nil
 	}
 
 	var elementToDelete *list.Element
-	for e, i := Remove.Elements.Front(), 0; e != nil; e, i = e.Next(), i+1 {
-		if i == Posicion.Valor {
+	var elemntptToDelete *list.Element
+	e := Remove.Elements.Front()
+	ee := Remove.ElementsPt.Front()
+	for i := 0; e != nil && ee != nil; i++ {
+		if i == Posicion.IntValue {
 			elementToDelete = e
+			elemntptToDelete = ee
 			break
+		} else {
+			e = e.Next()
+			ee = ee.Next()
 		}
 	}
 
 	Remove.Elements.Remove(elementToDelete)
+	Remove.ElementsPt.Remove(elemntptToDelete)
 
 	ast.ActualizarArreglo(v.Remove, Remove)
+	gen.MainCodeF()
 	return nil
 }
-*/

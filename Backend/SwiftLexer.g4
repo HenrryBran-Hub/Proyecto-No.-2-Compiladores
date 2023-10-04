@@ -1,4 +1,4 @@
-lexer grammar SwiftLexer;
+lexer grammar SwiftLexer; 
 
 // --------------- TOKENS TIPOS DE DATOS
 INT: 'Int';

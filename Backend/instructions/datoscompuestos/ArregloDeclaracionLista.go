@@ -56,11 +56,12 @@ func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST, gen *generator.G
 	}
 
 	symbol := environment.Symbol{
-		Lin:   v.Lin,
-		Col:   v.Col,
-		Tipo:  v.Type,
-		Valor: nil,
-		Scope: ast.ObtenerAmbito(),
+		Lin:      v.Lin,
+		Col:      v.Col,
+		Tipo:     v.Type,
+		Valor:    nil,
+		Scope:    ast.ObtenerAmbito(),
+		Posicion: ast.PosicionStack,
 	}
 
 	gen.AddComment("Declaracion de Vector")
