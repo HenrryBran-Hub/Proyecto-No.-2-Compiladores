@@ -1,7 +1,12 @@
 package datoscompuestos
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"container/list"
+	"strconv"
+	"strings"
 )
 
 type MatrizSimpleDos struct {
@@ -17,18 +22,26 @@ func NewMatrizSimpleDos(tipo interfaces.Expression, expre interfaces.Expression,
 	return exp
 }
 
-/*
-func (o MatrizSimpleDos) Ejecutar(ast *environment.AST) interface{} {
-	tipo := o.Type.Ejecutar(ast)
-	expre := o.Expre.Ejecutar(ast)
+func (o MatrizSimpleDos) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	tipo := o.Type.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	expre := o.Expre.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 
-	if tipo.Tipo != expre.Tipo {
+	if tipo.Type != expre.Type {
 		Errores := environment.Errores{
 			Descripcion: "No es posible crear la matriz, esta colocando diferentes tipos de datos",
 			Fila:        strconv.Itoa(o.Lin),
 			Columna:     strconv.Itoa(o.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      expre.Scope,
+			Ambito:      expre.Val.Symbols.Scope,
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -40,7 +53,7 @@ func (o MatrizSimpleDos) Ejecutar(ast *environment.AST) interface{} {
 			Fila:        strconv.Itoa(o.Lin),
 			Columna:     strconv.Itoa(o.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      expre.Scope,
+			Ambito:      expre.Val.Symbols.Scope,
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -53,7 +66,7 @@ func (o MatrizSimpleDos) Ejecutar(ast *environment.AST) interface{} {
 			Fila:        strconv.Itoa(o.Lin),
 			Columna:     strconv.Itoa(o.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      expre.Scope,
+			Ambito:      expre.Val.Symbols.Scope,
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -65,7 +78,7 @@ func (o MatrizSimpleDos) Ejecutar(ast *environment.AST) interface{} {
 			Fila:        strconv.Itoa(o.Lin),
 			Columna:     strconv.Itoa(o.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      expre.Scope,
+			Ambito:      expre.Val.Symbols.Scope,
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -73,12 +86,14 @@ func (o MatrizSimpleDos) Ejecutar(ast *environment.AST) interface{} {
 
 	lista := list.New()
 	lista.PushBack(num)
+	expre.Val.Symbols.Valor = expre.Value
+	expre.Val.Symbols.Tipo = expre.Type
 	arreglo := environment.Valores_Matriz{
-		Tipo:      tipo.Tipo,
-		Valor:     expre,
+		Tipo:      tipo.Type,
+		Valor:     expre.Val.Symbols,
 		Matriztam: lista,
 	}
 	ast.Lista_Matriz_Val.PushFront(arreglo)
+	gen.MainCodeF()
 	return nil
 }
-*/

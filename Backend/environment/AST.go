@@ -352,6 +352,7 @@ func (a *AST) GuardarMatriz(matriz Matriz) {
 
 	a.Lista_Matriz.PushBack(matriz)
 	a.Lista_MatrizHTML.PushBack(matriz)
+	a.PosicionStack = a.PosicionStack + 1
 }
 
 func (a *AST) ActualizarVariable(mariable *Variable) {
