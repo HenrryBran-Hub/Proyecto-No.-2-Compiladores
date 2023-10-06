@@ -115,6 +115,12 @@ type SwiftGrammarListener interface {
 	// EnterSimplematriz is called when entering the simplematriz production.
 	EnterSimplematriz(c *SimplematrizContext)
 
+	// EnterListamatrizaddsubs is called when entering the listamatrizaddsubs production.
+	EnterListamatrizaddsubs(c *ListamatrizaddsubsContext)
+
+	// EnterListamatrizaddsub is called when entering the listamatrizaddsub production.
+	EnterListamatrizaddsub(c *ListamatrizaddsubContext)
+
 	// EnterPrintstmt is called when entering the printstmt production.
 	EnterPrintstmt(c *PrintstmtContext)
 
@@ -225,6 +231,12 @@ type SwiftGrammarListener interface {
 
 	// ExitSimplematriz is called when exiting the simplematriz production.
 	ExitSimplematriz(c *SimplematrizContext)
+
+	// ExitListamatrizaddsubs is called when exiting the listamatrizaddsubs production.
+	ExitListamatrizaddsubs(c *ListamatrizaddsubsContext)
+
+	// ExitListamatrizaddsub is called when exiting the listamatrizaddsub production.
+	ExitListamatrizaddsub(c *ListamatrizaddsubContext)
 
 	// ExitPrintstmt is called when exiting the printstmt production.
 	ExitPrintstmt(c *PrintstmtContext)

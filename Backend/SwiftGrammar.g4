@@ -330,10 +330,10 @@ bloqueparams returns [interfaces.Expression blopas]
 vectoragregar returns [interfaces.Instruction veadct]
 : ID_VALIDO PUNTO APPEND PARIZQ expr PARDER { $veadct = datoscompuestos.NewArregloAppend($ID_VALIDO.text , $expr.e)}
 | prin=ID_VALIDO CORCHIZQ pop=expr CORCHDER IG secu=ID_VALIDO CORCHIZQ sop=expr CORCHDER { $veadct = datoscompuestos.NewArregloAppendArreglo($prin.text , $pop.e, $secu.text, $sop.e)}
-// | ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER listamatrizaddsubs IG op3=expr
-// { $veadct = instructions.NewMatrizAsignacionList($ID_VALIDO.text, $op1.e, $op2.e, $listamatrizaddsubs.blklimatas, $op3.e) }
-// | ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER IG op3=expr
-// { $veadct = instructions.NewMatrizAsignacion($ID_VALIDO.text, $op1.e, $op2.e, $op3.e) } 
+| ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER listamatrizaddsubs IG op3=expr
+{ $veadct = datoscompuestos.NewMatrizAsignacionList($ID_VALIDO.text, $op1.e, $op2.e, $listamatrizaddsubs.blklimatas, $op3.e) }
+| ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER IG op3=expr
+{ $veadct = datoscompuestos.NewMatrizAsignacion($ID_VALIDO.text, $op1.e, $op2.e, $op3.e) } 
 |ID_VALIDO CORCHIZQ pop=expr CORCHDER IG sop=expr { $veadct = datoscompuestos.NewArregloAppendExp($ID_VALIDO.text , $pop.e, $sop.e)}
 ;
 
@@ -349,11 +349,11 @@ vectorcount returns [interfaces.Expression vecnct]
 : ID_VALIDO PUNTO COUNT { $vecnct = datoscompuestos.NewArregloCount($PUNTO.line, $PUNTO.pos, $ID_VALIDO.text)};
 
 vectoraccess returns [interfaces.Expression vepposct]
-// : ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER listamatrizaddsubs
-// { $vepposct = instructions.NewMatrizObtencionList($ID_VALIDO.text, $op1.e, $op2.e, $listamatrizaddsubs.blklimatas) }
-// | ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER 
-// { $vepposct = instructions.NewMatrizObtencion($ID_VALIDO.text, $op1.e, $op2.e) } 
-: ID_VALIDO CORCHIZQ expr CORCHDER { $vepposct = datoscompuestos.NewArregloAccess($CORCHDER.line, $CORCHDER.pos, $ID_VALIDO.text, $expr.e)}
+: ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER listamatrizaddsubs
+{ $vepposct = datoscompuestos.NewMatrizObtencionList($ID_VALIDO.text, $op1.e, $op2.e, $listamatrizaddsubs.blklimatas) }
+| ID_VALIDO CORCHIZQ op1=expr CORCHDER CORCHIZQ op2=expr CORCHDER 
+{ $vepposct = datoscompuestos.NewMatrizObtencion($ID_VALIDO.text, $op1.e, $op2.e) } 
+| ID_VALIDO CORCHIZQ expr CORCHDER { $vepposct = datoscompuestos.NewArregloAccess($CORCHDER.line, $CORCHDER.pos, $ID_VALIDO.text, $expr.e)}
 ;
 
 //CREACION DE MATRICES
@@ -427,26 +427,26 @@ simplematriz returns [interfaces.Instruction simmat]
 { $simmat = datoscompuestos.NewMatrizSimpleDos($tipomatriz.tipomat, $expr.e, $NUMBER.text, $NUMBER.line,$NUMBER.pos)}
 ;
 
-// listamatrizaddsubs returns [[]interface{} blklimatas]
-// @init{
-//     $blklimatas = []interface{}{}
-//     var listInt []IListamatrizaddsubContext
-// }
-// : lmas+=listamatrizaddsub+
-// {
-//     listInt = localctx.(*ListamatrizaddsubsContext).GetLmas()
-//     for _, e := range listInt {
-//         $blklimatas = append($blklimatas, e.GetLmas())
-//     }
-// }
-// ;
+listamatrizaddsubs returns [[]interface{} blklimatas]
+@init{
+    $blklimatas = []interface{}{}
+    var listInt []IListamatrizaddsubContext
+}
+: lmas+=listamatrizaddsub+
+{
+    listInt = localctx.(*ListamatrizaddsubsContext).GetLmas()
+    for _, e := range listInt {
+        $blklimatas = append($blklimatas, e.GetLmas())
+    }
+}
+;
 
-// listamatrizaddsub returns [interfaces.Expression lmas]
-// : CORCHIZQ expr CORCHDER 
-// {
-//     $lmas = instructions.NewArregloParametros($CORCHIZQ.line ,$CORCHIZQ.pos, $expr.e)
-// }
-// ;
+listamatrizaddsub returns [interfaces.Expression lmas]
+: CORCHIZQ expr CORCHDER 
+{
+    $lmas = datoscompuestos.NewArregloParametros($CORCHIZQ.line ,$CORCHIZQ.pos, $expr.e)
+}
+;
 
 // //CREACION DEL STRUCT
 

@@ -317,9 +317,9 @@ func (a *AST) GuardarArreglo(vector Vector) {
 			return
 		}
 	}
-	a.PosicionStack = a.PosicionStack + 1
 	a.Lista_Arreglos.PushBack(vector)
 	a.Lista_VectorHTML.PushBack(vector)
+	a.PosicionStack = a.PosicionStack + 1
 }
 
 func (a *AST) GuardarMatriz(matriz Matriz) {

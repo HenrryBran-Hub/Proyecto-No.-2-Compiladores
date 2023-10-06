@@ -9,4 +9,5 @@ type Symbol struct {
 	Struct   string
 	TipoDato TipoExpresion
 	Posicion int
+	ValorInt int
 }

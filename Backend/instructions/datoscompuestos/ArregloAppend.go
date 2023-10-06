@@ -51,15 +51,7 @@ func (v ArregloAppend) Ejecutar(ast *environment.AST, gen *generator.Generator) 
 		}
 	}
 
-	symbol := environment.Symbol{
-		Lin:   expre.Val.Symbols.Lin,
-		Col:   expre.Val.Symbols.Col,
-		Tipo:  expre.Type,
-		Valor: expre.Value,
-		Scope: arreglo.Symbols.Scope,
-	}
-
-	arreglo.Elements.PushBack(symbol)
+	arreglo.Elements.PushBack(expre)
 	newTemp := gen.NewTemp()
 	gen.AddAssign(newTemp, "H")           //Creamos un nuevo puntero Head para que en este vayan los valores
 	gen.AddSetHeap("(int)H", expre.Value) // Agregamos el caracter de escape
