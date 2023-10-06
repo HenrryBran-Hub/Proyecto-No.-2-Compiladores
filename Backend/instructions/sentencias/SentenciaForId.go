@@ -39,7 +39,7 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 				Tipo:     environment.CHARACTER,
 				Valor:    newTemp,
 				Scope:    ast.ObtenerAmbito(),
-				Posicion: ast.PosicionStack,
+				Posicion: variables.Symbols.Posicion,
 			}
 			Variable := environment.Variable{
 				Name:        v.Id,
@@ -208,11 +208,12 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			gen.MainCodeT()
 		}
 		symbol := environment.Symbol{
-			Lin:   v.Lin,
-			Col:   v.Col,
-			Tipo:  arreglos.Symbols.Tipo,
-			Valor: nil,
-			Scope: ast.ObtenerAmbito(),
+			Lin:      v.Lin,
+			Col:      v.Col,
+			Tipo:     arreglos.Symbols.Tipo,
+			Valor:    nil,
+			Scope:    ast.ObtenerAmbito(),
+			Posicion: arreglos.Symbols.Posicion,
 		}
 		Variable := environment.Variable{
 			Name:        v.Id,
@@ -242,13 +243,23 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		gen.AddLabel(looptl)
 		ast.GuardarVariable(Variable)
 		for i := arreglos.Elements.Front(); i != nil; i = i.Next() {
-			vari := ast.GetVariable(v.Id)
-			valor := i.Value.(environment.Value)
-			vari.Symbols.Valor = valor.Value
-			gen.AddAssign(tmp, valor.Value)
-			gen.AddGetHeap(tmp2, "(int)"+tmp)
-			gen.AddSetStack(strconv.Itoa(arreglos.Symbols.Posicion), tmp2)
-			ast.ActualizarVariable(vari)
+			if arreglos.Symbols.Tipo == environment.CHARACTER || arreglos.Symbols.Tipo == environment.STRING {
+				vari := ast.GetVariable(v.Id)
+				valor := i.Value.(environment.Value)
+				vari.Symbols.Valor = valor.Value
+				gen.AddAssign(tmp, valor.Value)
+				gen.AddGetHeap(tmp2, "(int)"+tmp)
+				gen.AddSetStack(strconv.Itoa(arreglos.Symbols.Posicion), tmp2)
+				ast.ActualizarVariable(vari)
+			} else {
+				vari := ast.GetVariable(v.Id)
+				valor := i.Value.(environment.Value)
+				vari.Symbols.Valor = valor.Value
+				gen.AddAssign(tmp, valor.Value)
+				gen.AddSetStack(strconv.Itoa(arreglos.Symbols.Posicion), tmp)
+				ast.ActualizarVariable(vari)
+			}
+
 			for _, inst := range v.slice {
 				if inst == nil {
 					continue

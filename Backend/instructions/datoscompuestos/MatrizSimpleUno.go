@@ -1,7 +1,12 @@
 package datoscompuestos
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"container/list"
+	"strconv"
+	"strings"
 )
 
 type MatrizSimpleUno struct {
@@ -17,17 +22,25 @@ func NewMatrizSimpleUno(tipo interfaces.Expression, op interfaces.Instruction, n
 	return exp
 }
 
-/*
-func (o MatrizSimpleUno) Ejecutar(ast *environment.AST) interface{} {
-	o.Op.Ejecutar(ast)
-	tipo := o.Type.Ejecutar(ast)
+func (o MatrizSimpleUno) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	o.Op.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	tipo := o.Type.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	if strings.Contains(o.Numero, ".") {
 		Errores := environment.Errores{
 			Descripcion: "No es posible crear la matriz, esta colocando numeros no enteros",
 			Fila:        strconv.Itoa(o.Lin),
 			Columna:     strconv.Itoa(o.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      tipo.Scope,
+			Ambito:      tipo.Val.Symbols.Scope,
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -40,7 +53,7 @@ func (o MatrizSimpleUno) Ejecutar(ast *environment.AST) interface{} {
 			Fila:        strconv.Itoa(o.Lin),
 			Columna:     strconv.Itoa(o.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      tipo.Scope,
+			Ambito:      tipo.Val.Symbols.Scope,
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -52,7 +65,7 @@ func (o MatrizSimpleUno) Ejecutar(ast *environment.AST) interface{} {
 			Fila:        strconv.Itoa(o.Lin),
 			Columna:     strconv.Itoa(o.Col),
 			Tipo:        "Error Semantico",
-			Ambito:      tipo.Scope,
+			Ambito:      tipo.Val.Symbols.Scope,
 		}
 		ast.ErroresHTML(Errores)
 		return nil
@@ -62,9 +75,10 @@ func (o MatrizSimpleUno) Ejecutar(ast *environment.AST) interface{} {
 	lista.PushBack(num)
 	arreglo := environment.Valores_Matriz{
 		Matriztam: lista,
-		Tipo:      tipo.Tipo,
+		Tipo:      tipo.Type,
+		Valor:     tipo.Val.Symbols,
 	}
 	ast.Lista_Matriz_Val.PushFront(arreglo)
+	gen.MainCodeF()
 	return nil
 }
-*/

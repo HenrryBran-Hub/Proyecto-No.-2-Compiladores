@@ -45,9 +45,8 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 		gen.MainCodeF()
 	}
 	gen.AddComment("----------Imprimimos----------")
-	var result environment.Value
 	for e := lista.Front(); e != nil; e = e.Next() {
-		result = e.Value.(environment.Value)
+		result := e.Value.(environment.Value)
 		if result.Type == environment.INTEGER {
 			newTemp := gen.NewTemp()
 			gen.AddGetStack(newTemp, strconv.Itoa(result.Val.Symbols.Posicion))
@@ -134,5 +133,5 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 	}
 
 	gen.MainCodeF()
-	return result
+	return nil
 }

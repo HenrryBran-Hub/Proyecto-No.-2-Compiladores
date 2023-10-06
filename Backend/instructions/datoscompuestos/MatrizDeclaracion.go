@@ -1,7 +1,11 @@
 package datoscompuestos
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"container/list"
+	"strconv"
 )
 
 type MatrizDeclaracion struct {
@@ -16,8 +20,7 @@ func NewMatrizDeclaracion(lin int, col int, name string, tipo interfaces.Express
 	return MatrizDeclaracion{lin, col, name, tipo, def}
 }
 
-/*
-func (v MatrizDeclaracion) Ejecutar(ast *environment.AST) interface{} {
+func (v MatrizDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	matexit := ast.GetMatriz(v.Name)
 	if matexit != nil {
 		Errores := environment.Errores{
@@ -32,9 +35,18 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 		return nil
 	}
 
-	tipo := v.Type.Ejecutar(ast)
-	v.Def.Ejecutar(ast)
-	tipo.Scope = ast.ObtenerAmbito()
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	tipo := v.Type.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	v.Def.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	tipo.Val.Symbols.Scope = ast.ObtenerAmbito()
 
 	Valor := ast.Lista_Matriz_Val.Back()
 	Condiciones := Valor.Value.(environment.Valores_Matriz)
@@ -50,7 +62,7 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 			lista := nivel.Value.(*list.List)
 			for elem := lista.Front(); elem != nil; elem = elem.Next() {
 				valores := elem.Value.(environment.Valores_Matriz)
-				if valores.Tipo == tipo.Tipo {
+				if valores.Tipo == tipo.Type {
 					for e := valores.Matriztam.Front(); e != nil; e = e.Next() {
 						switch contador {
 						case 0:
@@ -83,29 +95,74 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 
 		var matriz environment.Matriz
 		if n1 > 0 && n2 > 0 && n3 > 0 && n4 > 0 && n5 > 0 {
-			matriz = ast.NuevaMatriz(v.Name, true, tipo, n1, n2, n3, n4, n5)
-			valormatri := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+			matriz = ast.NuevaMatriz(v.Name, true, tipo.Val.Symbols, n1, n2, n3, n4, n5)
+			var valormatri interface{}
+			if matriz.Symbols.Tipo == environment.INTEGER || matriz.Symbols.Tipo == environment.FLOAT {
+				newTmp := gen.NewTemp()
+				gen.AddAssign(newTmp, "H")
+				valormatri1 := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+				gen.AddSetHeap("(int)H", valormatri1.(string))
+				gen.AddExpression("H", "H", "1", "+")
+				valormatri = newTmp
+			} else {
+				valormatri1 := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+				valormatri = valormatri1
+			}
 			ast.SustituirValores5(&matriz, valormatri, n1, n2, n3, n4, n5)
 		}
 		if n1 > 0 && n2 > 0 && n3 > 0 && n4 > 0 && n5 == -1 {
-			matriz = ast.NuevaMatriz(v.Name, true, tipo, n1, n2, n3, n4)
-			valormatri := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+			matriz = ast.NuevaMatriz(v.Name, true, tipo.Val.Symbols, n1, n2, n3, n4)
+			var valormatri interface{}
+			if matriz.Symbols.Tipo == environment.INTEGER || matriz.Symbols.Tipo == environment.FLOAT {
+				newTmp := gen.NewTemp()
+				gen.AddAssign(newTmp, "H")
+				valormatri1 := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+				gen.AddSetHeap("(int)H", valormatri1.(string))
+				gen.AddExpression("H", "H", "1", "+")
+				valormatri = newTmp
+			} else {
+				valormatri1 := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+				valormatri = valormatri1
+			}
 			ast.SustituirValores4(&matriz, valormatri, n1, n2, n3, n4)
 		}
 		if n1 > 0 && n2 > 0 && n3 > 0 && n4 == -1 && n5 == -1 {
-			matriz = ast.NuevaMatriz(v.Name, true, tipo, n1, n2, n3)
-			valormatri := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+			matriz = ast.NuevaMatriz(v.Name, true, tipo.Val.Symbols, n1, n2, n3)
+			var valormatri interface{}
+			if matriz.Symbols.Tipo == environment.INTEGER || matriz.Symbols.Tipo == environment.FLOAT {
+				newTmp := gen.NewTemp()
+				gen.AddAssign(newTmp, "H")
+				valormatri1 := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+				gen.AddSetHeap("(int)H", valormatri1.(string))
+				gen.AddExpression("H", "H", "1", "+")
+				valormatri = newTmp
+			} else {
+				valormatri1 := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+				valormatri = valormatri1
+			}
 			ast.SustituirValores3(&matriz, valormatri, n1, n2, n3)
 		}
 		if n1 > 0 && n2 > 0 && n3 == -1 && n4 == -1 && n5 == -1 {
-			matriz = ast.NuevaMatriz(v.Name, true, tipo, n1, n2)
-			valormatri := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+			matriz = ast.NuevaMatriz(v.Name, true, tipo.Val.Symbols, n1, n2)
+			var valormatri interface{}
+			if matriz.Symbols.Tipo == environment.INTEGER || matriz.Symbols.Tipo == environment.FLOAT {
+				newTmp := gen.NewTemp()
+				gen.AddAssign(newTmp, "H")
+				valormatri1 := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+				gen.AddSetHeap("(int)H", valormatri1.(string))
+				gen.AddExpression("H", "H", "1", "+")
+				valormatri = newTmp
+			} else {
+				valormatri1 := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Valor.Valor
+				valormatri = valormatri1
+			}
 			ast.SustituirValores2(&matriz, valormatri, n1, n2)
 		}
 
-		if ast.Lista_Matriz_Val.Len() == tipo.Valor {
+		if ast.Lista_Matriz_Val.Len() == tipo.Val.Symbols.Valor {
 			ast.GuardarMatriz(matriz)
 			ast.QuitarNiveles()
+			gen.MainCodeF()
 			return nil
 		} else {
 			Errores := environment.Errores{
@@ -130,7 +187,7 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 				valores := elem.Value.(environment.Valores_Matriz)
 				if valores.Elements != nil {
 					for e := valores.Elements.Front(); e != nil; e = e.Next() {
-						if tipo.Tipo != e.Value.(environment.Symbol).Tipo {
+						if tipo.Type != e.Value.(environment.Value).Type {
 							Errores := environment.Errores{
 								Descripcion: "Algun dato dentro de la matriz no es del mismo tipo que se declaro la matriz",
 								Fila:        strconv.Itoa(v.Lin),
@@ -171,16 +228,16 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 		}
 
 		var matriz environment.Matriz
-		contadorpila := tipo.Valor.(int) - 1
+		contadorpila := tipo.Val.Symbols.Valor.(int) - 1
 		pila := ast.Pila_Matriz_Val.Len()
 		lista := ast.Lista_Matriz_Val.Len()
 		elementos := ast.Lista_Matriz_Val.Back().Value.(environment.Valores_Matriz).Elements.Len()
-		pila2 := tipo.Valor.(int)
+		pila2 := tipo.Val.Symbols.Valor.(int)
 
 		if pila <= 3 {
-			matriz = ast.NuevaMatriz(v.Name, true, tipo, lista, elementos)
+			matriz = ast.NuevaMatriz(v.Name, true, tipo.Val.Symbols, lista, elementos)
 		} else {
-			matriz = ast.NuevaMatriz(v.Name, true, tipo, pila2, lista, elementos)
+			matriz = ast.NuevaMatriz(v.Name, true, tipo.Val.Symbols, pila2, lista, elementos)
 		}
 
 		for nivel := ast.Pila_Matriz_Val.Front(); nivel != nil; nivel = nivel.Next() {
@@ -191,10 +248,32 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 				if valores.Elements != nil {
 					contadorvalor := 0
 					for e := valores.Elements.Front(); e != nil; e = e.Next() {
-						if tipo.Valor.(int) == 2 {
-							ast.IngresarValor(&matriz, []int{contadorlista, contadorvalor}, e.Value.(environment.Symbol).Valor)
+						if tipo.Val.Symbols.Valor.(int) == 2 {
+							if matriz.Symbols.Tipo == environment.INTEGER || matriz.Symbols.Tipo == environment.FLOAT {
+								var valormatri interface{}
+								newTmp := gen.NewTemp()
+								gen.AddAssign(newTmp, "H")
+								valormatri1 := e.Value.(environment.Value).Value
+								gen.AddSetHeap("(int)H", valormatri1)
+								gen.AddExpression("H", "H", "1", "+")
+								valormatri = newTmp
+								ast.IngresarValor(&matriz, []int{contadorlista, contadorvalor}, valormatri)
+							} else {
+								ast.IngresarValor(&matriz, []int{contadorlista, contadorvalor}, e.Value.(environment.Value).Value)
+							}
 						} else {
-							ast.IngresarValor(&matriz, []int{contadorpila, contadorlista, contadorvalor}, e.Value.(environment.Symbol).Valor)
+							if matriz.Symbols.Tipo == environment.INTEGER || matriz.Symbols.Tipo == environment.FLOAT {
+								var valormatri interface{}
+								newTmp := gen.NewTemp()
+								gen.AddAssign(newTmp, "H")
+								valormatri1 := e.Value.(environment.Value).Value
+								gen.AddSetHeap("(int)H", valormatri1)
+								gen.AddExpression("H", "H", "1", "+")
+								valormatri = newTmp
+								ast.IngresarValor(&matriz, []int{contadorpila, contadorlista, contadorvalor}, valormatri)
+							} else {
+								ast.IngresarValor(&matriz, []int{contadorpila, contadorlista, contadorvalor}, e.Value.(environment.Value).Value)
+							}
 						}
 						contadorvalor++
 					}
@@ -209,6 +288,6 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST) interface{} {
 	}
 
 	ast.QuitarNiveles()
+	gen.MainCodeF()
 	return nil
 }
-*/

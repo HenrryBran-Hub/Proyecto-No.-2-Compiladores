@@ -1,6 +1,8 @@
 package datoscompuestos
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
 )
 
@@ -15,10 +17,30 @@ func NewMatrizDimension(lin, col int, tipo interfaces.Expression) MatrizDimensio
 	return exp
 }
 
-/*
-func (o MatrizDimension) Ejecutar(ast *environment.AST) environment.Symbol {
-	valor := o.Type.Ejecutar(ast)
-	result := valor.Valor.(int) + 1
-	return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: valor.Tipo, Valor: result}
+func (o MatrizDimension) Ejecutar(ast *environment.AST, gen *generator.Generator) environment.Value {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	valor := o.Type.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	result := valor.Val.Symbols.Valor.(int) + 1
+	symbol := environment.Symbol{
+		Lin:      o.Lin,
+		Col:      o.Col,
+		Tipo:     valor.Type,
+		Valor:    result,
+		Scope:    ast.ObtenerAmbito(),
+		Posicion: ast.PosicionStack,
+	}
+	Variable := environment.Variable{
+		Name:        "matriztipo",
+		Symbols:     symbol,
+		Mutable:     true,
+		TipoSimbolo: "Variable",
+	}
+
+	gen.MainCodeF()
+	return environment.NewValue("", true, valor.Type, false, false, false, Variable)
 }
-*/

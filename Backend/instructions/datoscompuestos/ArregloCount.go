@@ -51,8 +51,12 @@ func (v ArregloCount) Ejecutar(ast *environment.AST, gen *generator.Generator) e
 		TipoSimbolo: "Vector",
 	}
 
+	gen.AddComment("Conteo de vector")
 	newTemp := gen.NewTemp()
 	gen.AddAssign(newTemp, strconv.Itoa(VCount.Elements.Len()))
 	gen.AddSetStack(strconv.Itoa(VCount.Symbols.Posicion), newTemp)
-	return environment.NewValue(strconv.Itoa(VCount.Elements.Len()), false, environment.INTEGER, false, false, false, Variable)
+	gen.AddBr()
+	result := environment.NewValue(newTemp, false, environment.INTEGER, false, false, false, Variable)
+	result.IntValue = VCount.Elements.Len()
+	return result
 }

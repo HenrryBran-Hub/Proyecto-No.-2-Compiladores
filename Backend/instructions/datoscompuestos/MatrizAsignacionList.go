@@ -1,7 +1,11 @@
 package datoscompuestos
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"container/list"
+	"strconv"
 )
 
 type MatrizAsignacionList struct {
@@ -16,16 +20,21 @@ func NewMatrizAsignacionList(name string, exp1, exp2 interfaces.Expression, valu
 	return MatrizAsignacionList{name, exp1, exp2, values, exp3}
 }
 
-/*
-func (v MatrizAsignacionList) Ejecutar(ast *environment.AST) interface{} {
+func (v MatrizAsignacionList) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 
-	primerval := v.Expr1.Ejecutar(ast)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	primerval := v.Expr1.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 
-	if primerval.Tipo != environment.INTEGER {
+	if primerval.Type != environment.INTEGER {
 		Errores := environment.Errores{
 			Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
-			Fila:        strconv.Itoa(primerval.Lin),
-			Columna:     strconv.Itoa(primerval.Col),
+			Fila:        strconv.Itoa(primerval.Val.Symbols.Lin),
+			Columna:     strconv.Itoa(primerval.Val.Symbols.Col),
 			Tipo:        "Error Semantico",
 			Ambito:      ast.ObtenerAmbito(),
 		}
@@ -33,13 +42,19 @@ func (v MatrizAsignacionList) Ejecutar(ast *environment.AST) interface{} {
 		return nil
 	}
 
-	primerval2 := v.Expr2.Ejecutar(ast)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	primerval2 := v.Expr2.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 
-	if primerval2.Tipo != environment.INTEGER {
+	if primerval2.Type != environment.INTEGER {
 		Errores := environment.Errores{
 			Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
-			Fila:        strconv.Itoa(primerval2.Lin),
-			Columna:     strconv.Itoa(primerval2.Col),
+			Fila:        strconv.Itoa(primerval2.Val.Symbols.Lin),
+			Columna:     strconv.Itoa(primerval2.Val.Symbols.Col),
 			Tipo:        "Error Semantico",
 			Ambito:      ast.ObtenerAmbito(),
 		}
@@ -56,17 +71,23 @@ func (v MatrizAsignacionList) Ejecutar(ast *environment.AST) interface{} {
 		if !ok {
 			continue
 		}
-		values := instruction.Ejecutar(ast)
+		if !ast.IsMain(ast.ObtenerAmbito()) {
+			gen.MainCodeT()
+		}
+		values := instruction.Ejecutar(ast, gen)
+		if !ast.IsMain(ast.ObtenerAmbito()) {
+			gen.MainCodeT()
+		}
 		listavalores.PushBack(values)
 	}
 
 	for e := listavalores.Front(); e != nil; e = e.Next() {
-		symbol := e.Value.(environment.Symbol)
-		if symbol.Tipo != environment.INTEGER {
+		symbol := e.Value.(environment.Value)
+		if symbol.Type != environment.INTEGER {
 			Errores := environment.Errores{
 				Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
-				Fila:        strconv.Itoa(symbol.Lin),
-				Columna:     strconv.Itoa(symbol.Col),
+				Fila:        strconv.Itoa(symbol.Val.Symbols.Lin),
+				Columna:     strconv.Itoa(symbol.Val.Symbols.Col),
 				Tipo:        "Error Semantico",
 				Ambito:      ast.ObtenerAmbito(),
 			}
@@ -76,22 +97,19 @@ func (v MatrizAsignacionList) Ejecutar(ast *environment.AST) interface{} {
 	}
 
 	var valoresSlice []int
-	valoresSlice = append(valoresSlice, primerval.Valor.(int))
-	valoresSlice = append(valoresSlice, primerval2.Valor.(int))
+	valoresSlice = append(valoresSlice, primerval.IntValue)
+	valoresSlice = append(valoresSlice, primerval2.IntValue)
 	for e := listavalores.Front(); e != nil; e = e.Next() {
-		symbol := e.Value.(environment.Symbol)
-		valor, ok := symbol.Valor.(int)
-		if ok {
-			valoresSlice = append(valoresSlice, valor)
-		}
+		symbol := e.Value.(environment.Value)
+		valoresSlice = append(valoresSlice, symbol.IntValue)
 	}
 
 	matriz := ast.GetMatriz(v.Name)
 	if matriz == nil {
 		Errores := environment.Errores{
 			Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
-			Fila:        strconv.Itoa(primerval.Lin),
-			Columna:     strconv.Itoa(primerval.Col),
+			Fila:        strconv.Itoa(primerval.Val.Symbols.Lin),
+			Columna:     strconv.Itoa(primerval.Val.Symbols.Col),
 			Tipo:        "Error Semantico",
 			Ambito:      ast.ObtenerAmbito(),
 		}
@@ -99,13 +117,19 @@ func (v MatrizAsignacionList) Ejecutar(ast *environment.AST) interface{} {
 		return nil
 	}
 
-	entrada := v.Expr3.Ejecutar(ast)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	entrada := v.Expr3.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 
-	if entrada.Tipo != matriz.Symbols.Tipo {
+	if entrada.Type != matriz.Symbols.Tipo {
 		Errores := environment.Errores{
 			Descripcion: "El valor que intenta ingresar no es del mismo tipo que el de la matriz",
-			Fila:        strconv.Itoa(primerval2.Lin),
-			Columna:     strconv.Itoa(primerval2.Col),
+			Fila:        strconv.Itoa(primerval2.Val.Symbols.Lin),
+			Columna:     strconv.Itoa(primerval2.Val.Symbols.Col),
 			Tipo:        "Error Semantico",
 			Ambito:      ast.ObtenerAmbito(),
 		}
@@ -113,7 +137,28 @@ func (v MatrizAsignacionList) Ejecutar(ast *environment.AST) interface{} {
 		return nil
 	}
 
-	ast.IngresarValor(matriz, valoresSlice, entrada.Valor)
+	if matriz.Symbols.Tipo == environment.INTEGER || matriz.Symbols.Tipo == environment.FLOAT {
+		var ingresado interface{}
+		ingresado = entrada.Value
+		gen.AddBr()
+		newTemp := gen.NewTemp()
+		gen.AddAssign(newTemp, "H")
+		gen.AddSetHeap("(int)H", entrada.Value)
+		gen.AddExpression("H", "H", "1", "+")
+		gen.AddBr()
+		ingresado = newTemp
+		ast.IngresarValor(matriz, valoresSlice, ingresado)
+	} else {
+		var ingresado interface{}
+		ingresado = entrada.Value
+		gen.AddBr()
+		newTemp := gen.NewTemp()
+		gen.AddAssign(newTemp, entrada.Value)
+		gen.AddBr()
+		ingresado = newTemp
+		ast.IngresarValor(matriz, valoresSlice, ingresado)
+	}
+
+	gen.MainCodeF()
 	return nil
 }
-*/

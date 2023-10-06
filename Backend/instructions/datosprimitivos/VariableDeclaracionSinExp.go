@@ -30,6 +30,7 @@ func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator
 		TipoDato: environment.VARIABLE,
 		Posicion: ast.PosicionStack,
 		Valor:    201314439,
+		ValorInt: 0,
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,

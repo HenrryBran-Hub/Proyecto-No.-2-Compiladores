@@ -1,7 +1,11 @@
 package datoscompuestos
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"container/list"
+	"strconv"
 )
 
 type MatrizObtencionList struct {
@@ -15,35 +19,48 @@ func NewMatrizObtencionList(name string, exp1, exp2 interfaces.Expression, value
 	return MatrizObtencionList{name, exp1, exp2, values}
 }
 
-/*
-func (v MatrizObtencionList) Ejecutar(ast *environment.AST) environment.Symbol {
+func (v MatrizObtencionList) Ejecutar(ast *environment.AST, gen *generator.Generator) environment.Value {
 
-	primerval := v.Expr1.Ejecutar(ast)
-
-	if primerval.Tipo != environment.INTEGER {
-		Errores := environment.Errores{
-			Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
-			Fila:        strconv.Itoa(primerval.Lin),
-			Columna:     strconv.Itoa(primerval.Col),
-			Tipo:        "Error Semantico",
-			Ambito:      ast.ObtenerAmbito(),
-		}
-		ast.ErroresHTML(Errores)
-		return environment.Symbol{Lin: primerval.Lin, Col: primerval.Col, Tipo: environment.INTEGER, Valor: nil}
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	primerval := v.Expr1.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
 	}
 
-	primerval2 := v.Expr2.Ejecutar(ast)
-
-	if primerval2.Tipo != environment.INTEGER {
+	if primerval.Type != environment.INTEGER {
 		Errores := environment.Errores{
 			Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
-			Fila:        strconv.Itoa(primerval2.Lin),
-			Columna:     strconv.Itoa(primerval2.Col),
+			Fila:        strconv.Itoa(primerval.Val.Symbols.Lin),
+			Columna:     strconv.Itoa(primerval.Val.Symbols.Col),
 			Tipo:        "Error Semantico",
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		return environment.Symbol{Lin: primerval2.Lin, Col: primerval2.Col, Tipo: environment.INTEGER, Valor: nil}
+		result := environment.Value{}
+		return result
+	}
+
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	primerval2 := v.Expr2.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+
+	if primerval2.Type != environment.INTEGER {
+		Errores := environment.Errores{
+			Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
+			Fila:        strconv.Itoa(primerval2.Val.Symbols.Lin),
+			Columna:     strconv.Itoa(primerval2.Val.Symbols.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+		result := environment.Value{}
+		return result
 	}
 
 	listavalores := list.New()
@@ -55,54 +72,104 @@ func (v MatrizObtencionList) Ejecutar(ast *environment.AST) environment.Symbol {
 		if !ok {
 			continue
 		}
-		values := instruction.Ejecutar(ast)
+		if !ast.IsMain(ast.ObtenerAmbito()) {
+			gen.MainCodeT()
+		}
+		values := instruction.Ejecutar(ast, gen)
+		if !ast.IsMain(ast.ObtenerAmbito()) {
+			gen.MainCodeT()
+		}
 		listavalores.PushBack(values)
 	}
 
 	for e := listavalores.Front(); e != nil; e = e.Next() {
-		symbol := e.Value.(environment.Symbol)
-		if symbol.Tipo != environment.INTEGER {
+		symbol := e.Value.(environment.Value)
+		if symbol.Type != environment.INTEGER {
 			Errores := environment.Errores{
 				Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
-				Fila:        strconv.Itoa(symbol.Lin),
-				Columna:     strconv.Itoa(symbol.Col),
+				Fila:        strconv.Itoa(symbol.Val.Symbols.Lin),
+				Columna:     strconv.Itoa(symbol.Val.Symbols.Col),
 				Tipo:        "Error Semantico",
 				Ambito:      ast.ObtenerAmbito(),
 			}
 			ast.ErroresHTML(Errores)
-			return environment.Symbol{Lin: symbol.Lin, Col: symbol.Col, Tipo: environment.INTEGER, Valor: nil}
+			result := environment.Value{}
+			return result
 		}
 	}
 
 	var valoresSlice []int
-	valoresSlice = append(valoresSlice, primerval.Valor.(int))
-	valoresSlice = append(valoresSlice, primerval2.Valor.(int))
+	valoresSlice = append(valoresSlice, primerval.IntValue)
+	valoresSlice = append(valoresSlice, primerval2.IntValue)
 	for e := listavalores.Front(); e != nil; e = e.Next() {
-		symbol := e.Value.(environment.Symbol)
-		valor, ok := symbol.Valor.(int)
-		if ok {
-			valoresSlice = append(valoresSlice, valor)
-		}
+		symbol := e.Value.(environment.Value)
+		valoresSlice = append(valoresSlice, symbol.IntValue)
 	}
 
 	matriz := ast.GetMatriz(v.Name)
 	if matriz == nil {
 		Errores := environment.Errores{
 			Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
-			Fila:        strconv.Itoa(primerval.Lin),
-			Columna:     strconv.Itoa(primerval.Col),
+			Fila:        strconv.Itoa(primerval.Val.Symbols.Lin),
+			Columna:     strconv.Itoa(primerval.Val.Symbols.Col),
 			Tipo:        "Error Semantico",
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		return environment.Symbol{Lin: primerval.Lin, Col: primerval.Col, Tipo: environment.INTEGER, Valor: nil}
+		result := environment.Value{}
+		return result
 	}
 
 	valor := ast.ObtenerValor(*matriz, valoresSlice)
 	if valor != nil {
-		return environment.Symbol{Lin: primerval.Lin, Col: primerval.Col, Tipo: matriz.Symbols.Tipo, Valor: valor}
+		symbol := environment.Symbol{
+			Lin:      primerval.Val.Symbols.Lin,
+			Col:      primerval.Val.Symbols.Col,
+			Tipo:     matriz.Symbols.Tipo,
+			Scope:    matriz.Symbols.Scope,
+			TipoDato: environment.MATRIZ,
+			Posicion: matriz.Symbols.Posicion,
+		}
+		Variable := environment.Variable{
+			Name:        matriz.Name,
+			Symbols:     symbol,
+			Mutable:     false,
+			TipoSimbolo: "Variable",
+		}
+
+		if matriz.Symbols.Tipo == environment.INTEGER || matriz.Symbols.Tipo == environment.FLOAT {
+			gen.AddBr()
+			newTemp := gen.NewTemp()
+			gen.AddGetHeap(newTemp, "(int)"+valor.(string))
+			gen.AddSetStack(strconv.Itoa(matriz.Symbols.Posicion), newTemp)
+			gen.AddBr()
+			gen.MainCodeF()
+			return environment.NewValue(newTemp, false, matriz.Symbols.Tipo, false, false, false, Variable)
+		} else {
+			gen.AddBr()
+			newTemp := gen.NewTemp()
+			gen.AddAssign(newTemp, valor.(string))
+			gen.AddSetStack(strconv.Itoa(matriz.Symbols.Posicion), newTemp)
+			gen.AddBr()
+			gen.MainCodeF()
+			return environment.NewValue(newTemp, false, matriz.Symbols.Tipo, false, false, false, Variable)
+		}
 	} else {
-		return environment.Symbol{Lin: primerval.Lin, Col: primerval.Col, Tipo: matriz.Symbols.Tipo, Valor: nil}
+		symbol := environment.Symbol{
+			Lin:      primerval.Val.Symbols.Lin,
+			Col:      primerval.Val.Symbols.Col,
+			Tipo:     matriz.Symbols.Tipo,
+			Scope:    matriz.Symbols.Scope,
+			TipoDato: environment.MATRIZ,
+			Posicion: matriz.Symbols.Posicion,
+		}
+		Variable := environment.Variable{
+			Name:        matriz.Name,
+			Symbols:     symbol,
+			Mutable:     false,
+			TipoSimbolo: "Variable",
+		}
+		gen.MainCodeF()
+		return environment.NewValue("201314439", false, environment.NULL, false, false, false, Variable)
 	}
 }
-*/

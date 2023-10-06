@@ -1,6 +1,8 @@
 package datoscompuestos
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
 )
 
@@ -14,10 +16,18 @@ func NewMatrizListaExpresionList(op1 interfaces.Instruction, op2 interfaces.Inst
 	return exp
 }
 
-/*
-func (o MatrizListaExpresionList) Ejecutar(ast *environment.AST) interface{} {
-	o.Op1.Ejecutar(ast)
-	o.Op2.Ejecutar(ast)
+func (o MatrizListaExpresionList) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	o.Op1.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	o.Op2.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	gen.MainCodeF()
 	return nil
 }
-*/
