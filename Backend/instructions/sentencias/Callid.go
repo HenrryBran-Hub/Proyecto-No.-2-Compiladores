@@ -27,6 +27,7 @@ func (o Callid) Ejecutar(ast *environment.AST, gen *generator.Generator) environ
 	gen.AddComment("LLamamos la funcion Callid ")
 	if variable != nil {
 		result = environment.NewValue(fmt.Sprintf("%v", variable.Symbols.Valor), true, variable.Symbols.Tipo, false, false, false, *variable)
+		result.IntValue = variable.Symbols.ValorInt
 		return result
 	} else {
 		Errores := environment.Errores{

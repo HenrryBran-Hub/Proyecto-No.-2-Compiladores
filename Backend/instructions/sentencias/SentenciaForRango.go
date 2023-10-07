@@ -54,10 +54,11 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generat
 		Lin:      v.Lin,
 		Col:      v.Col,
 		Tipo:     environment.INTEGER,
-		Valor:    left.Value,
+		Valor:    0,
 		Scope:    ast.ObtenerAmbito(),
 		Posicion: ast.PosicionStack,
 		TipoDato: environment.VARIABLE,
+		ValorInt: 0,
 	}
 
 	Variable := environment.Variable{
@@ -87,8 +88,6 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generat
 	op2 := right
 	tlabel := gen.NewLabel()
 	flabel := gen.NewLabel()
-	tlabel2 := gen.NewLabel()
-	flabel2 := gen.NewLabel()
 	newTemp1 := gen.NewTemp()
 	newTemp2 := gen.NewTemp()
 
@@ -112,59 +111,68 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generat
 	gen.AddGoto(flabel)
 	gen.AddLabel(tlabel)
 	gen.AddLabel(looptl)
-	newTemp3 := gen.NewTemp()
-	gen.AddGetStack(newTemp3, strconv.Itoa(Variable.Symbols.Posicion))
-	gen.AddIf(newTemp3, newTemp2, "<=", tlabel2)
-	gen.AddGoto(flabel2)
-	gen.AddLabel(tlabel2)
-	for _, inst := range v.slice {
-		if inst == nil {
-			continue
-		}
-		instruction, ok := inst.(interfaces.Instruction)
-		if !ok {
-			continue
-		}
-		instruction.Ejecutar(ast, gen)
-		if !ast.IsMain(ambitonuevo) {
-			gen.MainCodeT()
-		}
-		bvari := ast.GetVariable("Break")
-		if bvari != nil {
-			retornable = 1
-			if ast.Lista_Tranferencias.Len() == 0 {
-				errorgeneral = 1
+	for i := left.IntValue; i <= right.IntValue; i++ {
+		newTemp3 := gen.NewTemp()
+		tlabel2 := gen.NewLabel()
+		flabel2 := gen.NewLabel()
+		gen.AddGetStack(newTemp3, strconv.Itoa(Variable.Symbols.Posicion))
+		gen.AddIf(newTemp3, strconv.Itoa(i), "==", tlabel2)
+		gen.AddGoto(flabel2)
+		gen.AddLabel(tlabel2)
+		Variable.Symbols.Valor = i
+		Variable.Symbols.ValorInt = i
+		ast.ActualizarVariable(&Variable)
+		for _, inst := range v.slice {
+
+			if inst == nil {
+				continue
+			}
+			instruction, ok := inst.(interfaces.Instruction)
+			if !ok {
+				continue
+			}
+			instruction.Ejecutar(ast, gen)
+			if !ast.IsMain(ambitonuevo) {
+				gen.MainCodeT()
+			}
+			bvari := ast.GetVariable("Break")
+			if bvari != nil {
+				retornable = 1
+				if ast.Lista_Tranferencias.Len() == 0 {
+					errorgeneral = 1
+				}
+			}
+			rvari := ast.GetVariable("Return")
+			if rvari != nil {
+				retornable = 2
+				if ast.Lista_Tranferencias.Len() == 0 {
+					errorgeneral = 1
+				}
+			}
+			revari := ast.GetVariable("ReturnExp")
+			if revari != nil {
+				retornable = 3
+				reexp = revari.Symbols
+				if ast.Lista_Tranferencias.Len() == 0 {
+					errorgeneral = 1
+				}
+			}
+			cvari := ast.GetVariable("Continue")
+			if cvari != nil {
+				if ast.Lista_Tranferencias.Len() == 0 {
+					errorgeneral = 1
+				}
 			}
 		}
-		rvari := ast.GetVariable("Return")
-		if rvari != nil {
-			retornable = 2
-			if ast.Lista_Tranferencias.Len() == 0 {
-				errorgeneral = 1
-			}
-		}
-		revari := ast.GetVariable("ReturnExp")
-		if revari != nil {
-			retornable = 3
-			reexp = revari.Symbols
-			if ast.Lista_Tranferencias.Len() == 0 {
-				errorgeneral = 1
-			}
-		}
-		cvari := ast.GetVariable("Continue")
-		if cvari != nil {
-			if ast.Lista_Tranferencias.Len() == 0 {
-				errorgeneral = 1
-			}
-		}
+		newTemp4 := gen.NewTemp()
+		gen.AddGetStack(newTemp4, strconv.Itoa(Variable.Symbols.Posicion))
+		newTemp5 := gen.NewTemp()
+		gen.AddExpression(newTemp5, newTemp4, "1", "+")
+		gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp5)
+		gen.AddGoto(looptl)
+		gen.AddLabel(flabel2)
 	}
-	newTemp4 := gen.NewTemp()
-	gen.AddGetStack(newTemp4, strconv.Itoa(Variable.Symbols.Posicion))
-	newTemp5 := gen.NewTemp()
-	gen.AddExpression(newTemp5, newTemp4, "1", "+")
-	gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp5)
-	gen.AddGoto(looptl)
-	gen.AddLabel(flabel2)
+
 	gen.AddGoto(exitla)
 	gen.AddLabel(flabel)
 	gen.AddPrintf("c", "(char)32")  // Agrega un espacio
