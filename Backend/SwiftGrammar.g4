@@ -208,9 +208,9 @@ expr returns [interfaces.Expression e]
 | vectorvacio { $e = $vectorvacio.veemct}
 | vectorcount { $e = $vectorcount.vecnct}
 | vectoraccess { $e = $vectoraccess.vepposct}
-// | intembebida { $e = $intembebida.intemb}
-// | floatembebida { $e = $floatembebida.floemb}
-// | stringembebida { $e = $stringembebida.stremb}
+| intembebida { $e = $intembebida.intemb}
+| floatembebida { $e = $floatembebida.floemb}
+| stringembebida { $e = $stringembebida.stremb}
 // | funcionllamadacontrolConRetorno { $e = $funcionllamadacontrolConRetorno.flctlret}
 // | llamadastruct { $e = $llamadastruct.llmstru}
 // | llamadafuncionstructcontrolret { $e = $llamadafuncionstructcontrolret.llmstrufunret}
@@ -670,11 +670,11 @@ listamatrizaddsub returns [interfaces.Expression lmas]
 printstmt returns [interfaces.Instruction prnt]
 : PRINT PARIZQ listaexpresions PARDER { $prnt = funciones.NewPrint($PRINT.line,$PRINT.pos,$listaexpresions.blkparf)};
 
-// intembebida returns [interfaces.Expression intemb]
-// : INT PARIZQ expr PARDER { $intemb = instructions.NewFuncionIntEmbebida($expr.e)};
+intembebida returns [interfaces.Expression intemb]
+: INT PARIZQ expr PARDER { $intemb = funciones.NewFuncionIntEmbebida($expr.e)};
 
-// floatembebida returns [interfaces.Expression floemb]
-// : FLOAT PARIZQ expr PARDER { $floemb = instructions.NewFuncionFloatEmbebida($expr.e)};
+floatembebida returns [interfaces.Expression floemb]
+: FLOAT PARIZQ expr PARDER { $floemb = funciones.NewFuncionFloatEmbebida($expr.e)};
 
-// stringembebida returns [interfaces.Expression stremb]
-// : STRING PARIZQ expr PARDER { $stremb = instructions.NewFuncionStringEmbebida($expr.e)};
+stringembebida returns [interfaces.Expression stremb]
+: STRING PARIZQ expr PARDER { $stremb = funciones.NewFuncionStringEmbebida($expr.e)};

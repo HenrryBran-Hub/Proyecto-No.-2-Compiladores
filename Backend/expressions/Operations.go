@@ -40,8 +40,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 	switch o.Operador {
 	case "+":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -68,6 +77,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "+")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				newTemp1 := gen.NewTemp()
@@ -92,6 +102,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "+")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.STRING {
 				//llamar a generar concatstring
@@ -112,6 +123,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression("P", "P", envSize, "-")
 				gen.AddBr()
 				result = environment.NewValue(tmp2, true, dominante, false, false, false, environment.Variable{})
+				gen.MainCodeF()
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
@@ -128,8 +140,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "-":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -156,6 +177,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "-")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue - op2.IntValue
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				newTemp1 := gen.NewTemp()
@@ -180,6 +202,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "-")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue - op2.IntValue
+				gen.MainCodeF()
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)

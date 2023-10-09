@@ -23,6 +23,9 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	symbol := environment.Symbol{
 		Lin:      v.Lin,
 		Col:      v.Col,

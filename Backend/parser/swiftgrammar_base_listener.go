@@ -253,3 +253,21 @@ func (s *BaseSwiftGrammarListener) EnterPrintstmt(ctx *PrintstmtContext) {}
 
 // ExitPrintstmt is called when production printstmt is exited.
 func (s *BaseSwiftGrammarListener) ExitPrintstmt(ctx *PrintstmtContext) {}
+
+// EnterIntembebida is called when production intembebida is entered.
+func (s *BaseSwiftGrammarListener) EnterIntembebida(ctx *IntembebidaContext) {}
+
+// ExitIntembebida is called when production intembebida is exited.
+func (s *BaseSwiftGrammarListener) ExitIntembebida(ctx *IntembebidaContext) {}
+
+// EnterFloatembebida is called when production floatembebida is entered.
+func (s *BaseSwiftGrammarListener) EnterFloatembebida(ctx *FloatembebidaContext) {}
+
+// ExitFloatembebida is called when production floatembebida is exited.
+func (s *BaseSwiftGrammarListener) ExitFloatembebida(ctx *FloatembebidaContext) {}
+
+// EnterStringembebida is called when production stringembebida is entered.
+func (s *BaseSwiftGrammarListener) EnterStringembebida(ctx *StringembebidaContext) {}
+
+// ExitStringembebida is called when production stringembebida is exited.
+func (s *BaseSwiftGrammarListener) ExitStringembebida(ctx *StringembebidaContext) {}

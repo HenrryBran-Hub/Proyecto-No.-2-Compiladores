@@ -124,6 +124,15 @@ type SwiftGrammarListener interface {
 	// EnterPrintstmt is called when entering the printstmt production.
 	EnterPrintstmt(c *PrintstmtContext)
 
+	// EnterIntembebida is called when entering the intembebida production.
+	EnterIntembebida(c *IntembebidaContext)
+
+	// EnterFloatembebida is called when entering the floatembebida production.
+	EnterFloatembebida(c *FloatembebidaContext)
+
+	// EnterStringembebida is called when entering the stringembebida production.
+	EnterStringembebida(c *StringembebidaContext)
+
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
 
@@ -240,4 +249,13 @@ type SwiftGrammarListener interface {
 
 	// ExitPrintstmt is called when exiting the printstmt production.
 	ExitPrintstmt(c *PrintstmtContext)
+
+	// ExitIntembebida is called when exiting the intembebida production.
+	ExitIntembebida(c *IntembebidaContext)
+
+	// ExitFloatembebida is called when exiting the floatembebida production.
+	ExitFloatembebida(c *FloatembebidaContext)
+
+	// ExitStringembebida is called when exiting the stringembebida production.
+	ExitStringembebida(c *StringembebidaContext)
 }

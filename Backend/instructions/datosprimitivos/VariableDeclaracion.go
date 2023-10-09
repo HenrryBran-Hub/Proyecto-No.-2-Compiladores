@@ -24,6 +24,9 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gener
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	symbol := environment.Symbol{
 		Lin:      v.Lin,
 		Col:      v.Col,
