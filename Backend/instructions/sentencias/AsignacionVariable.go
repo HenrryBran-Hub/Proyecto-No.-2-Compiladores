@@ -25,6 +25,9 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, gen *generator.Genera
 	}
 
 	value := v.Value.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 
 	Variable := ast.GetVariable(v.Name)
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Type {
@@ -47,6 +50,9 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, gen *generator.Genera
 			gen.AddBr()
 			Variable.Symbols.Valor = value.Value
 		}
+		Variable.Symbols.ValorInt = value.IntValue
+		Variable.Symbols.ValorFloat = value.FloatValue
+		Variable.Symbols.ValorString = value.StringValue
 		ast.ActualizarVariable(Variable)
 		gen.MainCodeF()
 	}

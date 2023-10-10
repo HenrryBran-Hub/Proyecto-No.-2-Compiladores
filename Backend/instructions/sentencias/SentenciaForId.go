@@ -101,6 +101,9 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -268,6 +271,9 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -366,8 +372,6 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		return nil
 	}
 
-	gen.MainCodeF()
-
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
@@ -381,6 +385,6 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
 	ast.Lista_For_Rango.Remove(ast.Lista_For_Rango.Back())
-
+	gen.MainCodeF()
 	return nil
 }

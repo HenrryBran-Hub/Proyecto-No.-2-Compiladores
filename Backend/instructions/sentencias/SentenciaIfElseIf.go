@@ -20,10 +20,13 @@ func NewSentenciaIfElseIf(lin int, col int, expresion interfaces.Expression, Ifo
 }
 
 func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	condicion := v.Expresion.Ejecutar(ast, gen)
 	ambito := ast.ObtenerAmbito()
 	ambitonuevo := "If-If-Else-Else" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
+	condicion := v.Expresion.Ejecutar(ast, gen)
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
@@ -47,6 +50,9 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generat
 				instruction, ok := inst.(interfaces.Instruction)
 				if !ok {
 					continue
+				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
 				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
@@ -84,6 +90,9 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generat
 
 			gen.AddGoto(exitla)
 			gen.AddLabel(fet)
+			if !ast.IsMain(ambitonuevo) {
+				gen.MainCodeT()
+			}
 			v.Elseop.Ejecutar(ast, gen)
 			if !ast.IsMain(ambitonuevo) {
 				gen.MainCodeT()
@@ -130,6 +139,9 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generat
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -167,6 +179,9 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generat
 
 			gen.AddGoto(exitl)
 			gen.AddLabel(condicion.Val.FEti)
+			if !ast.IsMain(ambitonuevo) {
+				gen.MainCodeT()
+			}
 			v.Elseop.Ejecutar(ast, gen)
 			if !ast.IsMain(ambitonuevo) {
 				gen.MainCodeT()
@@ -214,6 +229,9 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generat
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -249,6 +267,9 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generat
 			}
 			gen.AddGoto(exitl)
 			gen.AddLabel(condicion.Val.FEti)
+			if !ast.IsMain(ambitonuevo) {
+				gen.MainCodeT()
+			}
 			v.Elseop.Ejecutar(ast, gen)
 			if !ast.IsMain(ambitonuevo) {
 				gen.MainCodeT()
@@ -343,7 +364,7 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generat
 		}
 		ast.ErroresHTML(Errores)
 	}
-	gen.MainCodeF()
+
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
@@ -354,5 +375,6 @@ func (v SentenciaIfElseIf) Ejecutar(ast *environment.AST, gen *generator.Generat
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.MainCodeF()
 	return nil
 }

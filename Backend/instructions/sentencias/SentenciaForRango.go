@@ -131,6 +131,9 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generat
 			if !ok {
 				continue
 			}
+			if !ast.IsMain(ambitonuevo) {
+				gen.MainCodeT()
+			}
 			instruction.Ejecutar(ast, gen)
 			if !ast.IsMain(ambitonuevo) {
 				gen.MainCodeT()
@@ -240,8 +243,6 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generat
 		ast.ErroresHTML(Errores)
 	}
 
-	gen.MainCodeF()
-
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
@@ -255,5 +256,6 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generat
 
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
 	ast.Lista_For_Rango.Remove(ast.Lista_For_Rango.Back())
+	gen.MainCodeF()
 	return nil
 }

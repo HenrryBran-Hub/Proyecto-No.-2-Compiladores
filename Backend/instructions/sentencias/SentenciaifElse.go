@@ -20,10 +20,13 @@ func NewSentenciaIfElse(lin int, col int, expresion interfaces.Expression, Ifop 
 }
 
 func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	condicion := v.Expresion.Ejecutar(ast, gen)
 	ambito := ast.ObtenerAmbito()
 	ambitonuevo := "If-Else" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
+	condicion := v.Expresion.Ejecutar(ast, gen)
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
@@ -47,6 +50,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				instruction, ok := inst.(interfaces.Instruction)
 				if !ok {
 					continue
+				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
 				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
@@ -91,6 +97,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				instruction, ok := inst.(interfaces.Instruction)
 				if !ok {
 					continue
+				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
 				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
@@ -141,6 +150,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -185,6 +197,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				instruction, ok := inst.(interfaces.Instruction)
 				if !ok {
 					continue
+				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
 				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
@@ -234,6 +249,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -277,6 +295,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				instruction, ok := inst.(interfaces.Instruction)
 				if !ok {
 					continue
+				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
 				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
@@ -372,7 +393,7 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 		}
 		ast.ErroresHTML(Errores)
 	}
-	gen.MainCodeF()
+
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
@@ -383,5 +404,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.MainCodeF()
 	return nil
 }

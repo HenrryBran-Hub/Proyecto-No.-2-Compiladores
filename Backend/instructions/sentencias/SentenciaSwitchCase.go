@@ -25,6 +25,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
 	expresion2 := v.Exp1.Ejecutar(ast, gen)
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
@@ -73,6 +76,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					instruction, ok := inst.(interfaces.Instruction)
 					if !ok {
 						continue
+					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
 					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
@@ -146,6 +152,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					if !ok {
 						continue
 					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
+					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
 						gen.MainCodeT()
@@ -217,6 +226,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					instruction, ok := inst.(interfaces.Instruction)
 					if !ok {
 						continue
+					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
 					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
@@ -290,6 +302,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					if !ok {
 						continue
 					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
+					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
 						gen.MainCodeT()
@@ -361,6 +376,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					instruction, ok := inst.(interfaces.Instruction)
 					if !ok {
 						continue
+					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
 					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
@@ -458,8 +476,6 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 		ast.ErroresHTML(Errores)
 	}
 
-	gen.MainCodeF()
-
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
@@ -470,5 +486,6 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.MainCodeF()
 	return nil
 }

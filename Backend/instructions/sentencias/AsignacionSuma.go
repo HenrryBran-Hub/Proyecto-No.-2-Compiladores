@@ -24,6 +24,9 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	Variable := ast.GetVariable(v.Name)
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Type {
 		//valida el tipo

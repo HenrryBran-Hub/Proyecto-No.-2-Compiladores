@@ -28,6 +28,9 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
 	valorswitch := v.Expresion.Ejecutar(ast, gen)
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
@@ -44,6 +47,9 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 
 	for _, inst := range v.Case {
 		switchCase, _ := inst.(SentenciaSwitchCase)
+		if !ast.IsMain(ambitonuevo) {
+			gen.MainCodeT()
+		}
 		switchCase.Ejecutar(ast, gen)
 		if !ast.IsMain(ambitonuevo) {
 			gen.MainCodeT()
@@ -77,7 +83,9 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 		if !ok {
 			continue
 		}
-
+		if !ast.IsMain(ambitonuevo) {
+			gen.MainCodeT()
+		}
 		instruction.Ejecutar(ast, gen)
 		if !ast.IsMain(ambitonuevo) {
 			gen.MainCodeT()
@@ -148,6 +156,6 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 	ast.Lista_Switch_Case.Remove(ast.Lista_Switch_Case.Back())
 	ast.Lista_Switch_Case_Eti.Remove(ast.Lista_Switch_Case_Eti.Back())
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
-
+	gen.MainCodeF()
 	return nil
 }

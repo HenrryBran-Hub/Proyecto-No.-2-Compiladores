@@ -32,6 +32,8 @@ func (o FuncionIntEmbebida) Ejecutar(ast *environment.AST, gen *generator.Genera
 		op.Val.Symbols.Posicion = ast.PosicionStack
 		result := environment.NewValue(newtmp, true, op.Type, false, false, false, op.Val)
 		result.IntValue = op.IntValue
+		result.FloatValue = op.FloatValue
+		result.StringValue = op.StringValue
 		gen.MainCodeF()
 		return result
 	} else if op.Type == environment.FLOAT {
@@ -44,6 +46,9 @@ func (o FuncionIntEmbebida) Ejecutar(ast *environment.AST, gen *generator.Genera
 		op.Val.Symbols.Posicion = ast.PosicionStack
 		result := environment.NewValue(newtmp, true, environment.INTEGER, false, false, false, op.Val)
 		result.IntValue = intValue
+		result.IntValue = op.IntValue
+		result.FloatValue = op.FloatValue
+		result.StringValue = op.StringValue
 		gen.MainCodeF()
 		return result
 	} else if op.Type == environment.STRING {
@@ -105,6 +110,9 @@ func (o FuncionIntEmbebida) Ejecutar(ast *environment.AST, gen *generator.Genera
 		op.Val.Symbols.Posicion = ast.PosicionStack
 		op.Val.Symbols.Tipo = environment.INTEGER
 		result := environment.NewValue(tmp5, true, environment.INTEGER, false, false, false, op.Val)
+		result.IntValue = op.IntValue
+		result.FloatValue = op.FloatValue
+		result.StringValue = op.StringValue
 		gen.MainCodeF()
 		return result
 	} else {

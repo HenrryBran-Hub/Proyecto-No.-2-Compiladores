@@ -49,18 +49,12 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 		result := e.Value.(environment.Value)
 		if result.Type == environment.INTEGER {
 			newTemp := gen.NewTemp()
-			newTemp2 := gen.NewTemp()
-			gen.AddAssign(newTemp2, result.Value)
-			gen.AddSetStack(strconv.Itoa(result.Val.Symbols.Posicion), newTemp2)
 			gen.AddGetStack(newTemp, strconv.Itoa(result.Val.Symbols.Posicion))
 			gen.AddPrintf("d", "(int)"+fmt.Sprintf("%v", newTemp))
 			gen.AddPrintf("c", "10")
 			gen.AddBr()
 		} else if result.Type == environment.FLOAT {
 			newTemp := gen.NewTemp()
-			newTemp2 := gen.NewTemp()
-			gen.AddAssign(newTemp2, result.Value)
-			gen.AddSetStack(strconv.Itoa(result.Val.Symbols.Posicion), newTemp2)
 			gen.AddGetStack(newTemp, strconv.Itoa(result.Val.Symbols.Posicion))
 			gen.AddPrintf("g", fmt.Sprintf("%v", newTemp))
 			gen.AddPrintf("c", "10")
@@ -134,6 +128,12 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 			gen.AddGetStack(newTemp2, "(int)P")    //obtencion retorno
 			gen.AddExpression("P", "P", size, "-") //regreso del entorno
 			gen.AddPrintf("c", "10")               //salto de linea
+			gen.AddBr()
+		} else {
+			gen.AddPrintf("c", "(char)110") // 'n'
+			gen.AddPrintf("c", "(char)105") // 'i'
+			gen.AddPrintf("c", "(char)108") // 'l'
+			gen.AddPrintf("c", "10")        //salto de linea
 			gen.AddBr()
 		}
 	}

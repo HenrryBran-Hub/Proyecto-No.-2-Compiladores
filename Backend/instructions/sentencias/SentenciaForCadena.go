@@ -106,6 +106,9 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Genera
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -201,11 +204,8 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Genera
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		gen.MainCodeF()
 		return nil
 	}
-
-	gen.MainCodeF()
 
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
@@ -217,9 +217,8 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Genera
 		}
 		ast.ErroresHTML(Errores)
 	}
-
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
 	ast.Lista_For_Rango.Remove(ast.Lista_For_Rango.Back())
-
+	gen.MainCodeF()
 	return nil
 }

@@ -28,14 +28,16 @@ func (v VariableDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gener
 		gen.MainCodeT()
 	}
 	symbol := environment.Symbol{
-		Lin:      v.Lin,
-		Col:      v.Col,
-		Tipo:     v.Type,
-		Scope:    ast.ObtenerAmbito(),
-		TipoDato: environment.VARIABLE,
-		Posicion: ast.PosicionStack,
-		Valor:    value.Value,
-		ValorInt: value.IntValue,
+		Lin:         v.Lin,
+		Col:         v.Col,
+		Tipo:        v.Type,
+		Scope:       ast.ObtenerAmbito(),
+		TipoDato:    environment.VARIABLE,
+		Posicion:    ast.PosicionStack,
+		Valor:       value.Value,
+		ValorInt:    value.IntValue,
+		ValorFloat:  value.FloatValue,
+		ValorString: value.StringValue,
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,

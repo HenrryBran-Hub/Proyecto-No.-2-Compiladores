@@ -61,6 +61,9 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -94,6 +97,9 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 				instruction, ok := inst.(interfaces.Instruction)
 				if !ok {
 					continue
+				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
 				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
@@ -129,6 +135,9 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 				instruction, ok := inst.(interfaces.Instruction)
 				if !ok {
 					continue
+				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
 				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
@@ -214,5 +223,6 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 	}
 
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
+	gen.MainCodeF()
 	return nil
 }

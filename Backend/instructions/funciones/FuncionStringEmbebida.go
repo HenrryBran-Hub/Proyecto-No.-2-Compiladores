@@ -28,10 +28,9 @@ func (o FuncionStringEmbebida) Ejecutar(ast *environment.AST, gen *generator.Gen
 	if op.Type == environment.INTEGER {
 
 		gen.AddComment("Int to String ")
-		newTemp := gen.NewTemp()              //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
-		gen.AddAssign(newTemp, "H")           //Creamos un nuevo puntero Head para que en este vayan los valores
-		myString := strconv.Itoa(op.IntValue) //Pasamos el valor a un string
-		byteArray := []byte(myString)         //hacemos un vector del string anterior
+		newTemp := gen.NewTemp()            //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+		gen.AddAssign(newTemp, "H")         //Creamos un nuevo puntero Head para que en este vayan los valores
+		byteArray := []byte(op.StringValue) //hacemos un vector del string anterior
 		for _, asc := range byteArray {
 			gen.AddSetHeap("(int)H", strconv.Itoa(int(asc))) //agregamos el ascii en el head Ej. heap[(int)H] = 111;
 			//suma heap pointer
@@ -42,14 +41,16 @@ func (o FuncionStringEmbebida) Ejecutar(ast *environment.AST, gen *generator.Gen
 		gen.AddBr()
 
 		result := environment.NewValue(newTemp, true, environment.STRING, false, false, false, op.Val)
+		result.IntValue = op.IntValue
+		result.FloatValue = op.FloatValue
+		result.StringValue = op.StringValue
 		return result
 
 	} else if op.Type == environment.FLOAT {
 		gen.AddComment("Float to String ")
-		newTemp := gen.NewTemp()              //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
-		gen.AddAssign(newTemp, "H")           //Creamos un nuevo puntero Head para que en este vayan los valores
-		myString := strconv.Itoa(op.IntValue) //Pasamos el valor a un string
-		byteArray := []byte(myString)         //hacemos un vector del string anterior
+		newTemp := gen.NewTemp()            //Cremos un nuevo temporal en esta va a ir el Head osea la asignacion de temp = head
+		gen.AddAssign(newTemp, "H")         //Creamos un nuevo puntero Head para que en este vayan los valores
+		byteArray := []byte(op.StringValue) //hacemos un vector del string anterior
 		for _, asc := range byteArray {
 			gen.AddSetHeap("(int)H", strconv.Itoa(int(asc))) //agregamos el ascii en el head Ej. heap[(int)H] = 111;
 			//suma heap pointer
@@ -60,9 +61,15 @@ func (o FuncionStringEmbebida) Ejecutar(ast *environment.AST, gen *generator.Gen
 		gen.AddBr()
 
 		result := environment.NewValue(newTemp, true, environment.STRING, false, false, false, op.Val)
+		result.IntValue = op.IntValue
+		result.FloatValue = op.FloatValue
+		result.StringValue = op.StringValue
 		return result
 	} else if op.Type == environment.STRING {
 		result := environment.NewValue(op.Value, true, environment.STRING, false, false, false, op.Val)
+		result.IntValue = op.IntValue
+		result.FloatValue = op.FloatValue
+		result.StringValue = op.StringValue
 		return result
 	} else if op.Type == environment.BOOLEAN {
 
@@ -135,6 +142,9 @@ func (o FuncionStringEmbebida) Ejecutar(ast *environment.AST, gen *generator.Gen
 		return result
 	} else if op.Type == environment.CHARACTER {
 		result := environment.NewValue(op.Value, true, environment.STRING, false, false, false, op.Val)
+		result.IntValue = op.IntValue
+		result.FloatValue = op.FloatValue
+		result.StringValue = op.StringValue
 		return result
 	} else {
 		result := environment.NewValue("201314439", true, environment.NULL, false, false, false, environment.Variable{})
