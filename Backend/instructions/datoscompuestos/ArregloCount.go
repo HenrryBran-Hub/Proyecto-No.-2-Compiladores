@@ -58,5 +58,6 @@ func (v ArregloCount) Ejecutar(ast *environment.AST, gen *generator.Generator) e
 	gen.AddBr()
 	result := environment.NewValue(newTemp, false, environment.INTEGER, false, false, false, Variable)
 	result.IntValue = VCount.Elements.Len()
+	gen.MainCodeF()
 	return result
 }

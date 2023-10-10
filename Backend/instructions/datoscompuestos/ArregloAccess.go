@@ -119,5 +119,6 @@ func (v ArregloAccess) Ejecutar(ast *environment.AST, gen *generator.Generator) 
 	gen.AddBr()
 	result := environment.NewValue(newTemp, false, VAccess.Symbols.Tipo, false, false, false, Variable)
 	result.IntValue = VAccess.Elements.Len()
+	gen.MainCodeF()
 	return result
 }
