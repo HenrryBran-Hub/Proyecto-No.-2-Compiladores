@@ -127,6 +127,9 @@ type SwiftGrammarListener interface {
 	// EnterFuncionllamadacontrol is called when entering the funcionllamadacontrol production.
 	EnterFuncionllamadacontrol(c *FuncionllamadacontrolContext)
 
+	// EnterFuncionllamadacontrolConRetorno is called when entering the funcionllamadacontrolConRetorno production.
+	EnterFuncionllamadacontrolConRetorno(c *FuncionllamadacontrolConRetornoContext)
+
 	// EnterPrintstmt is called when entering the printstmt production.
 	EnterPrintstmt(c *PrintstmtContext)
 
@@ -258,6 +261,9 @@ type SwiftGrammarListener interface {
 
 	// ExitFuncionllamadacontrol is called when exiting the funcionllamadacontrol production.
 	ExitFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
+	// ExitFuncionllamadacontrolConRetorno is called when exiting the funcionllamadacontrolConRetorno production.
+	ExitFuncionllamadacontrolConRetorno(c *FuncionllamadacontrolConRetornoContext)
 
 	// ExitPrintstmt is called when exiting the printstmt production.
 	ExitPrintstmt(c *PrintstmtContext)

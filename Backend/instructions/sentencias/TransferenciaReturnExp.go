@@ -26,14 +26,17 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		gen.MainCodeT()
 	}
 	symbol := environment.Symbol{
-		Lin:   v.Lin,
-		Col:   v.Col,
-		Tipo:  value.Type,
-		Valor: value.Value,
-		Scope: ast.ObtenerAmbito(),
+		Lin:         v.Lin,
+		Col:         v.Col,
+		Tipo:        value.Type,
+		Valor:       value.Value,
+		ValorInt:    value.Val.Symbols.ValorInt,
+		ValorFloat:  value.Val.Symbols.ValorFloat,
+		ValorString: value.Val.Symbols.ValorString,
+		Scope:       ast.ObtenerAmbito(),
 	}
 	Variable := environment.Variable{
-		Name:        "ReturnExp",
+		Name:        "ReturnExp" + strconv.Itoa(v.Lin),
 		Symbols:     symbol,
 		Mutable:     false,
 		TipoSimbolo: "Sentencia de Transferencia",
@@ -50,8 +53,6 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		gen.AddBr()
 	}
 
-	etiquetas := ast.Lista_Tranferencias.Back().Value.(environment.SentenciasdeTransferencia)
-	gen.AddGoto(etiquetas.EFalse)
 	ast.GuardarVariable(Variable)
 	gen.MainCodeF()
 	return nil

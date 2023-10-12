@@ -289,10 +289,27 @@ func (a *AST) GuardarVariable(variable Variable) {
 	}
 	a.Lista_Variables.PushBack(variable)
 	a.PosicionStack = a.PosicionStack + 1
-	if variable.Name == "Break" || variable.Name == "Continue" || variable.Name == "Return" || variable.Name == "ReturnExp" {
+	if a.IsBreak(variable.Name) || a.IsContinue(variable.Name) || a.IsReturn(variable.Name) || a.IsReturnexp(variable.Name) {
 		return
 	}
 	a.Lista_VariablesHTML.PushBack(variable)
+}
+
+func (a *AST) IsBreak(cadena string) bool {
+	cadena = strings.ToLower(cadena)
+	return strings.Contains(cadena, "break")
+}
+func (a *AST) IsContinue(cadena string) bool {
+	cadena = strings.ToLower(cadena)
+	return strings.Contains(cadena, "continue")
+}
+func (a *AST) IsReturn(cadena string) bool {
+	cadena = strings.ToLower(cadena)
+	return strings.Contains(cadena, "return")
+}
+func (a *AST) IsReturnexp(cadena string) bool {
+	cadena = strings.ToLower(cadena)
+	return strings.Contains(cadena, "returnexp")
 }
 
 func (a *AST) ObtenerAmbito() string {

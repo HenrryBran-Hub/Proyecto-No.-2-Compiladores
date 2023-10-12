@@ -196,11 +196,14 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		}
 		if retornable == 3 {
 			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  reexp.Tipo,
-				Valor: reexp.Valor,
-				Scope: ast.ObtenerAmbito(),
+				Lin:         v.Lin,
+				Col:         v.Col,
+				Tipo:        reexp.Tipo,
+				Valor:       reexp.Valor,
+				ValorInt:    reexp.ValorInt,
+				ValorFloat:  reexp.ValorFloat,
+				ValorString: reexp.ValorString,
+				Scope:       ast.ObtenerAmbito(),
 			}
 			Variable := environment.Variable{
 				Name:        "ReturnExp",

@@ -8,6 +8,7 @@
     import "Backend/instructions/funciones"
     import "Backend/instructions/sentencias"
     import "strings"
+   
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -501,6 +502,18 @@ public class SwiftGrammarBaseListener implements SwiftGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitListaparametro(SwiftGrammarParser.ListaparametroContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFuncionllamadacontrol(SwiftGrammarParser.FuncionllamadacontrolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFuncionllamadacontrol(SwiftGrammarParser.FuncionllamadacontrolContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

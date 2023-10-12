@@ -8,6 +8,7 @@
     import "Backend/instructions/funciones"
     import "Backend/instructions/sentencias"
     import "strings"
+   
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -416,6 +417,16 @@ public interface SwiftGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitListaparametro(SwiftGrammarParser.ListaparametroContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SwiftGrammarParser#funcionllamadacontrol}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncionllamadacontrol(SwiftGrammarParser.FuncionllamadacontrolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SwiftGrammarParser#funcionllamadacontrol}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncionllamadacontrol(SwiftGrammarParser.FuncionllamadacontrolContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SwiftGrammarParser#printstmt}.
 	 * @param ctx the parse tree

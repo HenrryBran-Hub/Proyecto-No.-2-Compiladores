@@ -262,6 +262,14 @@ func (s *BaseSwiftGrammarListener) EnterFuncionllamadacontrol(ctx *Funcionllamad
 // ExitFuncionllamadacontrol is called when production funcionllamadacontrol is exited.
 func (s *BaseSwiftGrammarListener) ExitFuncionllamadacontrol(ctx *FuncionllamadacontrolContext) {}
 
+// EnterFuncionllamadacontrolConRetorno is called when production funcionllamadacontrolConRetorno is entered.
+func (s *BaseSwiftGrammarListener) EnterFuncionllamadacontrolConRetorno(ctx *FuncionllamadacontrolConRetornoContext) {
+}
+
+// ExitFuncionllamadacontrolConRetorno is called when production funcionllamadacontrolConRetorno is exited.
+func (s *BaseSwiftGrammarListener) ExitFuncionllamadacontrolConRetorno(ctx *FuncionllamadacontrolConRetornoContext) {
+}
+
 // EnterPrintstmt is called when production printstmt is entered.
 func (s *BaseSwiftGrammarListener) EnterPrintstmt(ctx *PrintstmtContext) {}
 
