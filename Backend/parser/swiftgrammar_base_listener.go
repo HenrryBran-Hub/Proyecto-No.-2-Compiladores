@@ -248,6 +248,20 @@ func (s *BaseSwiftGrammarListener) EnterListamatrizaddsub(ctx *Listamatrizaddsub
 // ExitListamatrizaddsub is called when production listamatrizaddsub is exited.
 func (s *BaseSwiftGrammarListener) ExitListamatrizaddsub(ctx *ListamatrizaddsubContext) {}
 
+// EnterFunciondeclaracioncontrol is called when production funciondeclaracioncontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterFunciondeclaracioncontrol(ctx *FunciondeclaracioncontrolContext) {
+}
+
+// ExitFunciondeclaracioncontrol is called when production funciondeclaracioncontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitFunciondeclaracioncontrol(ctx *FunciondeclaracioncontrolContext) {
+}
+
+// EnterFuncionllamadacontrol is called when production funcionllamadacontrol is entered.
+func (s *BaseSwiftGrammarListener) EnterFuncionllamadacontrol(ctx *FuncionllamadacontrolContext) {}
+
+// ExitFuncionllamadacontrol is called when production funcionllamadacontrol is exited.
+func (s *BaseSwiftGrammarListener) ExitFuncionllamadacontrol(ctx *FuncionllamadacontrolContext) {}
+
 // EnterPrintstmt is called when production printstmt is entered.
 func (s *BaseSwiftGrammarListener) EnterPrintstmt(ctx *PrintstmtContext) {}
 

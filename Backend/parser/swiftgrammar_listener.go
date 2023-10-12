@@ -121,6 +121,12 @@ type SwiftGrammarListener interface {
 	// EnterListamatrizaddsub is called when entering the listamatrizaddsub production.
 	EnterListamatrizaddsub(c *ListamatrizaddsubContext)
 
+	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
+	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
+
+	// EnterFuncionllamadacontrol is called when entering the funcionllamadacontrol production.
+	EnterFuncionllamadacontrol(c *FuncionllamadacontrolContext)
+
 	// EnterPrintstmt is called when entering the printstmt production.
 	EnterPrintstmt(c *PrintstmtContext)
 
@@ -246,6 +252,12 @@ type SwiftGrammarListener interface {
 
 	// ExitListamatrizaddsub is called when exiting the listamatrizaddsub production.
 	ExitListamatrizaddsub(c *ListamatrizaddsubContext)
+
+	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
+	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
+
+	// ExitFuncionllamadacontrol is called when exiting the funcionllamadacontrol production.
+	ExitFuncionllamadacontrol(c *FuncionllamadacontrolContext)
 
 	// ExitPrintstmt is called when exiting the printstmt production.
 	ExitPrintstmt(c *PrintstmtContext)
