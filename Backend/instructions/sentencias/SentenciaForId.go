@@ -39,7 +39,7 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 				Tipo:     environment.CHARACTER,
 				Valor:    newTemp,
 				Scope:    ast.ObtenerAmbito(),
-				Posicion: variables.Symbols.Posicion,
+				Posicion: ast.PosicionStack,
 			}
 			Variable := environment.Variable{
 				Name:        v.Id,
@@ -288,7 +288,9 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			ast.ErroresHTML(Errores)
 		}
 
-	} else {
+	}
+
+	if variables == nil && arreglos == nil {
 		Errores := environment.Errores{
 			Descripcion: "El id ingresado no a una variable tipo string",
 			Fila:        strconv.Itoa(v.Lin),

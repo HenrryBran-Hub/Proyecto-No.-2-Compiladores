@@ -171,12 +171,24 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST, gen *generator.Generat
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+
+	gen.AddComment("Parametros declaracion")
+	for e := listavariablesinterna.Front(); e != nil; e = e.Next() {
+		vari := e.Value.(environment.Variable)
+		gen.AddSetStack(strconv.Itoa(vari.Symbols.Posicion), vari.Symbols.Valor.(string))
+		gen.AddBr()
+	}
+
+	gen.AddComment("Llamada de funcion")
 	newtem1 := gen.NewTemp()
-	gen.AddExpression(newtem1, "P", strconv.Itoa(ast.PosicionStack), "+")
+	posicion := ast.PosicionStack - listavariablesinterna.Len()
+	gen.AddExpression(newtem1, "P", strconv.Itoa(posicion), "+")
 	for e := listavariablesinterna.Front(); e != nil; e = e.Next() {
 		vari := e.Value.(environment.Variable)
 		gen.AddExpression(newtem1, newtem1, "1", "+")
-		gen.AddSetStack("(int)"+newtem1, vari.Symbols.Valor.(string))
+		newtem2 := gen.NewTemp()
+		gen.AddGetStack(newtem2, strconv.Itoa(vari.Symbols.Posicion))
+		gen.AddSetStack("(int)"+newtem1, newtem2)
 
 	}
 
@@ -190,25 +202,6 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST, gen *generator.Generat
 	}
 	gen.MainCodeF()
 	ast.DisminuirAmbito()
-
-	e1 = existfun.Parametros.Front()
-	e2 = listaparametros.Front()
-	for e1 != nil && e2 != nil {
-		valor1 := e1.Value.(environment.VariableFuncion)
-		valor2 := e2.Value.(environment.VariableFuncion)
-
-		for e := listavariablesinterna2.Front(); e != nil; e = e.Next() {
-			vari2 := e.Value.(environment.Variable)
-			if valor1.Name == vari2.Name && valor2.Inout {
-				variable := ast.GetVariable(valor2.Name)
-				variable.Symbols.Valor = vari2.Symbols.Valor
-				ast.ActualizarVariable(variable)
-			}
-		}
-
-		e1 = e1.Next()
-		e2 = e2.Next()
-	}
 
 	if existfun.IsReturn {
 		Errores := environment.Errores{

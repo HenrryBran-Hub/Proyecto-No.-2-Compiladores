@@ -21,11 +21,14 @@ func (v FuncionesLlamadaList1) Ejecutar(ast *environment.AST, gen *generator.Gen
 
 	aux := ast.GetVariable(v.Name)
 	symbol := environment.Symbol{
-		Lin:   v.Lin,
-		Col:   v.Col,
-		Tipo:  aux.Symbols.Tipo,
-		Valor: aux.Symbols.Valor,
-		Scope: ast.ObtenerAmbito(),
+		Lin:         v.Lin,
+		Col:         v.Col,
+		Tipo:        aux.Symbols.Tipo,
+		Valor:       aux.Symbols.Valor,
+		ValorInt:    aux.Symbols.ValorInt,
+		ValorFloat:  aux.Symbols.ValorFloat,
+		ValorString: aux.Symbols.ValorString,
+		Scope:       ast.ObtenerAmbito(),
 	}
 
 	variablefuncion := environment.VariableFuncion{

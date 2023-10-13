@@ -28,7 +28,7 @@ func (v FuncionesLlamadaList5) Ejecutar(ast *environment.AST, gen *generator.Gen
 	symbol := environment.Symbol{
 		Lin:         v.Lin,
 		Col:         v.Col,
-		Tipo:        valor.Val.Symbols.Tipo,
+		Tipo:        valor.Type,
 		Valor:       valor.Value,
 		ValorInt:    valor.IntValue,
 		ValorFloat:  valor.FloatValue,

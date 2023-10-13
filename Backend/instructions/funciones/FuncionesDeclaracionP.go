@@ -140,6 +140,7 @@ func (v FuncionesDeclaracionP) Ejecutar(ast *environment.AST, gen *generator.Gen
 	}
 	ast.Lista_Tranferencias.PushBack(transferencia)
 
+	inicio := ast.PosicionStack
 	gen.AddTittle(v.Name)
 
 	e := listavalores.Front()
@@ -155,7 +156,7 @@ func (v FuncionesDeclaracionP) Ejecutar(ast *environment.AST, gen *generator.Gen
 		}
 		newtem1 := gen.NewTemp()
 		newtem2 := gen.NewTemp()
-		gen.AddExpression(newtem1, "P", strconv.Itoa(i+1), "+")
+		gen.AddExpression(newtem1, "P", strconv.Itoa(i), "+")
 		gen.AddGetStack(newtem2, "(int)"+newtem1)
 		symbol.Valor = newtem2
 
@@ -214,7 +215,7 @@ func (v FuncionesDeclaracionP) Ejecutar(ast *environment.AST, gen *generator.Gen
 	gen.MainCodeF()
 	ast.Lista_Funciones_Var.Init()
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
-
+	ast.PosicionStack = inicio
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
