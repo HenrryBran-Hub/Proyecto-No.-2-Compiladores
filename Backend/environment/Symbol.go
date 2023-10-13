@@ -12,4 +12,5 @@ type Symbol struct {
 	ValorInt    int
 	ValorFloat  float64
 	ValorString string
+	Valorpos    string
 }

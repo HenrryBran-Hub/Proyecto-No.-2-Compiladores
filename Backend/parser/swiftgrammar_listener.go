@@ -124,11 +124,17 @@ type SwiftGrammarListener interface {
 	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
 	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
 
+	// EnterListaparametro is called when entering the listaparametro production.
+	EnterListaparametro(c *ListaparametroContext)
+
 	// EnterFuncionllamadacontrol is called when entering the funcionllamadacontrol production.
 	EnterFuncionllamadacontrol(c *FuncionllamadacontrolContext)
 
 	// EnterFuncionllamadacontrolConRetorno is called when entering the funcionllamadacontrolConRetorno production.
 	EnterFuncionllamadacontrolConRetorno(c *FuncionllamadacontrolConRetornoContext)
+
+	// EnterListaparametrosllamada is called when entering the listaparametrosllamada production.
+	EnterListaparametrosllamada(c *ListaparametrosllamadaContext)
 
 	// EnterPrintstmt is called when entering the printstmt production.
 	EnterPrintstmt(c *PrintstmtContext)
@@ -259,11 +265,17 @@ type SwiftGrammarListener interface {
 	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
 	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
 
+	// ExitListaparametro is called when exiting the listaparametro production.
+	ExitListaparametro(c *ListaparametroContext)
+
 	// ExitFuncionllamadacontrol is called when exiting the funcionllamadacontrol production.
 	ExitFuncionllamadacontrol(c *FuncionllamadacontrolContext)
 
 	// ExitFuncionllamadacontrolConRetorno is called when exiting the funcionllamadacontrolConRetorno production.
 	ExitFuncionllamadacontrolConRetorno(c *FuncionllamadacontrolConRetornoContext)
+
+	// ExitListaparametrosllamada is called when exiting the listaparametrosllamada production.
+	ExitListaparametrosllamada(c *ListaparametrosllamadaContext)
 
 	// ExitPrintstmt is called when exiting the printstmt production.
 	ExitPrintstmt(c *PrintstmtContext)

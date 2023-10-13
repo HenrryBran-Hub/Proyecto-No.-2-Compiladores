@@ -256,6 +256,12 @@ func (s *BaseSwiftGrammarListener) EnterFunciondeclaracioncontrol(ctx *Funcionde
 func (s *BaseSwiftGrammarListener) ExitFunciondeclaracioncontrol(ctx *FunciondeclaracioncontrolContext) {
 }
 
+// EnterListaparametro is called when production listaparametro is entered.
+func (s *BaseSwiftGrammarListener) EnterListaparametro(ctx *ListaparametroContext) {}
+
+// ExitListaparametro is called when production listaparametro is exited.
+func (s *BaseSwiftGrammarListener) ExitListaparametro(ctx *ListaparametroContext) {}
+
 // EnterFuncionllamadacontrol is called when production funcionllamadacontrol is entered.
 func (s *BaseSwiftGrammarListener) EnterFuncionllamadacontrol(ctx *FuncionllamadacontrolContext) {}
 
@@ -269,6 +275,12 @@ func (s *BaseSwiftGrammarListener) EnterFuncionllamadacontrolConRetorno(ctx *Fun
 // ExitFuncionllamadacontrolConRetorno is called when production funcionllamadacontrolConRetorno is exited.
 func (s *BaseSwiftGrammarListener) ExitFuncionllamadacontrolConRetorno(ctx *FuncionllamadacontrolConRetornoContext) {
 }
+
+// EnterListaparametrosllamada is called when production listaparametrosllamada is entered.
+func (s *BaseSwiftGrammarListener) EnterListaparametrosllamada(ctx *ListaparametrosllamadaContext) {}
+
+// ExitListaparametrosllamada is called when production listaparametrosllamada is exited.
+func (s *BaseSwiftGrammarListener) ExitListaparametrosllamada(ctx *ListaparametrosllamadaContext) {}
 
 // EnterPrintstmt is called when production printstmt is entered.
 func (s *BaseSwiftGrammarListener) EnterPrintstmt(ctx *PrintstmtContext) {}

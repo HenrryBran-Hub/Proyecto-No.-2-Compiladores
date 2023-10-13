@@ -2,6 +2,7 @@ package funciones
 
 import (
 	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
 )
 
@@ -20,8 +21,7 @@ func NewFuncionesListaParametro(lin int, col int, externointerno, name string, t
 	return FuncionesListaParametro{lin, col, externointerno, name, tipo, inout, ei, lista}
 }
 
-/*
-func (v FuncionesListaParametro) Ejecutar(ast *environment.AST) interface{} {
+func (v FuncionesListaParametro) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -41,7 +41,6 @@ func (v FuncionesListaParametro) Ejecutar(ast *environment.AST) interface{} {
 	}
 
 	ast.Lista_Funciones_Var.PushBack(variablefuncion)
-	v.Lista.Ejecutar(ast)
+	v.Lista.Ejecutar(ast, gen)
 	return true
 }
-*/

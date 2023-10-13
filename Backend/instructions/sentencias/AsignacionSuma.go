@@ -48,6 +48,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Variable.Symbols.Valor = newTemp3
 			Variable.Symbols.ValorInt = Variable.Symbols.ValorInt + value.IntValue
 			Variable.Symbols.ValorFloat = float64(Variable.Symbols.ValorInt)
+			Variable.Symbols.ValorString = strconv.Itoa(Variable.Symbols.ValorInt)
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
 			gen.AddBr()
@@ -70,7 +71,8 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Variable.Symbols.Col = v.Col
 			Variable.Symbols.Valor = newTemp3
 			Variable.Symbols.ValorInt = Variable.Symbols.ValorInt + value.IntValue
-			Variable.Symbols.ValorFloat = float64(Variable.Symbols.ValorInt)
+			Variable.Symbols.ValorFloat = Variable.Symbols.ValorFloat + value.FloatValue
+			Variable.Symbols.ValorString = strconv.FormatFloat(Variable.Symbols.ValorFloat, 'f', -1, 64)
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
 			gen.AddBr()

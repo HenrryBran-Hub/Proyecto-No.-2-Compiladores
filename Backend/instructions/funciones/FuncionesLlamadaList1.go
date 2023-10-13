@@ -1,6 +1,8 @@
 package funciones
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
 )
 
@@ -15,8 +17,7 @@ func NewFuncionesLlamadaList1(lin int, col int, name string, lista interfaces.In
 	return FuncionesLlamadaList1{lin, col, name, lista}
 }
 
-/*
-func (v FuncionesLlamadaList1) Ejecutar(ast *environment.AST) interface{} {
+func (v FuncionesLlamadaList1) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 
 	aux := ast.GetVariable(v.Name)
 	symbol := environment.Symbol{
@@ -37,7 +38,6 @@ func (v FuncionesLlamadaList1) Ejecutar(ast *environment.AST) interface{} {
 	}
 
 	ast.Lista_Funciones_Par.PushBack(variablefuncion)
-	v.Lista.Ejecutar(ast)
+	v.Lista.Ejecutar(ast, gen)
 	return true
 }
-*/

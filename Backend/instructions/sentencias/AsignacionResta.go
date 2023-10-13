@@ -31,29 +31,51 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Type {
 		//valida el tipo
 		if Variable.Symbols.Tipo == environment.INTEGER {
+			gen.AddComment("Asignacion de Int resta")
 			newTemp := gen.NewTemp()
 			gen.AddGetStack(newTemp, strconv.Itoa(Variable.Symbols.Posicion))
 			newTemp2 := gen.NewTemp()
-			gen.AddExpression(newTemp2, newTemp, value.Value, "-")
-			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp2)
+			if value.IsTemp {
+				gen.AddGetStack(newTemp2, strconv.Itoa(value.Val.Symbols.Posicion))
+			} else {
+				gen.AddAssign(newTemp2, value.Value)
+			}
+			newTemp3 := gen.NewTemp()
+			gen.AddExpression(newTemp3, newTemp, newTemp2, "+")
+			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp3)
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Valor = newTemp2
+			Variable.Symbols.Valor = newTemp3
+			Variable.Symbols.ValorInt = Variable.Symbols.ValorInt + value.IntValue
+			Variable.Symbols.ValorFloat = float64(Variable.Symbols.ValorInt)
+			Variable.Symbols.ValorString = strconv.Itoa(Variable.Symbols.ValorInt)
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.AddBr()
 			gen.MainCodeF()
 			return nil
 		} else if Variable.Symbols.Tipo == environment.FLOAT {
+			gen.AddComment("Asignacion de Float resta")
 			newTemp := gen.NewTemp()
 			gen.AddGetStack(newTemp, strconv.Itoa(Variable.Symbols.Posicion))
 			newTemp2 := gen.NewTemp()
-			gen.AddExpression(newTemp2, newTemp, value.Value, "-")
-			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp2)
+			if value.IsTemp {
+				gen.AddGetStack(newTemp2, strconv.Itoa(value.Val.Symbols.Posicion))
+			} else {
+				gen.AddAssign(newTemp2, value.Value)
+			}
+			newTemp3 := gen.NewTemp()
+			gen.AddExpression(newTemp3, newTemp, newTemp2, "+")
+			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp3)
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Valor = newTemp2
+			Variable.Symbols.Valor = newTemp3
+			Variable.Symbols.ValorInt = Variable.Symbols.ValorInt + value.IntValue
+			Variable.Symbols.ValorFloat = Variable.Symbols.ValorFloat + value.FloatValue
+			Variable.Symbols.ValorString = strconv.FormatFloat(Variable.Symbols.ValorFloat, 'f', -1, 64)
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.AddBr()
 			gen.MainCodeF()
 			return nil
 		} else {

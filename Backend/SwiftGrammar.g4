@@ -619,11 +619,11 @@ listaparametro returns [interfaces.Instruction listparfun]
 ;
 
 funcionllamadacontrol returns [interfaces.Instruction flctl]
-// : ID_VALIDO PARIZQ listaparametrosllamada PARDER 
-// {
-//     $flctl = funciones.NewFuncionesControlP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
-// }
-: ID_VALIDO PARIZQ PARDER 
+: ID_VALIDO PARIZQ listaparametrosllamada PARDER 
+{
+    $flctl = funciones.NewFuncionesControlP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
+}
+| ID_VALIDO PARIZQ PARDER 
 {
     $flctl = funciones.NewFuncionesControl($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text )
 }
@@ -640,31 +640,31 @@ funcionllamadacontrolConRetorno returns [interfaces.Expression flctlret]
 }
 ;
 
-// listaparametrosllamada returns [interfaces.Instruction lpll]
-// : DIRME ID_VALIDO COMA op2=listaparametrosllamada 
-// {
-//     $lpll = instructions.NewFuncionesLlamadaList1($DIRME.line, $DIRME.pos, $ID_VALIDO.text, $op2.lpll)    
-// }
-// | DIRME ID_VALIDO
-// {
-//     $lpll = instructions.NewFuncionesLlamadaList2($DIRME.line, $DIRME.pos, $ID_VALIDO.text)    
-// }
-// | (ID_VALIDO op=DOS_PUNTOS)? expr COMA op2=listaparametrosllamada 
-// {
-//     if $op != nil{
-//         $lpll = instructions.NewFuncionesLlamadaList3($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e, $op2.lpll)
-//     }else{
-//         $lpll = instructions.NewFuncionesLlamadaList4($COMA.line, $COMA.pos, $expr.e, $op2.lpll)
-//     }
-// }
-// | (ID_VALIDO op=DOS_PUNTOS)? expr
-// {
-//     if $op != nil{
-//         $lpll = instructions.NewFuncionesLlamadaList5($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)
-//     }else{
-//         $lpll = instructions.NewFuncionesLlamadaList6($expr.e)
-//     }     
-// };
+listaparametrosllamada returns [interfaces.Instruction lpll]
+: DIRME ID_VALIDO COMA op2=listaparametrosllamada 
+{
+    $lpll = funciones.NewFuncionesLlamadaList1($DIRME.line, $DIRME.pos, $ID_VALIDO.text, $op2.lpll)    
+}
+| DIRME ID_VALIDO
+{
+    $lpll = funciones.NewFuncionesLlamadaList2($DIRME.line, $DIRME.pos, $ID_VALIDO.text)    
+}
+| (ID_VALIDO op=DOS_PUNTOS)? expr COMA op2=listaparametrosllamada 
+{
+    if $op != nil{
+        $lpll = funciones.NewFuncionesLlamadaList3($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e, $op2.lpll)
+    }else{
+        $lpll = funciones.NewFuncionesLlamadaList4($COMA.line, $COMA.pos, $expr.e, $op2.lpll)
+    }
+}
+| (ID_VALIDO op=DOS_PUNTOS)? expr
+{
+    if $op != nil{
+        $lpll = funciones.NewFuncionesLlamadaList5($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)
+    }else{
+        $lpll = funciones.NewFuncionesLlamadaList6($expr.e)
+    }     
+};
 
 // //CREACION DE EMBEBIDAS
 
