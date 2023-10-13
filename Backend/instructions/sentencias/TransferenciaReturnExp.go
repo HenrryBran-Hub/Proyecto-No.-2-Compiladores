@@ -36,7 +36,7 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		Scope:       ast.ObtenerAmbito(),
 	}
 	Variable := environment.Variable{
-		Name:        "ReturnExp" + strconv.Itoa(v.Lin),
+		Name:        "ReturnExp",
 		Symbols:     symbol,
 		Mutable:     false,
 		TipoSimbolo: "Sentencia de Transferencia",
@@ -52,8 +52,25 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
 		gen.AddBr()
 	}
-
+	etiquetas := ast.Lista_Tranferencias.Back().Value.(environment.SentenciasdeTransferencia)
+	newtemp := gen.NewTemp()
+	gen.AddGetStack(newtemp, strconv.Itoa(symbol.Posicion))
+	gen.AddSetStack("(int)P", newtemp)
+	gen.AddGoto(etiquetas.EFalse)
 	ast.GuardarVariable(Variable)
+
+	etiqueta := ast.Lista_Tranferencias.Front().Value.(environment.SentenciasdeTransferencia)
+	if etiqueta.Tipo != Variable.Symbols.Tipo {
+		Errores := environment.Errores{
+			Descripcion: "El tipo que esta retornando no es del mismo tipo de la funcion",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+	}
+
 	gen.MainCodeF()
 	return nil
 }

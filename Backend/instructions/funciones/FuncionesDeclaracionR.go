@@ -31,6 +31,7 @@ func (v FuncionesDeclaracionR) Ejecutar(ast *environment.AST, gen *generator.Gen
 	}
 
 	ast.GuardarFuncion(funcion)
+	inicio := ast.PosicionStack
 	ambito := ast.ObtenerAmbito()
 	ambitonuevo := "funcion" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
@@ -46,6 +47,7 @@ func (v FuncionesDeclaracionR) Ejecutar(ast *environment.AST, gen *generator.Gen
 		Scope:  ambitonuevo,
 		ETrue:  newlabelr,
 		EFalse: exitla,
+		Tipo:   funcion.Tipo,
 	}
 	ast.Lista_Tranferencias.PushBack(transferencia)
 
@@ -77,17 +79,6 @@ func (v FuncionesDeclaracionR) Ejecutar(ast *environment.AST, gen *generator.Gen
 			if ast.Lista_Tranferencias.Len() == 0 {
 				errorgeneral = 1
 			}
-			if revari.Symbols.Tipo != funcion.Tipo {
-				Errores := environment.Errores{
-					Descripcion: "El tipo que esta retornando no es del mismo tipo de la funcion",
-					Fila:        strconv.Itoa(v.Lin),
-					Columna:     strconv.Itoa(v.Col),
-					Tipo:        "Error Semantico",
-					Ambito:      ast.ObtenerAmbito(),
-				}
-				ast.ErroresHTML(Errores)
-			}
-			gen.AddSetStack("(int)P", revari.Symbols.Valor.(string))
 		}
 	}
 
@@ -108,6 +99,6 @@ func (v FuncionesDeclaracionR) Ejecutar(ast *environment.AST, gen *generator.Gen
 		}
 		ast.ErroresHTML(Errores)
 	}
-
+	ast.PosicionStack = inicio
 	return nil
 }

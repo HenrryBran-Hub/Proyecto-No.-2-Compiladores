@@ -572,51 +572,51 @@ funciondeclaracioncontrol returns [interfaces.Instruction fdc]
 {
     $fdc = funciones.NewFuncionesDeclaracionR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $tipodato.tipo, $blockinterno.blkint)
 }
-// | FUNCION ID_VALIDO PARIZQ listaparametro PARDER LLAVEIZQ blockinterno LLAVEDER 
-// {
-//    $fdc = funciones.NewFuncionesDeclaracionP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $blockinterno.blkint)
-// }
+| FUNCION ID_VALIDO PARIZQ listaparametro PARDER LLAVEIZQ blockinterno LLAVEDER 
+{
+   $fdc = funciones.NewFuncionesDeclaracionP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $blockinterno.blkint)
+}
 | FUNCION ID_VALIDO PARIZQ PARDER LLAVEIZQ blockinterno LLAVEDER 
 {
     $fdc = funciones.NewFuncionesDeclaracion($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $blockinterno.blkint)
 }
 ;
 
-// listaparametro returns [interfaces.Instruction listparfun]
-// : op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato COMA op3=listaparametro 
-// {
-//     if $op != nil{
-//         if $INOUT != nil{
-//             $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true, true, $op3.listparfun )
-//         }else {
-//             $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true, $op3.listparfun )
-//         } 
-//     }else{
-//         if $INOUT != nil{
-//             $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false, $op3.listparfun )
-//         }else {
-//             $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false,$op3.listparfun )
-//         } 
-//     }      
-// }
-// | op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato 
-// {
-//     if $op != nil{
-//         if $INOUT != nil{
-//             $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true , true)
-//         }else {
-//             $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true)
-//         } 
-//     }else{
-//         if $INOUT != nil{
-//             $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false)
-//         }else {
-//             $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false)
-//     } 
-//     }
+listaparametro returns [interfaces.Instruction listparfun]
+: op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato COMA op3=listaparametro 
+{
+    if $op != nil{
+        if $INOUT != nil{
+            $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true, true, $op3.listparfun )
+        }else {
+            $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true, $op3.listparfun )
+        } 
+    }else{
+        if $INOUT != nil{
+            $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false, $op3.listparfun )
+        }else {
+            $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false,$op3.listparfun )
+        } 
+    }      
+}
+| op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato 
+{
+    if $op != nil{
+        if $INOUT != nil{
+            $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true , true)
+        }else {
+            $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true)
+        } 
+    }else{
+        if $INOUT != nil{
+            $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false)
+        }else {
+            $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false)
+    } 
+    }
     
-// }
-// ;
+}
+;
 
 funcionllamadacontrol returns [interfaces.Instruction flctl]
 // : ID_VALIDO PARIZQ listaparametrosllamada PARDER 

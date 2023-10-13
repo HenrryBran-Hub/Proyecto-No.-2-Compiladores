@@ -63,7 +63,6 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Genera
 		gen.AddBr()
 
 		var retornable int = 0
-		var reexp environment.Symbol
 		looptl := gen.NewLabel()
 		exitla := gen.NewLabel()
 		transferencia := environment.SentenciasdeTransferencia{
@@ -130,7 +129,6 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Genera
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -151,40 +149,6 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Genera
 
 		ast.DisminuirAmbito()
 		tamanio := ast.Pila_Variables.Len()
-		if tamanio > 1 {
-			if retornable == 2 {
-				symbol := environment.Symbol{
-					Lin:   v.Lin,
-					Col:   v.Col,
-					Tipo:  environment.BOOLEAN,
-					Valor: true,
-					Scope: ast.ObtenerAmbito(),
-				}
-				Variable := environment.Variable{
-					Name:        "Return",
-					Symbols:     symbol,
-					Mutable:     false,
-					TipoSimbolo: "Sentencia de Transferencia",
-				}
-				ast.GuardarVariable(Variable)
-			}
-			if retornable == 3 {
-				symbol := environment.Symbol{
-					Lin:   v.Lin,
-					Col:   v.Col,
-					Tipo:  reexp.Tipo,
-					Valor: reexp.Valor,
-					Scope: ast.ObtenerAmbito(),
-				}
-				Variable := environment.Variable{
-					Name:        "ReturnExp",
-					Symbols:     symbol,
-					Mutable:     false,
-					TipoSimbolo: "Sentencia de Transferencia",
-				}
-				ast.GuardarVariable(Variable)
-			}
-		}
 		if tamanio == 1 && retornable == 3 {
 			Errores := environment.Errores{
 				Descripcion: "Estas retornando un valor fuera de una funcion",

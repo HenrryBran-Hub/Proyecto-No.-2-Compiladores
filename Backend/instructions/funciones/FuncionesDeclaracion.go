@@ -29,6 +29,7 @@ func (v FuncionesDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gene
 		CodigoFuncion: v.Bloque,
 	}
 	ast.GuardarFuncion(funcion)
+	inicio := ast.PosicionStack
 	ambito := ast.ObtenerAmbito()
 	ambitonuevo := "funcion" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
@@ -103,5 +104,6 @@ func (v FuncionesDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gene
 		ast.ErroresHTML(Errores)
 	}
 
+	ast.PosicionStack = inicio
 	return nil
 }
