@@ -173,22 +173,24 @@ func (v FuncionesControlP) Ejecutar(ast *environment.AST, gen *generator.Generat
 	}
 
 	gen.AddComment("Parametros declaracion")
+	contador := 0
 	for e := listavariablesinterna.Front(); e != nil; e = e.Next() {
 		vari := e.Value.(environment.Variable)
-		gen.AddSetStack(strconv.Itoa(vari.Symbols.Posicion), vari.Symbols.Valor.(string))
+		gen.AddSetStack(strconv.Itoa(existfun.Inicio+contador), vari.Symbols.Valor.(string))
 		gen.AddBr()
+		contador++
 	}
 
 	gen.AddComment("Llamada de funcion")
 	newtem1 := gen.NewTemp()
-	posicion := ast.PosicionStack - listavariablesinterna.Len()
-	gen.AddExpression(newtem1, "P", strconv.Itoa(posicion), "+")
+	gen.AddExpression(newtem1, "P", strconv.Itoa(ast.PosicionStack), "+")
+	contador = 0
 	for e := listavariablesinterna.Front(); e != nil; e = e.Next() {
-		vari := e.Value.(environment.Variable)
 		gen.AddExpression(newtem1, newtem1, "1", "+")
 		newtem2 := gen.NewTemp()
-		gen.AddGetStack(newtem2, strconv.Itoa(vari.Symbols.Posicion))
+		gen.AddGetStack(newtem2, strconv.Itoa(existfun.Inicio+contador))
 		gen.AddSetStack("(int)"+newtem1, newtem2)
+		contador++
 
 	}
 

@@ -117,6 +117,7 @@ func (v FuncionesDeclaracionP) Ejecutar(ast *environment.AST, gen *generator.Gen
 		IsParame:      true,
 		Parametros:    listavalores,
 		CodigoFuncion: v.Bloque,
+		Inicio:        ast.PosicionStack,
 	}
 
 	ast.GuardarFuncion(funcion)
@@ -140,23 +141,25 @@ func (v FuncionesDeclaracionP) Ejecutar(ast *environment.AST, gen *generator.Gen
 	}
 	ast.Lista_Tranferencias.PushBack(transferencia)
 
-	inicio := ast.PosicionStack
 	gen.AddTittle(v.Name)
 
 	e := listavalores.Front()
 	for i := 0; e != nil; i++ {
 		valor := e.Value.(environment.VariableFuncion)
 		symbol := environment.Symbol{
-			Lin:      valor.Symbols.Lin,
-			Col:      valor.Symbols.Col,
-			Tipo:     valor.Symbols.Tipo,
-			Scope:    ast.ObtenerAmbito(),
-			TipoDato: environment.VARIABLE,
-			Posicion: ast.PosicionStack,
+			Lin:         valor.Symbols.Lin,
+			Col:         valor.Symbols.Col,
+			Tipo:        valor.Symbols.Tipo,
+			Scope:       ast.ObtenerAmbito(),
+			TipoDato:    environment.VARIABLE,
+			Posicion:    ast.PosicionStack,
+			ValorInt:    valor.Symbols.ValorInt,
+			ValorFloat:  valor.Symbols.ValorFloat,
+			ValorString: valor.Symbols.ValorString,
 		}
 		newtem1 := gen.NewTemp()
 		newtem2 := gen.NewTemp()
-		gen.AddExpression(newtem1, "P", strconv.Itoa(i), "+")
+		gen.AddExpression(newtem1, "P", strconv.Itoa(i+1), "+")
 		gen.AddGetStack(newtem2, "(int)"+newtem1)
 		symbol.Valor = newtem2
 
@@ -215,7 +218,6 @@ func (v FuncionesDeclaracionP) Ejecutar(ast *environment.AST, gen *generator.Gen
 	gen.MainCodeF()
 	ast.Lista_Funciones_Var.Init()
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
-	ast.PosicionStack = inicio
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",

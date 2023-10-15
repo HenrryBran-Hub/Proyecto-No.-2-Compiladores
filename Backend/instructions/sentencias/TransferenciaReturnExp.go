@@ -34,6 +34,7 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		ValorFloat:  value.Val.Symbols.ValorFloat,
 		ValorString: value.Val.Symbols.ValorString,
 		Scope:       ast.ObtenerAmbito(),
+		Posicion:    ast.PosicionStack,
 	}
 	Variable := environment.Variable{
 		Name:        "ReturnExp",
@@ -42,6 +43,7 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		TipoSimbolo: "Sentencia de Transferencia",
 	}
 
+	ast.GuardarVariable(Variable)
 	gen.AddComment("Retorno de variable")
 
 	if value.Type == environment.BOOLEAN {
@@ -57,7 +59,6 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 	gen.AddGetStack(newtemp, strconv.Itoa(symbol.Posicion))
 	gen.AddSetStack("(int)P", newtemp)
 	gen.AddGoto(etiquetas.EFalse)
-	ast.GuardarVariable(Variable)
 
 	etiqueta := ast.Lista_Tranferencias.Front().Value.(environment.SentenciasdeTransferencia)
 	if etiqueta.Tipo != Variable.Symbols.Tipo {

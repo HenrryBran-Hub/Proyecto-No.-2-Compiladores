@@ -113,6 +113,7 @@ type Funcion struct {
 	Parametros    *list.List
 	CodigoFuncion []interface{}
 	Mutating      bool
+	Inicio        int
 }
 
 type VariableFuncion struct {

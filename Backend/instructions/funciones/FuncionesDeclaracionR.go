@@ -31,7 +31,6 @@ func (v FuncionesDeclaracionR) Ejecutar(ast *environment.AST, gen *generator.Gen
 	}
 
 	ast.GuardarFuncion(funcion)
-	inicio := ast.PosicionStack
 	ambito := ast.ObtenerAmbito()
 	ambitonuevo := "funcion" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
@@ -99,6 +98,5 @@ func (v FuncionesDeclaracionR) Ejecutar(ast *environment.AST, gen *generator.Gen
 		}
 		ast.ErroresHTML(Errores)
 	}
-	ast.PosicionStack = inicio
 	return nil
 }
