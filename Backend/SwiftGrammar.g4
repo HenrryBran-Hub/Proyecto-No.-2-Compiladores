@@ -564,11 +564,11 @@ listamatrizaddsub returns [interfaces.Expression lmas]
 
 //CREACION DE FUNCIONES
 funciondeclaracioncontrol returns [interfaces.Instruction fdc]
-// : FUNCION ID_VALIDO PARIZQ listaparametro PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
-// {
-//     $fdc = funciones.NewFuncionesDeclaracionRP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $tipodato.tipo, $blockinterno.blkint)
-// }
-: FUNCION ID_VALIDO PARIZQ  PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
+: FUNCION ID_VALIDO PARIZQ listaparametro PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
+{
+    $fdc = funciones.NewFuncionesDeclaracionRP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $tipodato.tipo, $blockinterno.blkint)
+}
+| FUNCION ID_VALIDO PARIZQ  PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
 {
     $fdc = funciones.NewFuncionesDeclaracionR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $tipodato.tipo, $blockinterno.blkint)
 }
@@ -630,11 +630,11 @@ funcionllamadacontrol returns [interfaces.Instruction flctl]
 ;
 
 funcionllamadacontrolConRetorno returns [interfaces.Expression flctlret]
-// : ID_VALIDO PARIZQ listaparametrosllamada PARDER 
-// {
-//     $flctlret = instructions.NewFuncionesControlPR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
-// }
-: ID_VALIDO PARIZQ PARDER 
+: ID_VALIDO PARIZQ listaparametrosllamada PARDER 
+{
+    $flctlret = funciones.NewFuncionesControlPR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
+}
+| ID_VALIDO PARIZQ PARDER 
 {
     $flctlret = funciones.NewFuncionesControlR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text )
 }

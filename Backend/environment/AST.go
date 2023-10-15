@@ -153,6 +153,7 @@ type SentenciasdeTransferencia struct {
 	ETrue  string
 	EFalse string
 	Tipo   TipoExpresion
+	Func   Funcion
 }
 
 func NewAST(inst []interface{}, print string, err string) AST {
@@ -213,7 +214,7 @@ func (a *AST) IniciarAmbito() {
 	a.ListaParametrosStruct = list.New()
 	a.Lista_Struct_HTML = list.New()
 
-	a.PosicionStack = 0
+	a.PosicionStack = 1
 	a.Lista_Tranferencias = list.New()
 
 	a.Lista_Switch_Case = list.New()

@@ -34,7 +34,7 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		ValorFloat:  value.Val.Symbols.ValorFloat,
 		ValorString: value.Val.Symbols.ValorString,
 		Scope:       ast.ObtenerAmbito(),
-		Posicion:    ast.PosicionStack,
+		Posicion:    0,
 	}
 	Variable := environment.Variable{
 		Name:        "ReturnExp",
@@ -43,9 +43,7 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		TipoSimbolo: "Sentencia de Transferencia",
 	}
 
-	ast.GuardarVariable(Variable)
-	gen.AddComment("Retorno de variable")
-
+	etiquetas := ast.Lista_Tranferencias.Back().Value.(environment.SentenciasdeTransferencia)
 	if value.Type == environment.BOOLEAN {
 		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
 		gen.AddBr()
@@ -54,7 +52,38 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
 		gen.AddBr()
 	}
-	etiquetas := ast.Lista_Tranferencias.Back().Value.(environment.SentenciasdeTransferencia)
+
+	e := etiquetas.Func.Parametros.Front()
+	for i := 0; e != nil; i++ {
+		valor := e.Value.(environment.VariableFuncion)
+		symbol := environment.Symbol{
+			Lin:         valor.Symbols.Lin,
+			Col:         valor.Symbols.Col,
+			Tipo:        valor.Symbols.Tipo,
+			Scope:       ast.ObtenerAmbito(),
+			TipoDato:    environment.VARIABLE,
+			Posicion:    etiquetas.Func.Inicio + i,
+			ValorInt:    valor.Symbols.ValorInt,
+			ValorFloat:  valor.Symbols.ValorFloat,
+			ValorString: valor.Symbols.ValorString,
+			Valor:       value.Value,
+		}
+
+		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
+		Variable := environment.Variable{
+			Name:        valor.Name,
+			Symbols:     symbol,
+			Mutable:     true,
+			TipoSimbolo: "Variable",
+		}
+
+		ast.ActualizarVariable(&Variable)
+		e = e.Next()
+	}
+
+	ast.GuardarVariable(Variable)
+	gen.AddComment("Retorno de variable")
+
 	newtemp := gen.NewTemp()
 	gen.AddGetStack(newtemp, strconv.Itoa(symbol.Posicion))
 	gen.AddSetStack("(int)P", newtemp)
