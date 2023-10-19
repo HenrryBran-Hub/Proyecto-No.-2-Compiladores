@@ -83,6 +83,8 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generat
 	ast.Lista_Tranferencias.PushBack(transferencia)
 	ast.Lista_For_Rango.PushBack(Variable)
 
+	gen.AddComment("Estoy dentro de la sentencia For-Rango")
+
 	op1 := left
 	op2 := right
 	tlabel := gen.NewLabel()
@@ -225,6 +227,7 @@ func (v SentenciaForRango) Ejecutar(ast *environment.AST, gen *generator.Generat
 
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
 	ast.Lista_For_Rango.Remove(ast.Lista_For_Rango.Back())
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

@@ -45,7 +45,7 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 		TipoSimbolo: "Variable",
 	}
 
-	gen.AddComment("Declaracion de Variable")
+	gen.AddComment("Datos Primitivios Declaracion de Variable sin Tipo")
 
 	if value.Type == environment.BOOLEAN {
 		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
@@ -57,6 +57,7 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.AddBr()
 	gen.MainCodeF()
 	return value
 }

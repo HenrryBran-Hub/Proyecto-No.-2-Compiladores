@@ -23,6 +23,7 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 	variables := ast.GetVariable(v.Id2)
 	arreglos := ast.GetArreglo(v.Id2)
 	var errorgeneral int = 0
+
 	if variables != nil {
 		if variables.Symbols.Tipo == environment.STRING {
 			ambito := ast.ObtenerAmbito()
@@ -31,7 +32,7 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			if !ast.IsMain(ambitonuevo) {
 				gen.MainCodeT()
 			}
-
+			gen.AddComment("Estoy dentro de la sentencia For-Id")
 			newTemp := gen.NewTemp()
 			symbol := environment.Symbol{
 				Lin:      v.Lin,
@@ -174,6 +175,7 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		if !ast.IsMain(ambitonuevo) {
 			gen.MainCodeT()
 		}
+		gen.AddComment("Estoy dentro de la sentencia For-Id")
 		symbol := environment.Symbol{
 			Lin:      v.Lin,
 			Col:      v.Col,
@@ -315,6 +317,7 @@ func (v SentenciaForId) Ejecutar(ast *environment.AST, gen *generator.Generator)
 
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
 	ast.Lista_For_Rango.Remove(ast.Lista_For_Rango.Back())
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

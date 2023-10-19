@@ -36,7 +36,7 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, gen *generator.Genera
 
 		Variable.Symbols.Scope = ast.ObtenerAmbito()
 
-		gen.AddComment("Asignacion de Variable")
+		gen.AddComment("Estoy dentro de la sentencia Asignacion-Variable")
 
 		if value.Type == environment.BOOLEAN {
 			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), value.Value)
@@ -54,6 +54,7 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, gen *generator.Genera
 		Variable.Symbols.ValorFloat = value.FloatValue
 		Variable.Symbols.ValorString = value.StringValue
 		ast.ActualizarVariable(Variable)
+		gen.AddBr()
 		gen.MainCodeF()
 	}
 
@@ -116,6 +117,7 @@ func (v AsignacionVariable) Ejecutar(ast *environment.AST, gen *generator.Genera
 		return nil
 	}
 
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

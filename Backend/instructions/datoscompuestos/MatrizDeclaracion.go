@@ -50,6 +50,7 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Generat
 
 	Valor := ast.Lista_Matriz_Val.Back()
 	Condiciones := Valor.Value.(environment.Valores_Matriz)
+	gen.AddComment("Datos Compuestos Matriz-Declaracion")
 
 	n1 := -1
 	n2 := -1
@@ -162,6 +163,7 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Generat
 		if ast.Lista_Matriz_Val.Len() == tipo.Val.Symbols.Valor {
 			ast.GuardarMatriz(matriz)
 			ast.QuitarNiveles()
+			gen.AddBr()
 			gen.MainCodeF()
 			return nil
 		} else {
@@ -288,6 +290,7 @@ func (v MatrizDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Generat
 	}
 
 	ast.QuitarNiveles()
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

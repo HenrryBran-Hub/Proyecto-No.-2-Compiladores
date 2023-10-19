@@ -113,7 +113,7 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gene
 		Variable.Symbols.Tipo = environment.INTEGER
 	}
 
-	gen.AddComment("Declaracion de Constante")
+	gen.AddComment("Datos Primitivios Declaracion de Constante")
 
 	if value.Type == environment.BOOLEAN {
 		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
@@ -125,6 +125,7 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gene
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.AddBr()
 	gen.MainCodeF()
 	return value
 }

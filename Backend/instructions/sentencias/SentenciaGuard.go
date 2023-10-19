@@ -29,8 +29,8 @@ func (v SentenciaGuard) Ejecutar(ast *environment.AST, gen *generator.Generator)
 	var retornable int = 0
 	var errorgeneral int = 0
 
+	gen.AddComment("Estoy dentro de la sentencia Guard ")
 	if condicion.Type == environment.BOOLEAN {
-		gen.AddComment("Estoy dentro de la sentencia guard ")
 		if condicion.Value == "1" || condicion.Value == "0" {
 			vet := gen.NewLabel()
 			fet := gen.NewLabel()
@@ -208,6 +208,7 @@ func (v SentenciaGuard) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		ast.ErroresHTML(Errores)
 	}
 
+	gen.AddBr()
 	gen.MainCodeF()
 
 	if errorgeneral == 1 {

@@ -46,7 +46,7 @@ func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generat
 		TipoSimbolo: "Constante",
 	}
 
-	gen.AddComment("Declaracion de Constante")
+	gen.AddComment("Datos Primitivios Declaracion de Constante sin Tipo")
 
 	if value.Type == environment.BOOLEAN {
 		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
@@ -58,6 +58,7 @@ func (v ConstanteDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generat
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.AddBr()
 	gen.MainCodeF()
 	return value
 }

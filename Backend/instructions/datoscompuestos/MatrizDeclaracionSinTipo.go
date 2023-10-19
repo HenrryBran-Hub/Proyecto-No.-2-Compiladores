@@ -46,6 +46,7 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generator.
 
 	Valor := ast.Lista_Matriz_Val.Back()
 	Condiciones := Valor.Value.(environment.Valores_Matriz)
+	gen.AddComment("Datos Compuestos Matriz-Declaracion-Sin-Tipo")
 
 	n1 := -1
 	n2 := -1
@@ -156,6 +157,7 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generator.
 		}
 		ast.GuardarMatriz(matriz)
 		ast.QuitarNiveles()
+		gen.AddBr()
 		gen.MainCodeF()
 		return nil
 	}
@@ -279,11 +281,13 @@ func (v MatrizDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generator.
 
 		ast.GuardarMatriz(matriz)
 		ast.QuitarNiveles()
+		gen.AddBr()
 		gen.MainCodeF()
 		return nil
 	}
 
 	ast.QuitarNiveles()
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

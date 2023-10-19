@@ -111,7 +111,7 @@ func (v ArregloRemovePos) Ejecutar(ast *environment.AST, gen *generator.Generato
 
 	gen.RemovePosVector()
 	//concat
-	gen.AddComment("Remove vector - " + Remove.Name)
+	gen.AddComment("Datos Compuestos Arreglo-Remove-Pos" + Remove.Name)
 	envSize := strconv.Itoa(ast.PosicionStack)
 	tmp1 := gen.NewTemp()
 	gen.AddExpression(tmp1, "P", envSize, "+")

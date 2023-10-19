@@ -142,6 +142,7 @@ func (v ArregloAppendArreglo) Ejecutar(ast *environment.AST, gen *generator.Gene
 		ValSecu = ValSecu.Next()
 	}
 
+	gen.AddComment("Datos Compuestos Arreglo-Append-Arreglo")
 	if ValPrin != nil && ValSecu != nil {
 		newTemp2 := gen.NewTemp()
 		cambio := ValPrin.Value.(environment.Value)
@@ -158,6 +159,7 @@ func (v ArregloAppendArreglo) Ejecutar(ast *environment.AST, gen *generator.Gene
 	}
 
 	ast.ActualizarArreglo(v.Prin, Principal)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

@@ -34,6 +34,7 @@ func (o MatrizSimpleUno) Ejecutar(ast *environment.AST, gen *generator.Generator
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Datos Compuestos Matriz-Simple-Uno")
 	if strings.Contains(o.Numero, ".") {
 		Errores := environment.Errores{
 			Descripcion: "No es posible crear la matriz, esta colocando numeros no enteros",
@@ -79,6 +80,7 @@ func (o MatrizSimpleUno) Ejecutar(ast *environment.AST, gen *generator.Generator
 		Valor:     tipo.Val.Symbols,
 	}
 	ast.Lista_Matriz_Val.PushFront(arreglo)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

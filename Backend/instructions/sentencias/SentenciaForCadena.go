@@ -31,6 +31,8 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Genera
 		gen.MainCodeT()
 	}
 
+	gen.AddComment("Estoy dentro de la sentencia For-Cadena")
+
 	var errorgeneral int = 0
 	if cadena.Type == environment.VECTOR || cadena.Type == environment.STRING {
 		newTemp := gen.NewTemp()
@@ -183,6 +185,7 @@ func (v SentenciaForCadena) Ejecutar(ast *environment.AST, gen *generator.Genera
 	}
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
 	ast.Lista_For_Rango.Remove(ast.Lista_For_Rango.Back())
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

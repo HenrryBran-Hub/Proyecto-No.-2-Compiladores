@@ -42,8 +42,8 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 	}
 	ast.Lista_Tranferencias.PushBack(transferencia)
 
+	gen.AddComment("Estoy dentro de la sentencia While ")
 	if condicion.Type == environment.BOOLEAN {
-		gen.AddComment("Estoy dentro de la sentencia while ")
 		if condicion.Value == "1" || condicion.Value == "0" {
 			newlabelr := gen.NewLabel()
 			gen.AddLabel(newlabelr)
@@ -250,6 +250,7 @@ func (v SentenciaWhile) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

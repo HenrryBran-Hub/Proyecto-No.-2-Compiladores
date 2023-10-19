@@ -21,6 +21,7 @@ func (v ArregloDeclaracionSinLista) Ejecutar(ast *environment.AST, gen *generato
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Datos Compuestos Arreglo-Declaracion-Sin-Lista")
 	listavalores := list.New()
 	listavalorespt := list.New()
 	symbol := environment.Symbol{
@@ -41,6 +42,7 @@ func (v ArregloDeclaracionSinLista) Ejecutar(ast *environment.AST, gen *generato
 	}
 
 	ast.GuardarArreglo(vector)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

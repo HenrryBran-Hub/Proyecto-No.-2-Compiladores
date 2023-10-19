@@ -35,13 +35,13 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 	var retornable int = 0
 	var errorgeneral int = 0
 
+	gen.AddComment("Estoy dentro de la sentencia Switch-Case")
 	expresion1 := ast.Lista_Switch_Case.Back().Value.(environment.Value)
 	if expresion1.Type == expresion2.Type {
 		{
 			op1 := expresion1
 			op2 := expresion2
 
-			gen.AddComment("Estoy dentro de la sentencia case ")
 			if expresion1.Type == environment.INTEGER {
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
@@ -466,6 +466,7 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

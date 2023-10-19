@@ -90,7 +90,7 @@ func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator
 		result = environment.NewValue(fmt.Sprintf("%v", symbol.Valor), false, v.Type, false, false, false, Variable)
 	}
 
-	gen.AddComment("Declaracion de Variable")
+	gen.AddComment("Datos Primitivios Declaracion de Variable sin Exp")
 
 	if result.Type == environment.BOOLEAN {
 		gen.AddSetStack(strconv.Itoa(symbol.Posicion), result.Value)
@@ -102,6 +102,7 @@ func (v VariableDeclaracionSinExp) Ejecutar(ast *environment.AST, gen *generator
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.AddBr()
 	gen.MainCodeF()
 	return result
 }

@@ -41,6 +41,7 @@ func (v SentenciaSwitch) Ejecutar(ast *environment.AST, gen *generator.Generator
 	ast.Lista_Switch_Case_Eti.PushBack(transferencia)
 	ast.Lista_Tranferencias.PushBack(transferencia)
 
+	gen.AddComment("Estoy dentro de la sentencia Switch")
 	for _, inst := range v.Case {
 		switchCase, _ := inst.(SentenciaSwitchCase)
 		if !ast.IsMain(ambitonuevo) {
@@ -99,6 +100,7 @@ func (v SentenciaSwitch) Ejecutar(ast *environment.AST, gen *generator.Generator
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

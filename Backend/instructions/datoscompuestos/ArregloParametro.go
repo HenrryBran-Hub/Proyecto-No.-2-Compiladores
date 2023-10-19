@@ -19,7 +19,9 @@ func (o ArregloParametro) Ejecutar(ast *environment.AST, gen *generator.Generato
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Datos Compuestos Arreglo-Parametro")
 	op := o.Op.Ejecutar(ast, gen)
+	gen.AddBr()
 	gen.MainCodeF()
 	return op
 }

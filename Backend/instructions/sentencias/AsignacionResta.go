@@ -27,6 +27,7 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Estoy dentro de la sentencia Asignacion-Resta")
 	Variable := ast.GetVariable(v.Name)
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Type {
 		//valida el tipo
@@ -106,6 +107,7 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.AddBr()
 			gen.MainCodeF()
 		}
 	}
@@ -169,6 +171,7 @@ func (v AsignacionResta) Ejecutar(ast *environment.AST, gen *generator.Generator
 		return nil
 	}
 
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

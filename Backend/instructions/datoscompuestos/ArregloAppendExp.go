@@ -111,6 +111,7 @@ func (v ArregloAppendExp) Ejecutar(ast *environment.AST, gen *generator.Generato
 		ValPrinpt = ValPrinpt.Next()
 	}
 
+	gen.AddComment("Datos Compuestos Arreglo-Append-Exp")
 	if ValPrin != nil {
 		ValPrin.Value = Secuop
 
@@ -129,6 +130,7 @@ func (v ArregloAppendExp) Ejecutar(ast *environment.AST, gen *generator.Generato
 	}
 
 	ast.ActualizarArreglo(v.Prin, Principal)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

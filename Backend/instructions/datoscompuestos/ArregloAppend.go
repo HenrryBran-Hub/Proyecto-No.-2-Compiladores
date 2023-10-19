@@ -56,7 +56,7 @@ func (v ArregloAppend) Ejecutar(ast *environment.AST, gen *generator.Generator) 
 	//llamar a generar concatstring
 	gen.AppendVector()
 	//concat
-	gen.AddComment("append vector")
+	gen.AddComment("Datos Compuestos Arreglo-Append")
 	envSize := strconv.Itoa(ast.PosicionStack)
 	tmp1 := gen.NewTemp()
 	tmp2 := gen.NewTemp()
@@ -71,5 +71,7 @@ func (v ArregloAppend) Ejecutar(ast *environment.AST, gen *generator.Generator) 
 	arreglo.ElementsPt.PushBack(tmp2)
 
 	ast.ActualizarArreglo(v.Name, arreglo)
+	gen.AddBr()
+	gen.MainCodeF()
 	return nil
 }

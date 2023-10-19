@@ -53,7 +53,7 @@ func (v ArregloIsEmpty) Ejecutar(ast *environment.AST, gen *generator.Generator)
 
 	gen.IsEmptyVector()
 	//concat
-	gen.AddComment("isEmpty vector")
+	gen.AddComment("Datos Compuestos Arreglo-IsEmpty")
 	envSize := strconv.Itoa(ast.PosicionStack)
 	tmp1 := gen.NewTemp()
 	tmp2 := gen.NewTemp()
@@ -67,21 +67,24 @@ func (v ArregloIsEmpty) Ejecutar(ast *environment.AST, gen *generator.Generator)
 	gen.AddBr()
 
 	gen.AddSetStack(strconv.Itoa(VEmpty.Symbols.Posicion), tmp2)
+	gen.AddBr()
 	gen.MainCodeF()
 	return environment.NewValue(tmp2, false, environment.BOOLEAN, false, false, false, Variable)
-	/*
-		if VEmpty.Elements.Len() == 0 {
-			newTemp := gen.NewTemp()
-			gen.AddAssign(newTemp, "1")
-			gen.AddSetStack(strconv.Itoa(VEmpty.Symbols.Posicion), newTemp)
-			gen.MainCodeF()
-			return environment.NewValue("1", false, environment.BOOLEAN, false, false, false, Variable)
-		} else {
-			newTemp := gen.NewTemp()
-			gen.AddAssign(newTemp, "0")
-			gen.AddSetStack(strconv.Itoa(VEmpty.Symbols.Posicion), newTemp)
-			gen.MainCodeF()
-			return environment.NewValue("1", false, environment.BOOLEAN, false, false, false, Variable)
-		}
-	*/
+
 }
+
+/*
+	if VEmpty.Elements.Len() == 0 {
+		newTemp := gen.NewTemp()
+		gen.AddAssign(newTemp, "1")
+		gen.AddSetStack(strconv.Itoa(VEmpty.Symbols.Posicion), newTemp)
+		gen.MainCodeF()
+		return environment.NewValue("1", false, environment.BOOLEAN, false, false, false, Variable)
+	} else {
+		newTemp := gen.NewTemp()
+		gen.AddAssign(newTemp, "0")
+		gen.AddSetStack(strconv.Itoa(VEmpty.Symbols.Posicion), newTemp)
+		gen.MainCodeF()
+		return environment.NewValue("1", false, environment.BOOLEAN, false, false, false, Variable)
+	}
+*/

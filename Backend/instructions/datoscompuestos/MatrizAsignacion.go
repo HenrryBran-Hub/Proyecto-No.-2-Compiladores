@@ -97,6 +97,8 @@ func (v MatrizAsignacion) Ejecutar(ast *environment.AST, gen *generator.Generato
 		return nil
 	}
 
+	gen.AddComment("Datos Compuestos Matriz-Asignacion")
+
 	if matriz.Symbols.Tipo == environment.INTEGER || matriz.Symbols.Tipo == environment.FLOAT {
 		var ingresado interface{}
 		ingresado = entrada.Value
@@ -119,6 +121,7 @@ func (v MatrizAsignacion) Ejecutar(ast *environment.AST, gen *generator.Generato
 		ast.IngresarValor(matriz, valoresSlice, ingresado)
 	}
 
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

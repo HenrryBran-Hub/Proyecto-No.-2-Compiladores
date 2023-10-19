@@ -25,6 +25,7 @@ func (o MatrizDimension) Ejecutar(ast *environment.AST, gen *generator.Generator
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Datos Compuestos Matriz-Dimension")
 	result := valor.Val.Symbols.Valor.(int) + 1
 	symbol := environment.Symbol{
 		Lin:      o.Lin,
@@ -41,6 +42,7 @@ func (o MatrizDimension) Ejecutar(ast *environment.AST, gen *generator.Generator
 		TipoSimbolo: "Variable",
 	}
 
+	gen.AddBr()
 	gen.MainCodeF()
 	return environment.NewValue("", true, valor.Type, false, false, false, Variable)
 }

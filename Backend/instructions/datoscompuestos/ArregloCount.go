@@ -53,7 +53,7 @@ func (v ArregloCount) Ejecutar(ast *environment.AST, gen *generator.Generator) e
 
 	gen.CountVector()
 	//concat
-	gen.AddComment("count vector")
+	gen.AddComment("Datos Compuestos Arreglo-Count")
 	envSize := strconv.Itoa(ast.PosicionStack)
 	tmp1 := gen.NewTemp()
 	tmp2 := gen.NewTemp()
@@ -70,6 +70,7 @@ func (v ArregloCount) Ejecutar(ast *environment.AST, gen *generator.Generator) e
 	gen.AddBr()
 	result := environment.NewValue(tmp2, false, environment.INTEGER, false, false, false, Variable)
 	result.IntValue = VCount.Elements.Len()
+	gen.AddBr()
 	gen.MainCodeF()
 	return result
 }

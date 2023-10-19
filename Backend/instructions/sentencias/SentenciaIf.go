@@ -32,8 +32,8 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 	var retornable int = 0
 	var errorgeneral int = 0
 
+	gen.AddComment("Estoy dentro de la sentencia If ")
 	if condicion.Type == environment.BOOLEAN {
-		gen.AddComment("Estoy dentro de la sentencia if ")
 		if condicion.Value == "1" || condicion.Value == "0" {
 			vet := gen.NewLabel()
 			fet := gen.NewLabel()
@@ -230,6 +230,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

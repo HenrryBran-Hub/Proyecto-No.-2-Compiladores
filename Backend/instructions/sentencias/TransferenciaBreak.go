@@ -33,9 +33,11 @@ func (v TransferenciaBreak) Ejecutar(ast *environment.AST, gen *generator.Genera
 		TipoSimbolo: "Sentencia de Transferencia",
 	}
 
+	gen.AddComment("Sentencia de transferencia Break")
 	etiquetas := ast.Lista_Tranferencias.Back().Value.(environment.SentenciasdeTransferencia)
 	gen.AddGoto(etiquetas.EFalse)
 	ast.GuardarVariable(Variable)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

@@ -20,6 +20,7 @@ func (o MatrizListaExpresionList) Ejecutar(ast *environment.AST, gen *generator.
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Datos Compuestos Matriz-Lista-Expresion-List")
 	o.Op1.Ejecutar(ast, gen)
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
@@ -28,6 +29,8 @@ func (o MatrizListaExpresionList) Ejecutar(ast *environment.AST, gen *generator.
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

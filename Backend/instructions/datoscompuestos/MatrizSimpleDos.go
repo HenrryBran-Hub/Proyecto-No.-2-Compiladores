@@ -34,6 +34,7 @@ func (o MatrizSimpleDos) Ejecutar(ast *environment.AST, gen *generator.Generator
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Datos Compuestos Matriz-Simple-Dos")
 
 	if tipo.Type != expre.Type {
 		Errores := environment.Errores{
@@ -94,6 +95,7 @@ func (o MatrizSimpleDos) Ejecutar(ast *environment.AST, gen *generator.Generator
 		Matriztam: lista,
 	}
 	ast.Lista_Matriz_Val.PushFront(arreglo)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

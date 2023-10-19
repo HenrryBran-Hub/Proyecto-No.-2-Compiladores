@@ -32,9 +32,8 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 	}
 	var retornable int = 0
 	var errorgeneral int = 0
-
+	gen.AddComment("Estoy dentro de la sentencia If-Else")
 	if condicion.Type == environment.BOOLEAN {
-		gen.AddComment("Estoy dentro de la sentencia if-else")
 		if condicion.Value == "1" || condicion.Value == "0" {
 			vet := gen.NewLabel()
 			fet := gen.NewLabel()
@@ -386,6 +385,7 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }
