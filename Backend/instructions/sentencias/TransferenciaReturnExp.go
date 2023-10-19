@@ -42,6 +42,7 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 		Mutable:     false,
 		TipoSimbolo: "Sentencia de Transferencia",
 	}
+	ast.GuardarVariable(Variable)
 
 	etiquetas := ast.Lista_Tranferencias.Back().Value.(environment.SentenciasdeTransferencia)
 	if value.Type == environment.BOOLEAN {
@@ -77,11 +78,12 @@ func (v TransferenciaReturnExp) Ejecutar(ast *environment.AST, gen *generator.Ge
 			TipoSimbolo: "Variable",
 		}
 
-		ast.ActualizarVariable(&Variable)
+		if (Variable.Symbols.Tipo == environment.INTEGER || Variable.Symbols.Tipo == environment.FLOAT) && (value.Type == environment.INTEGER || value.Type == environment.FLOAT) {
+			ast.ActualizarVariable(&Variable)
+		}
 		e = e.Next()
 	}
 
-	ast.GuardarVariable(Variable)
 	gen.AddComment("Retorno de variable")
 
 	newtemp := gen.NewTemp()

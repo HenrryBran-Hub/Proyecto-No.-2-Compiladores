@@ -58,6 +58,11 @@ func (v ArregloRemoveLast) Ejecutar(ast *environment.AST, gen *generator.Generat
 	}
 
 	ast.ActualizarArreglo(v.Remove, Remove)
+	gen.RemoveLastVector()
+	//concat
+	gen.AddComment("Remove vector - Ultimo - " + Remove.Name)
+	gen.AddCall("RemoveLastVector")
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

@@ -28,6 +28,11 @@ type Generator struct {
 	OrFlag           bool
 	IsString         bool
 	CadtoNumber      bool
+	IsAppend         bool
+	IsCount          bool
+	IsEmpty          bool
+	IsRemovePos      bool
+	IsRemoveLast     bool
 }
 
 func NewGenerator() Generator {
@@ -54,6 +59,11 @@ func NewGenerator() Generator {
 		OrFlag:           true,
 		IsString:         true,
 		CadtoNumber:      true,
+		IsAppend:         true,
+		IsCount:          true,
+		IsEmpty:          true,
+		IsRemovePos:      true,
+		IsRemoveLast:     true,
 	}
 	return generator
 }
@@ -1123,62 +1133,171 @@ func (g *Generator) ConvertirCadenaANumero() {
 	}
 }
 
-/*
-func (g *Generator) ConvertirCadenaANumero() {
-	if g.CadtoNumber {
+func (g *Generator) AppendVector() {
+	if g.IsAppend {
 		//generando temporales y etiquetas
 		newTemp1 := g.NewTemp()
 		newTemp2 := g.NewTemp()
 		newTemp3 := g.NewTemp()
-		newTemp4 := g.NewTemp()
-		newTemp5 := g.NewTemp()
-		newTemp6 := g.NewTemp()
+		//se genera la funcion printstring
+		g.Natives.PushBack("void AppendVector() {\n")
+		g.Natives.PushBack("\t" + newTemp1 + " = P + 0;\n")
+		g.Natives.PushBack("\t" + newTemp2 + " = stack[(int)" + newTemp1 + "];\n")
+		g.Natives.PushBack("\t" + newTemp3 + "= H;\n")
+		g.Natives.PushBack("\theap[(int)H] = " + newTemp2 + ";\n")
+		g.Natives.PushBack("\tH = H + 1;\n")
+		g.Natives.PushBack("\tstack[(int)P] = " + newTemp3 + ";\n")
+		g.Natives.PushBack("\treturn;\n")
+		g.Natives.PushBack("}\n\n")
+		g.IsAppend = false
+	}
+}
+
+func (g *Generator) CountVector() {
+	if g.IsCount {
+		//generando temporales y etiquetas
+		newTemp1 := g.NewTemp()
+		newTemp2 := g.NewTemp()
+		newTemp3 := g.NewTemp()
 		newLvl1 := g.NewLabel()
 		newLvl2 := g.NewLabel()
 		newLvl3 := g.NewLabel()
 		newLvl4 := g.NewLabel()
-		newLvl5 := g.NewLabel()
-		newLvl6 := g.NewLabel()
-		newLvl7 := g.NewLabel()
-		newLvl8 := g.NewLabel()
-		newLvl9 := g.NewLabel()
 		//se genera la funcion printstring
-		g.Natives.PushBack("void ConvertCadtoNumber() {\n")
+		g.Natives.PushBack("void CountVector() {\n")
 		g.Natives.PushBack("\t" + newTemp1 + " = P + 1;\n")
 		g.Natives.PushBack("\t" + newTemp2 + " = stack[(int)" + newTemp1 + "];\n")
-		g.Natives.PushBack("\t" + newTemp3 + " = 0;\n")
-		g.Natives.PushBack("\t" + newTemp4 + " = 1;\n")
+		g.Natives.PushBack("\t" + newTemp3 + "= 0;\n")
 		g.Natives.PushBack("\t" + newLvl1 + ":\n")
-		g.Natives.PushBack("\t" + newTemp5 + " = heap[(int)" + newTemp2 + "];\n")
-		g.Natives.PushBack("\tif(" + newTemp5 + " == -1) goto " + newLvl2 + ";\n")
-		g.Natives.PushBack("\tgoto " + newLvl3 + ";\n")
-		g.Natives.PushBack("\t" + newLvl2 + ":\n")
+		g.Natives.PushBack("\t\tif(" + newTemp3 + " < " + newTemp2 + ") goto " + newLvl2 + ";\n")
+		g.Natives.PushBack("\t\tgoto " + newLvl3 + ";\n")
+		g.Natives.PushBack("\t\t" + newLvl2 + ":\n")
+		g.Natives.PushBack("\t\t\t" + newTemp3 + " = " + newTemp3 + " + 1;\n")
+		g.Natives.PushBack("\t\t\tgoto " + newLvl1 + ";\n")
+		g.Natives.PushBack("\t\t" + newLvl3 + ":\n")
+		g.Natives.PushBack("\t\t\tgoto " + newLvl4 + ";\n")
+		g.Natives.PushBack("\t" + newLvl4 + ":\n")
 		g.Natives.PushBack("\t\tstack[(int)P] = " + newTemp3 + ";\n")
 		g.Natives.PushBack("\t\treturn;\n")
-		g.Natives.PushBack("\t" + newLvl3 + ":\n")
-		g.Natives.PushBack("\t\tif(" + newTemp5 + " >= 48 ) goto " + newLvl4 + ";\n")
-		g.Natives.PushBack("\t\tgoto " + newLvl5 + ";\n")
-		g.Natives.PushBack("\t\t" + newLvl4 + ":\n")
-		g.Natives.PushBack("\t\t\tif(" + newTemp5 + " <= 57 ) goto " + newLvl6 + ";\n")
-		g.Natives.PushBack("\t\t\tgoto " + newLvl7 + ";\n")
-		g.Natives.PushBack("\t\t\t" + newLvl6 + ":\n")
-		g.Natives.PushBack("\t\t\t\t" + newTemp6 + " = " + newTemp5 + " - 48;\n")
-		g.Natives.PushBack("\t\t\t\t" + newTemp6 + " = " + newTemp6 + " * " + newTemp4 + ";\n")
-		g.Natives.PushBack("\t\t\t\t" + newTemp3 + " = " + newTemp3 + " + " + newTemp6 + ";\n")
-		g.Natives.PushBack("\t\t\t\t" + newTemp4 + " = " + newTemp4 + " * 10;\n")
-		g.Natives.PushBack("\t\t\t\tgoto " + newLvl8 + ";\n")
-		g.Natives.PushBack("\t\t\t" + newLvl7 + ":\n")
-		g.Natives.PushBack("\t\t\t\tgoto " + newLvl9 + ";\n")
-		g.Natives.PushBack("\t\t" + newLvl5 + ":\n")
-		g.Natives.PushBack("\t\t\tgoto " + newLvl9 + ";\n")
-		g.Natives.PushBack("\t" + newLvl8 + ":\n")
-		g.Natives.PushBack("\t\t" + newTemp2 + " = " + newTemp2 + " + 1 ;\n")
-		g.Natives.PushBack("\t\tgoto " + newLvl1 + ";\n")
-		g.Natives.PushBack("\t" + newLvl9 + ":\n")
-		g.Natives.PushBack("\t\treturn;\n")
 		g.Natives.PushBack("}\n\n")
-		g.CadtoNumber = false
+		g.IsCount = false
 	}
 }
 
-*/
+func (g *Generator) IsEmptyVector() {
+	if g.IsEmpty {
+		//generando temporales y etiquetas
+		newTemp1 := g.NewTemp()
+		newTemp2 := g.NewTemp()
+		newLvl2 := g.NewLabel()
+		newLvl3 := g.NewLabel()
+		newLvl4 := g.NewLabel()
+		//se genera la funcion printstring
+		g.Natives.PushBack("void IsEmptyVector() {\n")
+		g.Natives.PushBack("\t" + newTemp1 + " = P + 1;\n")
+		g.Natives.PushBack("\t" + newTemp2 + " = stack[(int)" + newTemp1 + "];\n")
+		g.Natives.PushBack("\t\tif(" + newTemp2 + " == 0) goto " + newLvl2 + ";\n")
+		g.Natives.PushBack("\t\tgoto " + newLvl3 + ";\n")
+		g.Natives.PushBack("\t\t" + newLvl2 + ":\n")
+		g.Natives.PushBack("\t\t\tstack[(int)P] = 1;\n")
+		g.Natives.PushBack("\t\t\tgoto " + newLvl4 + ";\n")
+		g.Natives.PushBack("\t\t" + newLvl3 + ":\n")
+		g.Natives.PushBack("\t\t\tstack[(int)P] = 0;\n")
+		g.Natives.PushBack("\t\t\tgoto " + newLvl4 + ";\n")
+		g.Natives.PushBack("\t" + newLvl4 + ":\n")
+		g.Natives.PushBack("\t\treturn;\n")
+		g.Natives.PushBack("}\n\n")
+		g.IsEmpty = false
+	}
+}
+
+func (g *Generator) RemovePosVector() {
+	if g.IsRemovePos {
+		//generando temporales y etiquetas
+		newTemp1 := g.NewTemp()
+		newTemp2 := g.NewTemp()
+		//se genera la funcion printstring
+		g.Natives.PushBack("void RemovePosVector() {\n")
+		g.Natives.PushBack("\t" + newTemp1 + " = P + 1;\n")
+		g.Natives.PushBack("\t" + newTemp2 + " = stack[(int)" + newTemp1 + "];\n")
+		g.Natives.PushBack("\tprintf(\"%c\", 10);\n")                    // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)69);\n")              // E
+		g.Natives.PushBack("\tprintf(\"%c\", (char)108);\n")             // l
+		g.Natives.PushBack("\tprintf(\"%c\", (char)105);\n")             // i
+		g.Natives.PushBack("\tprintf(\"%c\", (char)109);\n")             // m
+		g.Natives.PushBack("\tprintf(\"%c\", (char)105);\n")             // i
+		g.Natives.PushBack("\tprintf(\"%c\", (char)110);\n")             // n
+		g.Natives.PushBack("\tprintf(\"%c\", (char)97);\n")              // a
+		g.Natives.PushBack("\tprintf(\"%c\", (char)115);\n")             // s
+		g.Natives.PushBack("\tprintf(\"%c\", (char)116);\n")             // t
+		g.Natives.PushBack("\tprintf(\"%c\", (char)101);\n")             // e
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")              // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)117);\n")             // u
+		g.Natives.PushBack("\tprintf(\"%c\", (char)110);\n")             // n
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")              // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)118);\n")             // v
+		g.Natives.PushBack("\tprintf(\"%c\", (char)97);\n")              // a
+		g.Natives.PushBack("\tprintf(\"%c\", (char)108);\n")             // l
+		g.Natives.PushBack("\tprintf(\"%c\", (char)111);\n")             // o
+		g.Natives.PushBack("\tprintf(\"%c\", (char)114);\n")             // r
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")              // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)100);\n")             // d
+		g.Natives.PushBack("\tprintf(\"%c\", (char)101);\n")             // e
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")              // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)86);\n")              // V
+		g.Natives.PushBack("\tprintf(\"%c\", (char)101);\n")             // e
+		g.Natives.PushBack("\tprintf(\"%c\", (char)99);\n")              // c
+		g.Natives.PushBack("\tprintf(\"%c\", (char)116);\n")             // t
+		g.Natives.PushBack("\tprintf(\"%c\", (char)111);\n")             // o
+		g.Natives.PushBack("\tprintf(\"%c\", (char)114);\n")             // r
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")              // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)101);\n")             // e
+		g.Natives.PushBack("\tprintf(\"%c\", (char)110);\n")             // n
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")              // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%d\", (int)" + newTemp2 + ");\n") // X
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")              // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", 10);\n")                    // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", 10);\n")                    // Agrega un espacio
+		g.Natives.PushBack("\treturn;\n")
+		g.Natives.PushBack("}\n\n")
+		g.IsRemovePos = false
+	}
+}
+
+func (g *Generator) RemoveLastVector() {
+	if g.IsRemoveLast {
+		g.Natives.PushBack("void RemoveLastVector() {\n")
+		g.Natives.PushBack("\tprintf(\"%c\", 10);\n")        // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)69);\n")  // E
+		g.Natives.PushBack("\tprintf(\"%c\", (char)108);\n") // l
+		g.Natives.PushBack("\tprintf(\"%c\", (char)105);\n") // i
+		g.Natives.PushBack("\tprintf(\"%c\", (char)109);\n") // m
+		g.Natives.PushBack("\tprintf(\"%c\", (char)105);\n") // i
+		g.Natives.PushBack("\tprintf(\"%c\", (char)110);\n") // n
+		g.Natives.PushBack("\tprintf(\"%c\", (char)97);\n")  // a
+		g.Natives.PushBack("\tprintf(\"%c\", (char)115);\n") // s
+		g.Natives.PushBack("\tprintf(\"%c\", (char)116);\n") // t
+		g.Natives.PushBack("\tprintf(\"%c\", (char)101);\n") // e
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")  // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)117);\n") // u
+		g.Natives.PushBack("\tprintf(\"%c\", (char)110);\n") // n
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")  // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)118);\n") // v
+		g.Natives.PushBack("\tprintf(\"%c\", (char)97);\n")  // a
+		g.Natives.PushBack("\tprintf(\"%c\", (char)108);\n") // l
+		g.Natives.PushBack("\tprintf(\"%c\", (char)111);\n") // o
+		g.Natives.PushBack("\tprintf(\"%c\", (char)114);\n") // r
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")  // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)250);\n") // ú
+		g.Natives.PushBack("\tprintf(\"%c\", (char)108);\n") // l
+		g.Natives.PushBack("\tprintf(\"%c\", (char)116);\n") // t
+		g.Natives.PushBack("\tprintf(\"%c\", (char)105);\n") // i
+		g.Natives.PushBack("\tprintf(\"%c\", (char)109);\n") // m
+		g.Natives.PushBack("\tprintf(\"%c\", (char)111);\n") // o
+		g.Natives.PushBack("\tprintf(\"%c\", (char)32);\n")  // Agrega un espacio
+		g.Natives.PushBack("\tprintf(\"%c\", (char)10);\n")  // Agrega un salto de línea
+		g.Natives.PushBack("\treturn;\n")
+		g.Natives.PushBack("}\n\n")
+		g.IsRemoveLast = false
+	}
+}

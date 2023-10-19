@@ -351,7 +351,16 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
 			if dominante == environment.INTEGER {
-				if op2.Value != "0" {
+				if op2.IntValue != 0 {
+
+					lvl1 := gen.NewLabel()
+					lvl2 := gen.NewLabel()
+					lvl3 := gen.NewLabel()
+
+					gen.AddIf(op2.Value, "0", "!=", lvl1)
+					gen.AddGoto(lvl2)
+					gen.AddLabel(lvl1)
+
 					newTemp1 := gen.NewTemp()
 					newTemp2 := gen.NewTemp()
 
@@ -375,6 +384,23 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 					result.IntValue = op1.IntValue / op2.IntValue
 					result.StringValue = strconv.Itoa(result.IntValue)
+
+					gen.AddGoto(lvl3)
+					gen.AddLabel(lvl2)
+					gen.AddPrintf("c", "(char)69")  // E
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)111") // o
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+					gen.AddPrintf("c", "(char)77")  // M
+					gen.AddPrintf("c", "(char)97")  // a
+					gen.AddPrintf("c", "(char)116") // t
+					gen.AddPrintf("c", "(char)104") // h
+					gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+					gen.AddBr()
+					gen.AddGoto(lvl3)
+					gen.AddLabel(lvl3)
 					gen.MainCodeF()
 					return result
 				} else {
@@ -389,7 +415,16 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					return result
 				}
 			} else if dominante == environment.FLOAT {
-				if op2.Value != "0" {
+				if op2.FloatValue != 0 {
+
+					lvl1 := gen.NewLabel()
+					lvl2 := gen.NewLabel()
+					lvl3 := gen.NewLabel()
+
+					gen.AddIf(op2.Value, "0", "!=", lvl1)
+					gen.AddGoto(lvl2)
+					gen.AddLabel(lvl1)
+
 					newTemp1 := gen.NewTemp()
 					newTemp2 := gen.NewTemp()
 
@@ -420,6 +455,22 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					}
 					result.IntValue = int(result.FloatValue)
 					result.StringValue = strconv.FormatFloat(float64(result.FloatValue), 'f', 4, 64)
+					gen.AddGoto(lvl3)
+					gen.AddLabel(lvl2)
+					gen.AddPrintf("c", "(char)69")  // E
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)111") // o
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+					gen.AddPrintf("c", "(char)77")  // M
+					gen.AddPrintf("c", "(char)97")  // a
+					gen.AddPrintf("c", "(char)116") // t
+					gen.AddPrintf("c", "(char)104") // h
+					gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+					gen.AddBr()
+					gen.AddGoto(lvl3)
+					gen.AddLabel(lvl3)
 					gen.MainCodeF()
 					return result
 				} else {

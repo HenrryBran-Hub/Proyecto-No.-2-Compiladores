@@ -108,6 +108,20 @@ func (v ArregloRemovePos) Ejecutar(ast *environment.AST, gen *generator.Generato
 	Remove.ElementsPt.Remove(elemntptToDelete)
 
 	ast.ActualizarArreglo(v.Remove, Remove)
+
+	gen.RemovePosVector()
+	//concat
+	gen.AddComment("Remove vector - " + Remove.Name)
+	envSize := strconv.Itoa(ast.PosicionStack)
+	tmp1 := gen.NewTemp()
+	gen.AddExpression(tmp1, "P", envSize, "+")
+	gen.AddExpression(tmp1, tmp1, "1", "+")
+	gen.AddSetStack("(int)"+tmp1, strconv.Itoa(Posicion.IntValue))
+	gen.AddExpression("P", "P", envSize, "+")
+	gen.AddCall("RemovePosVector")
+	gen.AddExpression("P", "P", envSize, "-")
+	gen.AddBr()
+
 	gen.MainCodeF()
 	return nil
 }

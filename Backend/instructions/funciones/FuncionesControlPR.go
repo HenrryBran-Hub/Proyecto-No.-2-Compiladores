@@ -214,6 +214,6 @@ func (v FuncionesControlPR) Ejecutar(ast *environment.AST, gen *generator.Genera
 	gen.MainCodeF()
 	ast.Lista_Funciones_Par.Init()
 	listaparametros.Init()
-	return environment.NewValue(newtmp, false, existfun.Tipo, false, false, false, environment.Variable{})
+	return environment.NewValue(newtmp, true, existfun.Tipo, false, false, false, environment.Variable{})
 
 }
