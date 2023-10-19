@@ -29,6 +29,8 @@ func (v MatrizObtencionList) Ejecutar(ast *environment.AST, gen *generator.Gener
 		gen.MainCodeT()
 	}
 
+	gen.AddComment("Datos Compuestos Matriz-Obtencion-Lista")
+
 	if primerval.Type != environment.INTEGER {
 		Errores := environment.Errores{
 			Descripcion: "Las posiciones ingresadas deben de ser Enteros o el resultado de una operacion que de entero",
@@ -169,6 +171,7 @@ func (v MatrizObtencionList) Ejecutar(ast *environment.AST, gen *generator.Gener
 			Mutable:     false,
 			TipoSimbolo: "Variable",
 		}
+		gen.AddBr()
 		gen.MainCodeF()
 		return environment.NewValue("201314439", false, environment.NULL, false, false, false, Variable)
 	}

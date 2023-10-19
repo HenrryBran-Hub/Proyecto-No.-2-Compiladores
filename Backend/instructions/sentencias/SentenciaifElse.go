@@ -20,19 +20,20 @@ func NewSentenciaIfElse(lin int, col int, expresion interfaces.Expression, Ifop 
 }
 
 func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	condicion := v.Expresion.Ejecutar(ast, gen)
 	ambito := ast.ObtenerAmbito()
 	ambitonuevo := "If-Else" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
+	condicion := v.Expresion.Ejecutar(ast, gen)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
 	var retornable int = 0
-	var reexp environment.Symbol
 	var errorgeneral int = 0
-
+	gen.AddComment("Estoy dentro de la sentencia If-Else")
 	if condicion.Type == environment.BOOLEAN {
-		gen.AddComment("Estoy dentro de la sentencia if-else")
 		if condicion.Value == "1" || condicion.Value == "0" {
 			vet := gen.NewLabel()
 			fet := gen.NewLabel()
@@ -40,6 +41,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 			gen.AddIf(condicion.Value, "1", "==", vet)
 			gen.AddGoto(fet)
 			gen.AddLabel(vet)
+			ambito = ast.ObtenerAmbito()
+			ambitonuevo = "If-Else" + "-" + ambito
+			ast.AumentarAmbito(ambitonuevo)
 			for _, inst := range v.Ifop {
 				if inst == nil {
 					continue
@@ -48,6 +52,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -69,7 +76,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -81,9 +87,13 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 					}
 				}
 			}
+			ast.DisminuirAmbito()
 
 			gen.AddGoto(exitla)
 			gen.AddLabel(fet)
+			ambito = ast.ObtenerAmbito()
+			ambitonuevo = "If-Else" + "-" + ambito
+			ast.AumentarAmbito(ambitonuevo)
 			for _, inst := range v.Elseop {
 				if inst == nil {
 					continue
@@ -92,6 +102,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -113,7 +126,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -125,6 +137,7 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 					}
 				}
 			}
+			ast.DisminuirAmbito()
 
 			gen.AddGoto(exitla)
 			gen.AddLabel(exitla)
@@ -133,6 +146,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 			exitl := gen.NewLabel()
 			gen.AddLabel(condicion.Val.TEti)
 
+			ambito = ast.ObtenerAmbito()
+			ambitonuevo = "If-Else" + "-" + ambito
+			ast.AumentarAmbito(ambitonuevo)
 			for _, inst := range v.Ifop {
 				if inst == nil {
 					continue
@@ -141,6 +157,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -155,7 +174,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					reexp = rvari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -163,7 +181,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -175,9 +192,13 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 					}
 				}
 			}
+			ast.DisminuirAmbito()
 
 			gen.AddGoto(exitl)
 			gen.AddLabel(condicion.Val.FEti)
+			ambito = ast.ObtenerAmbito()
+			ambitonuevo = "If-Else" + "-" + ambito
+			ast.AumentarAmbito(ambitonuevo)
 			for _, inst := range v.Elseop {
 				if inst == nil {
 					continue
@@ -186,6 +207,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -207,7 +231,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -219,6 +242,7 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 					}
 				}
 			}
+			ast.DisminuirAmbito()
 
 			gen.AddGoto(exitl)
 			gen.AddLabel(exitl)
@@ -226,6 +250,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 		} else if condicion.Value != "" && condicion.Val.TEti != "" {
 			exitl := gen.NewLabel()
 			gen.AddLabel(condicion.Val.TEti)
+			ambito = ast.ObtenerAmbito()
+			ambitonuevo = "If-Else" + "-" + ambito
+			ast.AumentarAmbito(ambitonuevo)
 			for _, inst := range v.Ifop {
 				if inst == nil {
 					continue
@@ -234,6 +261,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -255,7 +285,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -267,9 +296,13 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 					}
 				}
 			}
+			ast.DisminuirAmbito()
 
 			gen.AddGoto(exitl)
 			gen.AddLabel(condicion.Val.FEti)
+			ambito = ast.ObtenerAmbito()
+			ambitonuevo = "If-Else" + "-" + ambito
+			ast.AumentarAmbito(ambitonuevo)
 			for _, inst := range v.Elseop {
 				if inst == nil {
 					continue
@@ -278,6 +311,9 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -299,7 +335,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -311,6 +346,7 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 					}
 				}
 			}
+			ast.DisminuirAmbito()
 			gen.AddGoto(exitl)
 			gen.AddLabel(exitl)
 			gen.AddBr()
@@ -328,40 +364,6 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 	}
 	ast.DisminuirAmbito()
 	tamanio := ast.Pila_Variables.Len()
-	if tamanio > 1 {
-		if retornable == 2 {
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  environment.BOOLEAN,
-				Valor: true,
-				Scope: ast.ObtenerAmbito(),
-			}
-			Variable := environment.Variable{
-				Name:        "Return",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
-		if retornable == 3 {
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  reexp.Tipo,
-				Valor: reexp.Valor,
-				Scope: ast.ObtenerAmbito(),
-			}
-			Variable := environment.Variable{
-				Name:        "ReturnExp",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
-	}
 	if tamanio == 1 && retornable == 3 {
 		Errores := environment.Errores{
 			Descripcion: "Estas retornando un valor fuera de una funcion",
@@ -372,7 +374,7 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 		}
 		ast.ErroresHTML(Errores)
 	}
-	gen.MainCodeF()
+
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
@@ -383,5 +385,7 @@ func (v SentenciaIfElse) Ejecutar(ast *environment.AST, gen *generator.Generator
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.AddBr()
+	gen.MainCodeF()
 	return nil
 }

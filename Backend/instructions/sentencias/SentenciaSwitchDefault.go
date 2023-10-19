@@ -21,10 +21,13 @@ func NewSentenciaSwitchDefault(lin int, col int, expresion interfaces.Expression
 
 func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	var retornable int = 0
-	var reexp environment.Symbol
+	var errorgeneral int = 0
 	ambito := ast.ObtenerAmbito()
 	ambitonuevo := "Switch" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
@@ -42,8 +45,12 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 	ast.Lista_Switch_Case_Eti.PushBack(transferencia)
 	ast.Lista_Tranferencias.PushBack(transferencia)
 
+	gen.AddComment("Estoy dentro de la sentencia Switch-Case")
 	for _, inst := range v.Case {
 		switchCase, _ := inst.(SentenciaSwitchCase)
+		if !ast.IsMain(ambitonuevo) {
+			gen.MainCodeT()
+		}
 		switchCase.Ejecutar(ast, gen)
 		if !ast.IsMain(ambitonuevo) {
 			gen.MainCodeT()
@@ -51,15 +58,23 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 		bvari := ast.GetVariable("Break")
 		if bvari != nil {
 			retornable = 1
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
 		}
 		rvari := ast.GetVariable("Return")
 		if rvari != nil {
 			retornable = 2
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
 		}
 		revari := ast.GetVariable("ReturnExp")
 		if revari != nil {
 			retornable = 3
-			reexp = revari.Symbols
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
 		}
 	}
 	ast.DisminuirAmbito()
@@ -69,6 +84,7 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Estoy dentro de la sentencia Switch-Default")
 	for _, inst := range v.Default {
 		if inst == nil {
 			continue
@@ -77,7 +93,9 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 		if !ok {
 			continue
 		}
-
+		if !ast.IsMain(ambitonuevo) {
+			gen.MainCodeT()
+		}
 		instruction.Ejecutar(ast, gen)
 		if !ast.IsMain(ambitonuevo) {
 			gen.MainCodeT()
@@ -85,55 +103,29 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 		bvari := ast.GetVariable("Break")
 		if bvari != nil {
 			retornable = 1
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
 		}
 		rvari := ast.GetVariable("Return")
 		if rvari != nil {
 			retornable = 2
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
 		}
 		revari := ast.GetVariable("ReturnExp")
 		if revari != nil {
 			retornable = 3
-			reexp = revari.Symbols
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
 		}
 	}
 	gen.AddGoto(exitla)
 	gen.AddLabel(exitla)
 	ast.DisminuirAmbito()
 	tamanio := ast.Pila_Variables.Len()
-	if tamanio > 1 {
-		if retornable == 2 {
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  environment.BOOLEAN,
-				Valor: true,
-				Scope: ast.ObtenerAmbito(),
-			}
-			Variable := environment.Variable{
-				Name:        "Return",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
-		if retornable == 3 {
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  reexp.Tipo,
-				Valor: reexp.Valor,
-				Scope: ast.ObtenerAmbito(),
-			}
-			Variable := environment.Variable{
-				Name:        "ReturnExp",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
-	}
 	if tamanio == 1 && retornable == 3 {
 		Errores := environment.Errores{
 			Descripcion: "Estas retornando un valor fuera de una funcion",
@@ -148,6 +140,17 @@ func (v SentenciaSwitchDefault) Ejecutar(ast *environment.AST, gen *generator.Ge
 	ast.Lista_Switch_Case.Remove(ast.Lista_Switch_Case.Back())
 	ast.Lista_Switch_Case_Eti.Remove(ast.Lista_Switch_Case_Eti.Back())
 	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
-
+	if errorgeneral == 1 {
+		Errores := environment.Errores{
+			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+	}
+	gen.AddBr()
+	gen.MainCodeF()
 	return nil
 }

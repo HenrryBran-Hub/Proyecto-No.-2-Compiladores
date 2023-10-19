@@ -25,21 +25,23 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
 	expresion2 := v.Exp1.Ejecutar(ast, gen)
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
 	var retornable int = 0
-	var reexp environment.Symbol
 	var errorgeneral int = 0
 
+	gen.AddComment("Estoy dentro de la sentencia Switch-Case")
 	expresion1 := ast.Lista_Switch_Case.Back().Value.(environment.Value)
 	if expresion1.Type == expresion2.Type {
 		{
 			op1 := expresion1
 			op2 := expresion2
 
-			gen.AddComment("Estoy dentro de la sentencia case ")
 			if expresion1.Type == environment.INTEGER {
 				tlabel := gen.NewLabel()
 				flabel := gen.NewLabel()
@@ -66,6 +68,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 				gen.AddIf(newTemp1, newTemp2, "==", tlabel)
 				gen.AddGoto(flabel)
 				gen.AddLabel(tlabel)
+				ambito = ast.ObtenerAmbito()
+				ambitonuevo = "Case" + "-" + ambito
+				ast.AumentarAmbito(ambitonuevo)
 				for _, inst := range v.Case {
 					if inst == nil {
 						continue
@@ -73,6 +78,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					instruction, ok := inst.(interfaces.Instruction)
 					if !ok {
 						continue
+					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
 					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
@@ -95,7 +103,6 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					revari := ast.GetVariable("ReturnExp")
 					if revari != nil {
 						retornable = 3
-						reexp = revari.Symbols
 						if ast.Lista_Tranferencias.Len() == 0 {
 							errorgeneral = 1
 						}
@@ -107,6 +114,7 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 						}
 					}
 				}
+				ast.DisminuirAmbito()
 				etiqueta := ast.Lista_Switch_Case_Eti.Back().Value.(environment.SentenciasdeTransferencia)
 				gen.AddGoto(etiqueta.EFalse)
 				gen.AddLabel(flabel)
@@ -138,6 +146,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 				gen.AddIf(newTemp1, newTemp2, "==", tlabel)
 				gen.AddGoto(flabel)
 				gen.AddLabel(tlabel)
+				ambito = ast.ObtenerAmbito()
+				ambitonuevo = "Case" + "-" + ambito
+				ast.AumentarAmbito(ambitonuevo)
 				for _, inst := range v.Case {
 					if inst == nil {
 						continue
@@ -145,6 +156,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					instruction, ok := inst.(interfaces.Instruction)
 					if !ok {
 						continue
+					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
 					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
@@ -167,7 +181,6 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					revari := ast.GetVariable("ReturnExp")
 					if revari != nil {
 						retornable = 3
-						reexp = revari.Symbols
 						if ast.Lista_Tranferencias.Len() == 0 {
 							errorgeneral = 1
 						}
@@ -179,6 +192,7 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 						}
 					}
 				}
+				ast.DisminuirAmbito()
 				etiqueta := ast.Lista_Switch_Case_Eti.Back().Value.(environment.SentenciasdeTransferencia)
 				gen.AddGoto(etiqueta.EFalse)
 				gen.AddLabel(flabel)
@@ -210,6 +224,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 				gen.AddIf(tmp2, "1", "==", tlabel)
 				gen.AddGoto(flabel)
 				gen.AddLabel(tlabel)
+				ambito = ast.ObtenerAmbito()
+				ambitonuevo = "Case" + "-" + ambito
+				ast.AumentarAmbito(ambitonuevo)
 				for _, inst := range v.Case {
 					if inst == nil {
 						continue
@@ -217,6 +234,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					instruction, ok := inst.(interfaces.Instruction)
 					if !ok {
 						continue
+					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
 					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
@@ -239,7 +259,6 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					revari := ast.GetVariable("ReturnExp")
 					if revari != nil {
 						retornable = 3
-						reexp = revari.Symbols
 						if ast.Lista_Tranferencias.Len() == 0 {
 							errorgeneral = 1
 						}
@@ -251,6 +270,7 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 						}
 					}
 				}
+				ast.DisminuirAmbito()
 				etiqueta := ast.Lista_Switch_Case_Eti.Back().Value.(environment.SentenciasdeTransferencia)
 				gen.AddGoto(etiqueta.EFalse)
 				gen.AddLabel(flabel)
@@ -282,6 +302,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 				gen.AddIf(tmp2, "1", "==", tlabel)
 				gen.AddGoto(flabel)
 				gen.AddLabel(tlabel)
+				ambito = ast.ObtenerAmbito()
+				ambitonuevo = "Case" + "-" + ambito
+				ast.AumentarAmbito(ambitonuevo)
 				for _, inst := range v.Case {
 					if inst == nil {
 						continue
@@ -289,6 +312,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					instruction, ok := inst.(interfaces.Instruction)
 					if !ok {
 						continue
+					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
 					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
@@ -311,7 +337,6 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					revari := ast.GetVariable("ReturnExp")
 					if revari != nil {
 						retornable = 3
-						reexp = revari.Symbols
 						if ast.Lista_Tranferencias.Len() == 0 {
 							errorgeneral = 1
 						}
@@ -323,6 +348,7 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 						}
 					}
 				}
+				ast.DisminuirAmbito()
 				etiqueta := ast.Lista_Switch_Case_Eti.Back().Value.(environment.SentenciasdeTransferencia)
 				gen.AddGoto(etiqueta.EFalse)
 				gen.AddLabel(flabel)
@@ -354,6 +380,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 				gen.AddIf(newTemp3, newTemp6, "==", tlabel)
 				gen.AddGoto(flabel)
 				gen.AddLabel(tlabel)
+				ambito = ast.ObtenerAmbito()
+				ambitonuevo = "Case" + "-" + ambito
+				ast.AumentarAmbito(ambitonuevo)
 				for _, inst := range v.Case {
 					if inst == nil {
 						continue
@@ -361,6 +390,9 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					instruction, ok := inst.(interfaces.Instruction)
 					if !ok {
 						continue
+					}
+					if !ast.IsMain(ambitonuevo) {
+						gen.MainCodeT()
 					}
 					instruction.Ejecutar(ast, gen)
 					if !ast.IsMain(ambitonuevo) {
@@ -383,7 +415,6 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 					revari := ast.GetVariable("ReturnExp")
 					if revari != nil {
 						retornable = 3
-						reexp = revari.Symbols
 						if ast.Lista_Tranferencias.Len() == 0 {
 							errorgeneral = 1
 						}
@@ -395,6 +426,7 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 						}
 					}
 				}
+				ast.DisminuirAmbito()
 				etiqueta := ast.Lista_Switch_Case_Eti.Back().Value.(environment.SentenciasdeTransferencia)
 				gen.AddGoto(etiqueta.EFalse)
 				gen.AddLabel(flabel)
@@ -413,40 +445,6 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 	}
 	ast.DisminuirAmbito()
 	tamanio := ast.Pila_Variables.Len()
-	if tamanio > 1 {
-		if retornable == 2 {
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  environment.BOOLEAN,
-				Valor: true,
-				Scope: ast.ObtenerAmbito(),
-			}
-			Variable := environment.Variable{
-				Name:        "Return",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
-		if retornable == 3 {
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  reexp.Tipo,
-				Valor: reexp.Valor,
-				Scope: ast.ObtenerAmbito(),
-			}
-			Variable := environment.Variable{
-				Name:        "ReturnExp",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
-	}
 	if tamanio == 1 && retornable == 3 {
 		Errores := environment.Errores{
 			Descripcion: "Estas retornando un valor fuera de una funcion",
@@ -458,8 +456,6 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 		ast.ErroresHTML(Errores)
 	}
 
-	gen.MainCodeF()
-
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
@@ -470,5 +466,7 @@ func (v SentenciaSwitchCase) Ejecutar(ast *environment.AST, gen *generator.Gener
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.AddBr()
+	gen.MainCodeF()
 	return nil
 }

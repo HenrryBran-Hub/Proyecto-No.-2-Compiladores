@@ -23,15 +23,20 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	symbol := environment.Symbol{
-		Lin:      v.Lin,
-		Col:      v.Col,
-		Tipo:     value.Type,
-		Scope:    ast.ObtenerAmbito(),
-		TipoDato: environment.VARIABLE,
-		Posicion: ast.PosicionStack,
-		Valor:    value.Value,
-		ValorInt: value.IntValue,
+		Lin:         v.Lin,
+		Col:         v.Col,
+		Tipo:        value.Type,
+		Scope:       ast.ObtenerAmbito(),
+		TipoDato:    environment.VARIABLE,
+		Posicion:    ast.PosicionStack,
+		Valor:       value.Value,
+		ValorInt:    value.IntValue,
+		ValorFloat:  value.FloatValue,
+		ValorString: value.StringValue,
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,
@@ -40,7 +45,7 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 		TipoSimbolo: "Variable",
 	}
 
-	gen.AddComment("Declaracion de Variable")
+	gen.AddComment("Datos Primitivios Declaracion de Variable sin Tipo")
 
 	if value.Type == environment.BOOLEAN {
 		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
@@ -52,6 +57,7 @@ func (v VariableDeclaracionSinTipo) Ejecutar(ast *environment.AST, gen *generato
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.AddBr()
 	gen.MainCodeF()
 	return value
 }

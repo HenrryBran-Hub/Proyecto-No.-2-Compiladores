@@ -129,6 +129,12 @@ func (p Print) Ejecutar(ast *environment.AST, gen *generator.Generator) interfac
 			gen.AddExpression("P", "P", size, "-") //regreso del entorno
 			gen.AddPrintf("c", "10")               //salto de linea
 			gen.AddBr()
+		} else {
+			gen.AddPrintf("c", "(char)110") // 'n'
+			gen.AddPrintf("c", "(char)105") // 'i'
+			gen.AddPrintf("c", "(char)108") // 'l'
+			gen.AddPrintf("c", "10")        //salto de linea
+			gen.AddBr()
 		}
 	}
 

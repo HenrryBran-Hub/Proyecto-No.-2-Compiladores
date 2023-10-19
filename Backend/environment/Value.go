@@ -16,6 +16,8 @@ type Value struct {
 	BreakFlag    bool
 	ContinueFlag bool
 	IntValue     int
+	FloatValue   float64
+	StringValue  string
 	Val          Variable
 }
 
@@ -32,6 +34,8 @@ func NewValue(Val string, tmp bool, typ TipoExpresion, ret, br, cont bool, val V
 		BreakFlag:    br,
 		ContinueFlag: cont,
 		IntValue:     0,
+		FloatValue:   0.0,
+		StringValue:  "",
 		Val:          val,
 	}
 	return result

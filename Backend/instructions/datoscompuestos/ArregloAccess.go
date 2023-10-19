@@ -112,12 +112,14 @@ func (v ArregloAccess) Ejecutar(ast *environment.AST, gen *generator.Generator) 
 		TipoSimbolo: "Vector",
 	}
 
-	gen.AddComment("Accedemos al arreglo")
+	gen.AddComment("Datos Compuestos Arreglo-Acceso")
 	newTemp := gen.NewTemp()
 	gen.AddGetHeap(newTemp, "(int)"+ee.Value.(string))
 	gen.AddSetStack(strconv.Itoa(VAccess.Symbols.Posicion), newTemp)
 	gen.AddBr()
 	result := environment.NewValue(newTemp, false, VAccess.Symbols.Tipo, false, false, false, Variable)
 	result.IntValue = VAccess.Elements.Len()
+	gen.AddBr()
+	gen.MainCodeF()
 	return result
 }

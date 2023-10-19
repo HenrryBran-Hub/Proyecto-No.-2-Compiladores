@@ -43,9 +43,11 @@ func (v TransferenciaContinue) Ejecutar(ast *environment.AST, gen *generator.Gen
 		gen.AddSetStack(strconv.Itoa(variableaux.Symbols.Posicion), newTemp2)
 	}
 
+	gen.AddComment("Sentencia de Transferencia Continue")
 	etiquetas := ast.Lista_Tranferencias.Back().Value.(environment.SentenciasdeTransferencia)
 	gen.AddGoto(etiquetas.ETrue)
 	ast.GuardarVariable(Variable)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

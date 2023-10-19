@@ -32,9 +32,11 @@ func (v TransferenciaReturn) Ejecutar(ast *environment.AST, gen *generator.Gener
 		TipoSimbolo: "Sentencia de Transferencia",
 	}
 
+	gen.AddComment("Retorno sin valor")
 	etiquetas := ast.Lista_Tranferencias.Back().Value.(environment.SentenciasdeTransferencia)
 	gen.AddGoto(etiquetas.EFalse)
 	ast.GuardarVariable(Variable)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

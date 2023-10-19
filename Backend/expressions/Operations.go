@@ -40,8 +40,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 	switch o.Operador {
 	case "+":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -68,6 +77,8 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "+")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue + op2.IntValue
+				result.StringValue = strconv.Itoa(result.IntValue)
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				newTemp1 := gen.NewTemp()
@@ -91,7 +102,16 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "+")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue + op2.IntValue
+				if op1.Type == environment.FLOAT && op2.Type == environment.FLOAT {
+					result.FloatValue = op1.FloatValue + op2.FloatValue
+				} else if op1.Type == environment.FLOAT && op2.Type == environment.INTEGER {
+					result.FloatValue = op1.FloatValue + float64(op2.IntValue)
+				} else if op1.Type == environment.INTEGER && op2.Type == environment.FLOAT {
+					result.FloatValue = float64(op1.IntValue) + op2.FloatValue
+				}
+				result.IntValue = int(result.FloatValue)
+				result.StringValue = strconv.FormatFloat(float64(result.FloatValue), 'f', 4, 64)
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.STRING {
 				//llamar a generar concatstring
@@ -112,6 +132,18 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression("P", "P", envSize, "-")
 				gen.AddBr()
 				result = environment.NewValue(tmp2, true, dominante, false, false, false, environment.Variable{})
+				if op1.Type == environment.INTEGER && op2.Type == environment.STRING {
+					result.StringValue = fmt.Sprintf("%v", op1.IntValue) + op2.StringValue
+				} else if op1.Type == environment.FLOAT && op2.Type == environment.STRING {
+					result.StringValue = fmt.Sprintf("%v", op1.FloatValue) + op2.StringValue
+				} else if op1.Type == environment.STRING && op2.Type == environment.STRING {
+					result.StringValue = op1.StringValue + op2.StringValue
+				} else if op1.Type == environment.STRING && op2.Type == environment.INTEGER {
+					result.StringValue = op1.StringValue + fmt.Sprintf("%v", op2.IntValue)
+				} else if op1.Type == environment.STRING && op2.Type == environment.FLOAT {
+					result.StringValue = op1.StringValue + fmt.Sprintf("%v", op2.FloatValue)
+				}
+				gen.MainCodeF()
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
@@ -128,8 +160,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "-":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -156,6 +197,8 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "-")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue - op2.IntValue
+				result.StringValue = strconv.Itoa(result.IntValue)
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				newTemp1 := gen.NewTemp()
@@ -179,7 +222,16 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "-")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue - op2.IntValue
+				if op1.Type == environment.FLOAT && op2.Type == environment.FLOAT {
+					result.FloatValue = op1.FloatValue - op2.FloatValue
+				} else if op1.Type == environment.FLOAT && op2.Type == environment.INTEGER {
+					result.FloatValue = op1.FloatValue - float64(op2.IntValue)
+				} else if op1.Type == environment.INTEGER && op2.Type == environment.FLOAT {
+					result.FloatValue = float64(op1.IntValue) - op2.FloatValue
+				}
+				result.IntValue = int(result.FloatValue)
+				result.StringValue = strconv.FormatFloat(float64(result.FloatValue), 'f', 4, 64)
+				gen.MainCodeF()
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
@@ -196,8 +248,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "*":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -224,6 +285,8 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "*")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue * op2.IntValue
+				result.StringValue = strconv.Itoa(result.IntValue)
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				newTemp1 := gen.NewTemp()
@@ -247,7 +310,16 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, newTemp1, newTemp2, "*")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue * op2.IntValue
+				if op1.Type == environment.FLOAT && op2.Type == environment.FLOAT {
+					result.FloatValue = op1.FloatValue * op2.FloatValue
+				} else if op1.Type == environment.FLOAT && op2.Type == environment.INTEGER {
+					result.FloatValue = op1.FloatValue * float64(op2.IntValue)
+				} else if op1.Type == environment.INTEGER && op2.Type == environment.FLOAT {
+					result.FloatValue = float64(op1.IntValue) * op2.FloatValue
+				}
+				result.IntValue = int(result.FloatValue)
+				result.StringValue = strconv.FormatFloat(float64(result.FloatValue), 'f', 4, 64)
+				gen.MainCodeF()
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
@@ -264,13 +336,31 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "/":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
 			if dominante == environment.INTEGER {
-				if op2.Value != "0" {
+				if op2.IntValue != 0 {
+
+					lvl1 := gen.NewLabel()
+					lvl2 := gen.NewLabel()
+					lvl3 := gen.NewLabel()
+
+					gen.AddIf(op2.Value, "0", "!=", lvl1)
+					gen.AddGoto(lvl2)
+					gen.AddLabel(lvl1)
+
 					newTemp1 := gen.NewTemp()
 					newTemp2 := gen.NewTemp()
 
@@ -293,6 +383,25 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					gen.AddExpression(newTemp, newTemp1, newTemp2, "/")
 					result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 					result.IntValue = op1.IntValue / op2.IntValue
+					result.StringValue = strconv.Itoa(result.IntValue)
+
+					gen.AddGoto(lvl3)
+					gen.AddLabel(lvl2)
+					gen.AddPrintf("c", "(char)69")  // E
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)111") // o
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+					gen.AddPrintf("c", "(char)77")  // M
+					gen.AddPrintf("c", "(char)97")  // a
+					gen.AddPrintf("c", "(char)116") // t
+					gen.AddPrintf("c", "(char)104") // h
+					gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+					gen.AddBr()
+					gen.AddGoto(lvl3)
+					gen.AddLabel(lvl3)
+					gen.MainCodeF()
 					return result
 				} else {
 					Errores := environment.Errores{
@@ -306,7 +415,16 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					return result
 				}
 			} else if dominante == environment.FLOAT {
-				if op2.Value != "0" {
+				if op2.FloatValue != 0 {
+
+					lvl1 := gen.NewLabel()
+					lvl2 := gen.NewLabel()
+					lvl3 := gen.NewLabel()
+
+					gen.AddIf(op2.Value, "0", "!=", lvl1)
+					gen.AddGoto(lvl2)
+					gen.AddLabel(lvl1)
+
 					newTemp1 := gen.NewTemp()
 					newTemp2 := gen.NewTemp()
 
@@ -328,7 +446,32 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 					gen.AddExpression(newTemp, newTemp1, newTemp2, "/")
 					result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-					result.IntValue = op1.IntValue / op2.IntValue
+					if op1.Type == environment.FLOAT && op2.Type == environment.FLOAT {
+						result.FloatValue = op1.FloatValue / op2.FloatValue
+					} else if op1.Type == environment.FLOAT && op2.Type == environment.INTEGER {
+						result.FloatValue = op1.FloatValue / float64(op2.IntValue)
+					} else if op1.Type == environment.INTEGER && op2.Type == environment.FLOAT {
+						result.FloatValue = float64(op1.IntValue) / op2.FloatValue
+					}
+					result.IntValue = int(result.FloatValue)
+					result.StringValue = strconv.FormatFloat(float64(result.FloatValue), 'f', 4, 64)
+					gen.AddGoto(lvl3)
+					gen.AddLabel(lvl2)
+					gen.AddPrintf("c", "(char)69")  // E
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)111") // o
+					gen.AddPrintf("c", "(char)114") // r
+					gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+					gen.AddPrintf("c", "(char)77")  // M
+					gen.AddPrintf("c", "(char)97")  // a
+					gen.AddPrintf("c", "(char)116") // t
+					gen.AddPrintf("c", "(char)104") // h
+					gen.AddPrintf("c", "(char)32")  // Agrega un espacio
+					gen.AddBr()
+					gen.AddGoto(lvl3)
+					gen.AddLabel(lvl3)
+					gen.MainCodeF()
 					return result
 				} else {
 					Errores := environment.Errores{
@@ -356,8 +499,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "%":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -384,6 +536,8 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				gen.AddExpression(newTemp, "(int)"+newTemp1, "(int)"+newTemp2, "%")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
 				result.IntValue = op1.IntValue % op2.IntValue
+				result.StringValue = strconv.Itoa(result.IntValue)
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				newTemp1 := gen.NewTemp()
@@ -407,7 +561,16 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 
 				gen.AddExpression(newTemp, "(int)"+newTemp1, "(int)"+newTemp2, "%")
 				result = environment.NewValue(newTemp, true, dominante, false, false, false, environment.Variable{})
-				result.IntValue = op1.IntValue % op2.IntValue
+				if op1.Type == environment.FLOAT && op2.Type == environment.FLOAT {
+					result.FloatValue = float64(int(op1.FloatValue) % int(op2.FloatValue))
+				} else if op1.Type == environment.FLOAT && op2.Type == environment.INTEGER {
+					result.FloatValue = float64(int(op1.FloatValue) % op2.IntValue)
+				} else if op1.Type == environment.INTEGER && op2.Type == environment.FLOAT {
+					result.FloatValue = float64(op1.IntValue % int(op2.FloatValue))
+				}
+				result.IntValue = int(result.FloatValue)
+				result.StringValue = strconv.FormatFloat(float64(result.FloatValue), 'f', 4, 64)
+				gen.MainCodeF()
 				return result
 			} else {
 				r1 := fmt.Sprintf("%v", op1.Value)
@@ -424,8 +587,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "<":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -458,7 +630,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				tlabel := gen.NewLabel()
@@ -489,7 +661,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -521,7 +693,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -553,7 +725,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else {
 				Errores := environment.Errores{
@@ -569,8 +741,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case ">":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -603,7 +784,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				tlabel := gen.NewLabel()
@@ -635,7 +816,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -667,7 +848,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -699,7 +880,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else {
 				Errores := environment.Errores{
@@ -715,8 +896,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "<=":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -750,7 +940,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				tlabel := gen.NewLabel()
@@ -782,7 +972,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -814,7 +1004,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -846,7 +1036,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else {
 				Errores := environment.Errores{
@@ -862,8 +1052,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case ">=":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -897,7 +1096,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				tlabel := gen.NewLabel()
@@ -929,7 +1128,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -961,7 +1160,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -993,7 +1192,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else {
 				Errores := environment.Errores{
@@ -1009,8 +1208,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "==":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -1044,7 +1252,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				tlabel := gen.NewLabel()
@@ -1076,7 +1284,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -1108,7 +1316,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -1140,7 +1348,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.BOOLEAN && (op1.Type == op2.Type) {
 				tlabel := gen.NewLabel()
@@ -1172,7 +1380,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.NULL && op1.Type != environment.NULL {
 				if op1.Type == environment.INTEGER {
@@ -1186,7 +1394,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op1.Type == environment.FLOAT {
 					tlabel := gen.NewLabel()
@@ -1199,7 +1407,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op1.Type == environment.STRING {
 					//llamar a generar concatstring
@@ -1237,7 +1445,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op1.Type == environment.CHARACTER {
 					//llamar a generar concatstring
@@ -1275,7 +1483,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op1.Type == environment.BOOLEAN {
 					tlabel := gen.NewLabel()
@@ -1307,7 +1515,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				}
 
@@ -1323,7 +1531,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op2.Type == environment.FLOAT {
 					tlabel := gen.NewLabel()
@@ -1336,7 +1544,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op2.Type == environment.STRING {
 					//llamar a generar concatstring
@@ -1374,7 +1582,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op2.Type == environment.CHARACTER {
 					//llamar a generar concatstring
@@ -1412,7 +1620,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op2.Type == environment.BOOLEAN {
 					tlabel := gen.NewLabel()
@@ -1444,7 +1652,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				}
 
@@ -1462,8 +1670,17 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "!=":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			//validar tipo dominante
 			dominante = tabla_dominante[op1.Type][op2.Type]
 			//valida el tipo
@@ -1497,7 +1714,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.FLOAT {
 				tlabel := gen.NewLabel()
@@ -1529,7 +1746,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.STRING && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -1561,7 +1778,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.CHARACTER && (op1.Type == op2.Type) {
 				//llamar a generar concatstring
@@ -1593,7 +1810,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.BOOLEAN && (op1.Type == op2.Type) {
 				tlabel := gen.NewLabel()
@@ -1625,7 +1842,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				result.FalseLabel.PushBack(flabel)
 				result.Val.FEti = flabel
 				result.Val.TEti = tlabel
-
+				gen.MainCodeF()
 				return result
 			} else if dominante == environment.NULL && op1.Type != environment.NULL {
 				if op1.Type == environment.INTEGER {
@@ -1639,7 +1856,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op1.Type == environment.FLOAT {
 					tlabel := gen.NewLabel()
@@ -1652,7 +1869,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op1.Type == environment.STRING {
 					//llamar a generar concatstring
@@ -1690,7 +1907,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op1.Type == environment.CHARACTER {
 					//llamar a generar concatstring
@@ -1728,7 +1945,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op1.Type == environment.BOOLEAN {
 					tlabel := gen.NewLabel()
@@ -1760,7 +1977,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				}
 
@@ -1776,7 +1993,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op2.Type == environment.FLOAT {
 					tlabel := gen.NewLabel()
@@ -1789,7 +2006,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op2.Type == environment.STRING {
 					//llamar a generar concatstring
@@ -1827,7 +2044,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op2.Type == environment.CHARACTER {
 					//llamar a generar concatstring
@@ -1865,7 +2082,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				} else if op2.Type == environment.BOOLEAN {
 					tlabel := gen.NewLabel()
@@ -1897,7 +2114,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 					result.FalseLabel.PushBack(flabel)
 					result.Val.FEti = flabel
 					result.Val.TEti = tlabel
-
+					gen.MainCodeF()
 					return result
 				}
 
@@ -1915,6 +2132,9 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	case "&&":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			newTemp := gen.NewTemp()
 			V1 := gen.NewLabel()
 			F1 := gen.NewLabel()
@@ -1924,6 +2144,9 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			auxF := gen.NewLabel()
 
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			if op1.Type == environment.BOOLEAN {
 				if op1.Value != "" {
 					gen.AddIf(op1.Value, "1", "==", V1)
@@ -1944,7 +2167,13 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				return result
 			}
 
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			if op2.Type == environment.BOOLEAN {
 				if op1.Value != "" && op2.Value != "" {
 					gen.AddIf(op2.Value, "1", "==", V2)
@@ -2022,10 +2251,14 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			result.Val.FEti = auxF
 			result.Val.TEti = auxV
 
+			gen.MainCodeF()
 			return result
 		}
 	case "||":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			newTemp := gen.NewTemp()
 			V1 := gen.NewLabel()
 			F1 := gen.NewLabel()
@@ -2033,8 +2266,13 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			F2 := gen.NewLabel()
 			auxV := gen.NewLabel()
 			auxF := gen.NewLabel()
-
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			if op1.Type == environment.BOOLEAN {
 				if op1.Value != "" {
 					gen.AddIf(op1.Value, "1", "==", V1)
@@ -2061,7 +2299,13 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 				return result
 			}
 
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op2 = o.Op_der.Ejecutar(ast, gen)
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			if op2.Type == environment.BOOLEAN {
 				if op1.Value != "" && op2.Value != "" {
 					gen.AddIf(op2.Value, "1", "==", V2)
@@ -2122,13 +2366,19 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 			result.FalseLabel.PushBack(auxF)
 			result.Val.FEti = auxF
 			result.Val.TEti = auxV
-
+			gen.MainCodeF()
 			return result
 		}
 	case "!":
 		{
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 			op1 = o.Op_izq.Ejecutar(ast, gen)
 			//validar tipo dominante
+			if !ast.IsMain(ast.ObtenerAmbito()) {
+				gen.MainCodeT()
+			}
 
 			if op1.Type == environment.BOOLEAN {
 
@@ -2148,7 +2398,7 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 						result = environment.NewValue("0", false, environment.BOOLEAN, false, false, false, environment.Variable{})
 					}
 				}
-
+				gen.MainCodeF()
 				return result
 			} else {
 				Errores := environment.Errores{
@@ -2164,5 +2414,6 @@ func (o Operation) Ejecutar(ast *environment.AST, gen *generator.Generator) envi
 		}
 	}
 
+	gen.MainCodeF()
 	return result
 }

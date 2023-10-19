@@ -64,7 +64,7 @@ func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST, gen *generator.G
 		Posicion: ast.PosicionStack,
 	}
 
-	gen.AddComment("Declaracion de Vector")
+	gen.AddComment("Datos Compuestos Arreglo-Declaracion-Lista")
 
 	listavalorespunteros := list.New()
 	for e := listavalores.Front(); e != nil; e = e.Next() {
@@ -87,6 +87,7 @@ func (v ArregloDeclaracionLista) Ejecutar(ast *environment.AST, gen *generator.G
 	}
 
 	ast.GuardarArreglo(vector)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

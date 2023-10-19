@@ -23,6 +23,7 @@ func (v ArregloDeclaracionId) Ejecutar(ast *environment.AST, gen *generator.Gene
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Datos Compuestos Arreglo-Declaracion-Id")
 	listavalores := list.New()
 	secund := ast.GetArreglo(v.Secu)
 	listavalorespt := list.New()
@@ -83,6 +84,7 @@ func (v ArregloDeclaracionId) Ejecutar(ast *environment.AST, gen *generator.Gene
 	}
 
 	ast.GuardarArreglo(vector)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

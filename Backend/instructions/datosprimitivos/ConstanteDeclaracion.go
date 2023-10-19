@@ -24,15 +24,20 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gene
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	symbol := environment.Symbol{
-		Lin:      v.Lin,
-		Col:      v.Col,
-		Tipo:     v.Type,
-		Scope:    ast.ObtenerAmbito(),
-		TipoDato: environment.VARIABLE,
-		Posicion: ast.PosicionStack,
-		Valor:    value.Value,
-		ValorInt: value.IntValue,
+		Lin:         v.Lin,
+		Col:         v.Col,
+		Tipo:        v.Type,
+		Scope:       ast.ObtenerAmbito(),
+		TipoDato:    environment.VARIABLE,
+		Posicion:    ast.PosicionStack,
+		Valor:       value.Value,
+		ValorInt:    value.IntValue,
+		ValorFloat:  value.FloatValue,
+		ValorString: value.StringValue,
 	}
 	Variable := environment.Variable{
 		Name:        v.Name,
@@ -108,7 +113,7 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gene
 		Variable.Symbols.Tipo = environment.INTEGER
 	}
 
-	gen.AddComment("Declaracion de Constante")
+	gen.AddComment("Datos Primitivios Declaracion de Constante")
 
 	if value.Type == environment.BOOLEAN {
 		gen.AddSetStack(strconv.Itoa(symbol.Posicion), value.Value)
@@ -120,6 +125,7 @@ func (v ConstanteDeclaracion) Ejecutar(ast *environment.AST, gen *generator.Gene
 	}
 
 	ast.GuardarVariable(Variable)
+	gen.AddBr()
 	gen.MainCodeF()
 	return value
 }

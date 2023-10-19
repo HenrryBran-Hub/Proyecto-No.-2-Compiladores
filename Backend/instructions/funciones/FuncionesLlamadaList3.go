@@ -1,6 +1,8 @@
 package funciones
 
 import (
+	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
 )
 
@@ -16,15 +18,24 @@ func NewFuncionesLlamadaList3(lin int, col int, name string, expr interfaces.Exp
 	return FuncionesLlamadaList3{lin, col, name, expr, lista}
 }
 
-/*
-func (v FuncionesLlamadaList3) Ejecutar(ast *environment.AST) interface{} {
-	valor := v.Expr.Ejecutar(ast)
+func (v FuncionesLlamadaList3) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	valor := v.Expr.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	symbol := environment.Symbol{
-		Lin:   v.Lin,
-		Col:   v.Col,
-		Tipo:  valor.Tipo,
-		Valor: valor.Valor,
-		Scope: ast.ObtenerAmbito(),
+		Lin:         v.Lin,
+		Col:         v.Col,
+		Tipo:        valor.Type,
+		Valor:       valor.Value,
+		ValorInt:    valor.IntValue,
+		ValorFloat:  valor.FloatValue,
+		ValorString: valor.StringValue,
+		Scope:       ast.ObtenerAmbito(),
 	}
 
 	variablefuncion := environment.VariableFuncion{
@@ -37,8 +48,7 @@ func (v FuncionesLlamadaList3) Ejecutar(ast *environment.AST) interface{} {
 	}
 
 	ast.Lista_Funciones_Par.PushBack(variablefuncion)
-	v.Lista.Ejecutar(ast)
+	gen.MainCodeF()
+	v.Lista.Ejecutar(ast, gen)
 	return true
 }
-
-*/

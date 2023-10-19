@@ -24,6 +24,10 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		gen.MainCodeT()
 	}
 	value := v.Value.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	gen.AddComment("Estoy dentro de la sentencia Asignacion-Suma")
 	Variable := ast.GetVariable(v.Name)
 	if Variable != nil && Variable.Mutable && Variable.Symbols.Tipo == value.Type {
 		//valida el tipo
@@ -32,13 +36,23 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			newTemp := gen.NewTemp()
 			gen.AddGetStack(newTemp, strconv.Itoa(Variable.Symbols.Posicion))
 			newTemp2 := gen.NewTemp()
-			gen.AddExpression(newTemp2, newTemp, value.Value, "+")
-			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp2)
+			if value.IsTemp {
+				gen.AddGetStack(newTemp2, strconv.Itoa(value.Val.Symbols.Posicion))
+			} else {
+				gen.AddAssign(newTemp2, value.Value)
+			}
+			newTemp3 := gen.NewTemp()
+			gen.AddExpression(newTemp3, newTemp, newTemp2, "+")
+			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp3)
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Valor = newTemp2
+			Variable.Symbols.Valor = newTemp3
+			Variable.Symbols.ValorInt = Variable.Symbols.ValorInt + value.IntValue
+			Variable.Symbols.ValorFloat = float64(Variable.Symbols.ValorInt)
+			Variable.Symbols.ValorString = strconv.Itoa(Variable.Symbols.ValorInt)
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.AddBr()
 			gen.MainCodeF()
 			return nil
 		} else if Variable.Symbols.Tipo == environment.FLOAT {
@@ -46,13 +60,23 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			newTemp := gen.NewTemp()
 			gen.AddGetStack(newTemp, strconv.Itoa(Variable.Symbols.Posicion))
 			newTemp2 := gen.NewTemp()
-			gen.AddExpression(newTemp2, newTemp, value.Value, "+")
-			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp2)
+			if value.IsTemp {
+				gen.AddGetStack(newTemp2, strconv.Itoa(value.Val.Symbols.Posicion))
+			} else {
+				gen.AddAssign(newTemp2, value.Value)
+			}
+			newTemp3 := gen.NewTemp()
+			gen.AddExpression(newTemp3, newTemp, newTemp2, "+")
+			gen.AddSetStack(strconv.Itoa(Variable.Symbols.Posicion), newTemp3)
 			Variable.Symbols.Lin = v.Lin
 			Variable.Symbols.Col = v.Col
-			Variable.Symbols.Valor = newTemp2
+			Variable.Symbols.Valor = newTemp3
+			Variable.Symbols.ValorInt = Variable.Symbols.ValorInt + value.IntValue
+			Variable.Symbols.ValorFloat = Variable.Symbols.ValorFloat + value.FloatValue
+			Variable.Symbols.ValorString = strconv.FormatFloat(Variable.Symbols.ValorFloat, 'f', -1, 64)
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.AddBr()
 			gen.MainCodeF()
 			return nil
 		} else if Variable.Symbols.Tipo == environment.STRING {
@@ -82,6 +106,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Variable.Symbols.Valor = tmp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.AddBr()
 			gen.MainCodeF()
 			return nil
 		} else {
@@ -113,6 +138,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 			Variable.Symbols.Valor = newTemp2
 			Variable.Symbols.Scope = ast.ObtenerAmbito()
 			ast.ActualizarVariable(Variable)
+			gen.AddBr()
 			gen.MainCodeF()
 		}
 	}
@@ -176,6 +202,7 @@ func (v AsignacionSuma) Ejecutar(ast *environment.AST, gen *generator.Generator)
 		return nil
 	}
 
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

@@ -19,6 +19,7 @@ func (o MatrizListaNivel) Ejecutar(ast *environment.AST, gen *generator.Generato
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddComment("Datos Compuestos Matriz-Lista-Nivel")
 	ast.AumentarNivel()
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
@@ -27,6 +28,7 @@ func (o MatrizListaNivel) Ejecutar(ast *environment.AST, gen *generator.Generato
 	if !ast.IsMain(ast.ObtenerAmbito()) {
 		gen.MainCodeT()
 	}
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

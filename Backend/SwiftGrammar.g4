@@ -13,6 +13,7 @@ options {
     import "Backend/instructions/funciones"
     import "Backend/instructions/sentencias"
     import "strings"
+   
 }
 
 s returns [[]interface{} code]
@@ -52,8 +53,8 @@ instruction returns [interfaces.Instruction inst]
 | printstmt (PUNTOCOMA)? { $inst = $printstmt.prnt}
 | matrizcontrol (PUNTOCOMA)? { $inst = $matrizcontrol.matct}
 // | structcontrol { $inst = $structcontrol.struck}
-// | funciondeclaracioncontrol { $inst = $funciondeclaracioncontrol.fdc}
-// | funcionllamadacontrol { $inst = $funcionllamadacontrol.flctl}
+| funciondeclaracioncontrol { $inst = $funciondeclaracioncontrol.fdc}
+| funcionllamadacontrol { $inst = $funcionllamadacontrol.flctl}
 // | structexpr (PUNTOCOMA)? { $inst = $structexpr.strexpr}
 // | asignacionparametrostruct (PUNTOCOMA)? { $inst = $asignacionparametrostruct.llmstruasig}
 // | llamadafuncionstructcontrol (PUNTOCOMA)? { $inst = $llamadafuncionstructcontrol.llmstrufun}
@@ -93,7 +94,7 @@ instructionint returns [interfaces.Instruction insint]
 | vectorremover (PUNTOCOMA)? { $insint = $vectorremover.vermct }
 | printstmt (PUNTOCOMA)? { $insint = $printstmt.prnt}
 | matrizcontrol (PUNTOCOMA)? { $insint = $matrizcontrol.matct}
-// | funcionllamadacontrol { $insint = $funcionllamadacontrol.flctl}
+| funcionllamadacontrol { $insint = $funcionllamadacontrol.flctl}
 // | structexpr (PUNTOCOMA)? { $insint = $structexpr.strexpr}
 // | asignacionparametrostruct (PUNTOCOMA)? { $insint = $asignacionparametrostruct.llmstruasig}
 // | llamadafuncionstructcontrol (PUNTOCOMA)? { $insint = $llamadafuncionstructcontrol.llmstrufun}
@@ -208,10 +209,10 @@ expr returns [interfaces.Expression e]
 | vectorvacio { $e = $vectorvacio.veemct}
 | vectorcount { $e = $vectorcount.vecnct}
 | vectoraccess { $e = $vectoraccess.vepposct}
-// | intembebida { $e = $intembebida.intemb}
-// | floatembebida { $e = $floatembebida.floemb}
-// | stringembebida { $e = $stringembebida.stremb}
-// | funcionllamadacontrolConRetorno { $e = $funcionllamadacontrolConRetorno.flctlret}
+| intembebida { $e = $intembebida.intemb}
+| floatembebida { $e = $floatembebida.floemb}
+| stringembebida { $e = $stringembebida.stremb}
+| funcionllamadacontrolConRetorno { $e = $funcionllamadacontrolConRetorno.flctlret}
 // | llamadastruct { $e = $llamadastruct.llmstru}
 // | llamadafuncionstructcontrolret { $e = $llamadafuncionstructcontrolret.llmstrufunret}
 ;
@@ -561,106 +562,109 @@ listamatrizaddsub returns [interfaces.Expression lmas]
 // };
 
 
-// //CREACION DE FUNCIONES
-// funciondeclaracioncontrol returns [interfaces.Instruction fdc]
-// : FUNCION ID_VALIDO PARIZQ listaparametro PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
-// {
-//     $fdc = instructions.NewFuncionesDeclaracionRP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $tipodato.tipo, $blockinterno.blkint)
-// }
-// | FUNCION ID_VALIDO PARIZQ  PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
-// {
-//     $fdc = instructions.NewFuncionesDeclaracionR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $tipodato.tipo, $blockinterno.blkint)
-// }
-// | FUNCION ID_VALIDO PARIZQ listaparametro PARDER LLAVEIZQ blockinterno LLAVEDER 
-// {
-//    $fdc = instructions.NewFuncionesDeclaracionP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $blockinterno.blkint)
-// }
-// | FUNCION ID_VALIDO PARIZQ PARDER LLAVEIZQ blockinterno LLAVEDER 
-// {
-//     $fdc = instructions.NewFuncionesDeclaracion($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $blockinterno.blkint)
-// }
-// ;
+//CREACION DE FUNCIONES
+funciondeclaracioncontrol returns [interfaces.Instruction fdc]
+: FUNCION ID_VALIDO PARIZQ listaparametro PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
+{
+    $fdc = funciones.NewFuncionesDeclaracionRP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $tipodato.tipo, $blockinterno.blkint)
+}
+| FUNCION ID_VALIDO PARIZQ  PARDER RETORNO tipodato LLAVEIZQ blockinterno LLAVEDER 
+{
+    $fdc = funciones.NewFuncionesDeclaracionR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $tipodato.tipo, $blockinterno.blkint)
+}
+| FUNCION ID_VALIDO PARIZQ listaparametro PARDER LLAVEIZQ blockinterno LLAVEDER 
+{
+   $fdc = funciones.NewFuncionesDeclaracionP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametro.listparfun, $blockinterno.blkint)
+}
+| FUNCION ID_VALIDO PARIZQ PARDER LLAVEIZQ blockinterno LLAVEDER 
+{
+    $fdc = funciones.NewFuncionesDeclaracion($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $blockinterno.blkint)
+}
+;
 
-// listaparametro returns [interfaces.Instruction listparfun]
-// : op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato COMA op3=listaparametro 
-// {
-//     if $op != nil{
-//         if $INOUT != nil{
-//             $listparfun = instructions.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true, true, $op3.listparfun )
-//         }else {
-//             $listparfun = instructions.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true, $op3.listparfun )
-//         } 
-//     }else{
-//         if $INOUT != nil{
-//             $listparfun = instructions.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false, $op3.listparfun )
-//         }else {
-//             $listparfun = instructions.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false,$op3.listparfun )
-//         } 
-//     }      
-// }
-// | op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato 
-// {
-//     if $op != nil{
-//         if $INOUT != nil{
-//             $listparfun = instructions.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true , true)
-//         }else {
-//             $listparfun = instructions.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true)
-//         } 
-//     }else{
-//         if $INOUT != nil{
-//             $listparfun = instructions.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false)
-//         }else {
-//             $listparfun = instructions.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false)
-//     } 
-//     }
+listaparametro returns [interfaces.Instruction listparfun]
+: op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato COMA op3=listaparametro 
+{
+    if $op != nil{
+        if $INOUT != nil{
+            $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true, true, $op3.listparfun )
+        }else {
+            $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true, $op3.listparfun )
+        } 
+    }else{
+        if $INOUT != nil{
+            $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false, $op3.listparfun )
+        }else {
+            $listparfun = funciones.NewFuncionesListaParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false,$op3.listparfun )
+        } 
+    }      
+}
+| op=(ID_VALIDO | GUIONBAJO)? op2=ID_VALIDO DOS_PUNTOS INOUT? tipodato 
+{
+    if $op != nil{
+        if $INOUT != nil{
+            $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, true , true)
+        }else {
+            $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, $op.text, $op2.text, $tipodato.tipo, false, true)
+        } 
+    }else{
+        if $INOUT != nil{
+            $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, true, false)
+        }else {
+            $listparfun = funciones.NewFuncionesParametro($op2.line, $op2.pos, "", $op2.text, $tipodato.tipo, false, false)
+    } 
+    }
     
-// };
+}
+;
 
-// funcionllamadacontrol returns [interfaces.Instruction flctl]
-// : ID_VALIDO PARIZQ listaparametrosllamada PARDER 
-// {
-//     $flctl = instructions.NewFuncionesControlP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
-// }
-// | ID_VALIDO PARIZQ PARDER 
-// {
-//     $flctl = instructions.NewFuncionesControl($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text )
-// };
+funcionllamadacontrol returns [interfaces.Instruction flctl]
+: ID_VALIDO PARIZQ listaparametrosllamada PARDER 
+{
+    $flctl = funciones.NewFuncionesControlP($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
+}
+| ID_VALIDO PARIZQ PARDER 
+{
+    $flctl = funciones.NewFuncionesControl($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text )
+}
+;
 
-// funcionllamadacontrolConRetorno returns [interfaces.Expression flctlret]
-// : ID_VALIDO PARIZQ listaparametrosllamada PARDER 
-// {
-//     $flctlret = instructions.NewFuncionesControlPR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
-// }
-// | ID_VALIDO PARIZQ PARDER 
-// {
-//     $flctlret = instructions.NewFuncionesControlR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text )
-// };
+funcionllamadacontrolConRetorno returns [interfaces.Expression flctlret]
+: ID_VALIDO PARIZQ listaparametrosllamada PARDER 
+{
+    $flctlret = funciones.NewFuncionesControlPR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $listaparametrosllamada.lpll)
+}
+| ID_VALIDO PARIZQ PARDER 
+{
+    $flctlret = funciones.NewFuncionesControlR($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text )
+}
+;
 
-// listaparametrosllamada returns [interfaces.Instruction lpll]
-// : DIRME ID_VALIDO COMA op2=listaparametrosllamada 
-// {
-//     $lpll = instructions.NewFuncionesLlamadaList1($DIRME.line, $DIRME.pos, $ID_VALIDO.text, $op2.lpll)    
-// }
-// | DIRME ID_VALIDO
-// {
-//     $lpll = instructions.NewFuncionesLlamadaList2($DIRME.line, $DIRME.pos, $ID_VALIDO.text)    
-// }
-// | (ID_VALIDO op=DOS_PUNTOS)? expr COMA op2=listaparametrosllamada 
-// {
-//     if $op != nil{
-//         $lpll = instructions.NewFuncionesLlamadaList3($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e, $op2.lpll)
-//     }else{
-//         $lpll = instructions.NewFuncionesLlamadaList4($COMA.line, $COMA.pos, $expr.e, $op2.lpll)
-//     }
-// }
-// | (ID_VALIDO op=DOS_PUNTOS)? expr
-// {
-//     if $op != nil{
-//         $lpll = instructions.NewFuncionesLlamadaList5($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)
-//     }else{
-//         $lpll = instructions.NewFuncionesLlamadaList6($expr.e)
-//     }     
-// };
+listaparametrosllamada returns [interfaces.Instruction lpll]
+: DIRME ID_VALIDO COMA op2=listaparametrosllamada 
+{
+    $lpll = funciones.NewFuncionesLlamadaList1($DIRME.line, $DIRME.pos, $ID_VALIDO.text, $op2.lpll)    
+}
+| DIRME ID_VALIDO
+{
+    $lpll = funciones.NewFuncionesLlamadaList2($DIRME.line, $DIRME.pos, $ID_VALIDO.text)    
+}
+| (ID_VALIDO op=DOS_PUNTOS)? expr COMA op2=listaparametrosllamada 
+{
+    if $op != nil{
+        $lpll = funciones.NewFuncionesLlamadaList3($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e, $op2.lpll)
+    }else{
+        $lpll = funciones.NewFuncionesLlamadaList4($COMA.line, $COMA.pos, $expr.e, $op2.lpll)
+    }
+}
+| (ID_VALIDO op=DOS_PUNTOS)? expr
+{
+    if $op != nil{
+        $lpll = funciones.NewFuncionesLlamadaList5($ID_VALIDO.line, $ID_VALIDO.pos, $ID_VALIDO.text, $expr.e)
+    }else{
+        $lpll = funciones.NewFuncionesLlamadaList6($expr.e)
+    }     
+};
 
 // //CREACION DE EMBEBIDAS
 
@@ -670,11 +674,11 @@ listamatrizaddsub returns [interfaces.Expression lmas]
 printstmt returns [interfaces.Instruction prnt]
 : PRINT PARIZQ listaexpresions PARDER { $prnt = funciones.NewPrint($PRINT.line,$PRINT.pos,$listaexpresions.blkparf)};
 
-// intembebida returns [interfaces.Expression intemb]
-// : INT PARIZQ expr PARDER { $intemb = instructions.NewFuncionIntEmbebida($expr.e)};
+intembebida returns [interfaces.Expression intemb]
+: INT PARIZQ expr PARDER { $intemb = funciones.NewFuncionIntEmbebida($expr.e)};
 
-// floatembebida returns [interfaces.Expression floemb]
-// : FLOAT PARIZQ expr PARDER { $floemb = instructions.NewFuncionFloatEmbebida($expr.e)};
+floatembebida returns [interfaces.Expression floemb]
+: FLOAT PARIZQ expr PARDER { $floemb = funciones.NewFuncionFloatEmbebida($expr.e)};
 
-// stringembebida returns [interfaces.Expression stremb]
-// : STRING PARIZQ expr PARDER { $stremb = instructions.NewFuncionStringEmbebida($expr.e)};
+stringembebida returns [interfaces.Expression stremb]
+: STRING PARIZQ expr PARDER { $stremb = funciones.NewFuncionStringEmbebida($expr.e)};

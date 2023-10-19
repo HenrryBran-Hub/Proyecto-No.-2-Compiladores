@@ -1,5 +1,11 @@
 package funciones
 
+import (
+	"Backend/environment"
+	"Backend/generator"
+	"strconv"
+)
+
 type FuncionesControlR struct {
 	Lin  int
 	Col  int
@@ -10,8 +16,7 @@ func NewFuncionesControlR(lin int, col int, name string) FuncionesControlR {
 	return FuncionesControlR{lin, col, name}
 }
 
-/*
-func (v FuncionesControlR) Ejecutar(ast *environment.AST) environment.Symbol {
+func (v FuncionesControlR) Ejecutar(ast *environment.AST, gen *generator.Generator) environment.Value {
 	existfun := ast.GetFuncion(v.Name)
 	if existfun == nil {
 		Errores := environment.Errores{
@@ -23,10 +28,10 @@ func (v FuncionesControlR) Ejecutar(ast *environment.AST) environment.Symbol {
 		}
 		ast.ErroresHTML(Errores)
 		ast.Lista_Funciones_Par.Init()
-		return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: existfun.Tipo, Valor: nil}
+		return environment.NewValue("0", false, environment.NULL, false, false, false, environment.Variable{})
 	}
 
-	if existfun.IsParame == true && ast.Lista_Funciones_Par.Len() > 0 {
+	if existfun.IsParame && ast.Lista_Funciones_Par.Len() > 0 {
 		Errores := environment.Errores{
 			Descripcion: "La funcion no debe de tener parametros",
 			Fila:        strconv.Itoa(v.Lin),
@@ -36,66 +41,21 @@ func (v FuncionesControlR) Ejecutar(ast *environment.AST) environment.Symbol {
 		}
 		ast.ErroresHTML(Errores)
 		ast.Lista_Funciones_Par.Init()
-		return environment.Symbol{Lin: v.Lin, Col: v.Col, Tipo: existfun.Tipo, Valor: nil}
+		return environment.NewValue("0", false, environment.NULL, false, false, false, environment.Variable{})
 	}
 
-	ast.AumentarAmbito("Funcion-" + v.Name)
-	var retorno environment.Symbol
-	for _, inst := range existfun.CodigoFuncion {
-		if inst == nil {
-			continue
-		}
-		instruction, ok := inst.(interfaces.Instruction)
-		if !ok {
-			continue
-		}
-		instruction.Ejecutar(ast)
-		rvari := ast.GetVariable("Return")
-		if rvari != nil {
-			retorno = rvari.Symbols
-			break
-		}
-		revari := ast.GetVariable("ReturnExp")
-		if revari != nil {
-			retorno = revari.Symbols
-			break
-		}
-
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
 	}
 
-	listavariablesinterna2 := list.New()
-	for e := ast.Lista_Variables.Front(); e != nil; e = e.Next() {
-		listavariablesinterna2.PushBack(e.Value)
-	}
-	ast.DisminuirAmbito()
+	newtmp := gen.NewTemp()
+	gen.AddExpression("P", "P", strconv.Itoa(ast.PosicionStack), "+")
+	gen.AddCall(v.Name)
+	gen.AddGetStack(newtmp, "(int)P")
+	gen.AddExpression("P", "P", strconv.Itoa(ast.PosicionStack), "-")
+	gen.AddBr()
 
-	if existfun.IsReturn == true {
-		if retorno.Tipo == existfun.Tipo {
-			ast.Lista_Funciones_Par.Init()
-			return environment.Symbol{Lin: retorno.Lin, Col: retorno.Col, Tipo: retorno.Tipo, Valor: retorno.Valor}
-		} else {
-			Errores := environment.Errores{
-				Descripcion: "El tipo de dato devuelto no es del tipo de la funcion",
-				Fila:        strconv.Itoa(v.Lin),
-				Columna:     strconv.Itoa(v.Col),
-				Tipo:        "Error Semantico",
-				Ambito:      ast.ObtenerAmbito(),
-			}
-			ast.ErroresHTML(Errores)
-			ast.Lista_Funciones_Par.Init()
-			return environment.Symbol{Lin: retorno.Lin, Col: retorno.Col, Tipo: retorno.Tipo, Valor: nil}
-		}
-	} else {
-		Errores := environment.Errores{
-			Descripcion: "Esta llamando una funcion sin retorno a la operacion",
-			Fila:        strconv.Itoa(v.Lin),
-			Columna:     strconv.Itoa(v.Col),
-			Tipo:        "Error Semantico",
-			Ambito:      ast.ObtenerAmbito(),
-		}
-		ast.ErroresHTML(Errores)
-		ast.Lista_Funciones_Par.Init()
-		return environment.Symbol{Lin: retorno.Lin, Col: retorno.Col, Tipo: retorno.Tipo, Valor: nil}
-	}
+	gen.MainCodeF()
+	ast.Lista_Funciones_Par.Init()
+	return environment.NewValue(newtmp, false, existfun.Tipo, false, false, false, environment.Variable{})
 }
-*/

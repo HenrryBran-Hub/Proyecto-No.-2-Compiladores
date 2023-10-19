@@ -19,19 +19,21 @@ func NewSentenciaIf(lin int, col int, expresion interfaces.Expression, bloque []
 }
 
 func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
-	condicion := v.Expresion.Ejecutar(ast, gen)
 	ambito := ast.ObtenerAmbito()
 	ambitonuevo := "If" + "-" + ambito
 	ast.AumentarAmbito(ambitonuevo)
 	if !ast.IsMain(ambitonuevo) {
 		gen.MainCodeT()
 	}
+	condicion := v.Expresion.Ejecutar(ast, gen)
+	if !ast.IsMain(ambitonuevo) {
+		gen.MainCodeT()
+	}
 	var retornable int = 0
-	var reexp environment.Symbol
 	var errorgeneral int = 0
 
+	gen.AddComment("Estoy dentro de la sentencia If ")
 	if condicion.Type == environment.BOOLEAN {
-		gen.AddComment("Estoy dentro de la sentencia if ")
 		if condicion.Value == "1" || condicion.Value == "0" {
 			vet := gen.NewLabel()
 			fet := gen.NewLabel()
@@ -46,6 +48,9 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				instruction, ok := inst.(interfaces.Instruction)
 				if !ok {
 					continue
+				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
 				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
@@ -68,7 +73,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -98,6 +102,9 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -112,7 +119,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				rvari := ast.GetVariable("Return")
 				if rvari != nil {
 					retornable = 2
-					reexp = rvari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -120,7 +126,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -149,6 +154,9 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				if !ok {
 					continue
 				}
+				if !ast.IsMain(ambitonuevo) {
+					gen.MainCodeT()
+				}
 				instruction.Ejecutar(ast, gen)
 				if !ast.IsMain(ambitonuevo) {
 					gen.MainCodeT()
@@ -170,7 +178,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 				revari := ast.GetVariable("ReturnExp")
 				if revari != nil {
 					retornable = 3
-					reexp = revari.Symbols
 					if ast.Lista_Tranferencias.Len() == 0 {
 						errorgeneral = 1
 					}
@@ -202,40 +209,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 	}
 	ast.DisminuirAmbito()
 	tamanio := ast.Pila_Variables.Len()
-	if tamanio > 1 {
-		if retornable == 2 {
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  environment.BOOLEAN,
-				Valor: true,
-				Scope: ast.ObtenerAmbito(),
-			}
-			Variable := environment.Variable{
-				Name:        "Return",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
-		if retornable == 3 {
-			symbol := environment.Symbol{
-				Lin:   v.Lin,
-				Col:   v.Col,
-				Tipo:  reexp.Tipo,
-				Valor: reexp.Valor,
-				Scope: ast.ObtenerAmbito(),
-			}
-			Variable := environment.Variable{
-				Name:        "ReturnExp",
-				Symbols:     symbol,
-				Mutable:     false,
-				TipoSimbolo: "Sentencia de Transferencia",
-			}
-			ast.GuardarVariable(Variable)
-		}
-	}
 	if tamanio == 1 && retornable == 3 {
 		Errores := environment.Errores{
 			Descripcion: "Estas retornando un valor fuera de una funcion",
@@ -247,8 +220,6 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 		ast.ErroresHTML(Errores)
 	}
 
-	gen.MainCodeF()
-
 	if errorgeneral == 1 {
 		Errores := environment.Errores{
 			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
@@ -259,5 +230,7 @@ func (v SentenciaIf) Ejecutar(ast *environment.AST, gen *generator.Generator) in
 		}
 		ast.ErroresHTML(Errores)
 	}
+	gen.AddBr()
+	gen.MainCodeF()
 	return nil
 }

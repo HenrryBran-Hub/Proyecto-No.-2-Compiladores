@@ -17,7 +17,13 @@ func NewArregloRemoveLast(line, col int, remove string) ArregloRemoveLast {
 }
 
 func (v ArregloRemoveLast) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	Remove := ast.GetArreglo(v.Remove)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	if Remove == nil {
 		Errores := environment.Errores{
 			Descripcion: "El arreglo que esta intentando quitar el ultimo valor no existe: \n Arreglo: " + v.Remove,
@@ -52,5 +58,11 @@ func (v ArregloRemoveLast) Ejecutar(ast *environment.AST, gen *generator.Generat
 	}
 
 	ast.ActualizarArreglo(v.Remove, Remove)
+	gen.RemoveLastVector()
+	//concat
+	gen.AddComment("Datos Compuestos Arreglo-Remove-Last" + Remove.Name)
+	gen.AddCall("RemoveLastVector")
+	gen.AddBr()
+	gen.MainCodeF()
 	return nil
 }

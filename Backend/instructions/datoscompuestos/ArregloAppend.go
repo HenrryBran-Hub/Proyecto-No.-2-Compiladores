@@ -52,13 +52,26 @@ func (v ArregloAppend) Ejecutar(ast *environment.AST, gen *generator.Generator) 
 	}
 
 	arreglo.Elements.PushBack(expre)
-	newTemp := gen.NewTemp()
-	gen.AddAssign(newTemp, "H")           //Creamos un nuevo puntero Head para que en este vayan los valores
-	gen.AddSetHeap("(int)H", expre.Value) // Agregamos el caracter de escape
-	gen.AddExpression("H", "H", "1", "+") // agregamos una nueva expresion igual que arriba de addexpression
+
+	//llamar a generar concatstring
+	gen.AppendVector()
+	//concat
+	gen.AddComment("Datos Compuestos Arreglo-Append")
+	envSize := strconv.Itoa(ast.PosicionStack)
+	tmp1 := gen.NewTemp()
+	tmp2 := gen.NewTemp()
+	gen.AddExpression(tmp1, "P", envSize, "+")
+	gen.AddExpression(tmp1, tmp1, "1", "+")
+	gen.AddSetStack("(int)"+tmp1, expre.Value)
+	gen.AddExpression("P", "P", envSize, "+")
+	gen.AddCall("AppendVector")
+	gen.AddGetStack(tmp2, "(int)P")
+	gen.AddExpression("P", "P", envSize, "-")
 	gen.AddBr()
-	arreglo.ElementsPt.PushBack(newTemp)
+	arreglo.ElementsPt.PushBack(tmp2)
 
 	ast.ActualizarArreglo(v.Name, arreglo)
+	gen.AddBr()
+	gen.MainCodeF()
 	return nil
 }

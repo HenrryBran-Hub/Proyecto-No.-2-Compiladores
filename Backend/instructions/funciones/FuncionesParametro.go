@@ -2,6 +2,7 @@ package funciones
 
 import (
 	"Backend/environment"
+	"Backend/generator"
 )
 
 type FuncionesParametro struct {
@@ -18,8 +19,7 @@ func NewFuncionesParametro(lin int, col int, externointerno, name string, tipo e
 	return FuncionesParametro{lin, col, externointerno, name, tipo, inout, ei}
 }
 
-/*
-func (v FuncionesParametro) Ejecutar(ast *environment.AST) interface{} {
+func (v FuncionesParametro) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	symbol := environment.Symbol{
 		Lin:   v.Lin,
 		Col:   v.Col,
@@ -39,6 +39,5 @@ func (v FuncionesParametro) Ejecutar(ast *environment.AST) interface{} {
 	}
 
 	ast.Lista_Funciones_Var.PushBack(variablefuncion)
-	return true
+	return nil
 }
-*/

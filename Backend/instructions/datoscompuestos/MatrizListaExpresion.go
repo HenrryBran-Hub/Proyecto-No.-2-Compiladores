@@ -33,6 +33,7 @@ func (o MatrizListaExpresion) Ejecutar(ast *environment.AST, gen *generator.Gene
 		if !ast.IsMain(ast.ObtenerAmbito()) {
 			gen.MainCodeT()
 		}
+		gen.AddComment("Datos Compuestos Matriz-Lista-Expresion")
 		lista.PushBack(valor)
 	}
 	arreglo := environment.Valores_Matriz{
@@ -40,6 +41,7 @@ func (o MatrizListaExpresion) Ejecutar(ast *environment.AST, gen *generator.Gene
 		Elements: lista,
 	}
 	ast.Lista_Matriz_Val.PushBack(arreglo)
+	gen.AddBr()
 	gen.MainCodeF()
 	return nil
 }

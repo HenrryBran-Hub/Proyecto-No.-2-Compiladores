@@ -2,7 +2,10 @@ package funciones
 
 import (
 	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"container/list"
+	"strconv"
 )
 
 type FuncionesDeclaracionRP struct {
@@ -18,10 +21,9 @@ func NewFuncionesDeclaracionRP(lin int, col int, name string, parametros interfa
 	return FuncionesDeclaracionRP{lin, col, name, parametros, tipo, bloque}
 }
 
-/*
-func (v FuncionesDeclaracionRP) Ejecutar(ast *environment.AST) interface{} {
+func (v FuncionesDeclaracionRP) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 	listavalores := list.New()
-	v.Parametros.Ejecutar(ast)
+	v.Parametros.Ejecutar(ast, gen)
 	for e := ast.Lista_Funciones_Var.Front(); e != nil; e = e.Next() {
 		valor := e.Value.(environment.VariableFuncion)
 		valor.Symbols.Scope = "Funcion-" + v.Name
@@ -34,7 +36,7 @@ func (v FuncionesDeclaracionRP) Ejecutar(ast *environment.AST) interface{} {
 		// Compara con los elementos anteriores en la lista
 		for i := ast.Lista_Funciones_Var.Front(); i != e; i = i.Next() {
 			valori := i.Value.(environment.VariableFuncion)
-			if valore.EI == true && valore.ExternoInterno != "_" {
+			if valore.EI && valore.ExternoInterno != "_" {
 				if valore.ExternoInterno == valori.ExternoInterno {
 					Errores := environment.Errores{
 						Descripcion: "Esta ingresando variables externas/internas iguales debe de cambiarles los nombres",
@@ -53,7 +55,7 @@ func (v FuncionesDeclaracionRP) Ejecutar(ast *environment.AST) interface{} {
 		// Compara con los elementos siguientes en la lista
 		for i := e.Next(); i != nil; i = i.Next() {
 			valori := i.Value.(environment.VariableFuncion)
-			if valore.EI == true && valore.ExternoInterno != "_" {
+			if valore.EI && valore.ExternoInterno != "_" {
 				if valore.ExternoInterno == valori.ExternoInterno {
 					Errores := environment.Errores{
 						Descripcion: "Esta ingresando variables externas/internas iguales debe de cambiarles los nombres",
@@ -117,10 +119,113 @@ func (v FuncionesDeclaracionRP) Ejecutar(ast *environment.AST) interface{} {
 		Parametros:    listavalores,
 		CodigoFuncion: v.Bloque,
 		Tipo:          v.Tipo,
+		Inicio:        ast.PosicionStack,
 	}
 
 	ast.GuardarFuncion(funcion)
 	ast.Lista_Funciones_Var.Init()
+
+	ambito := ast.ObtenerAmbito()
+	ambitonuevo := "funcion" + "-" + ambito
+	ast.AumentarAmbito(ambitonuevo)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+
+	newlabelr := gen.NewLabel()
+	exitla := gen.NewLabel()
+	var errorgeneral int = 0
+
+	transferencia := environment.SentenciasdeTransferencia{
+		Scope:  ambitonuevo,
+		ETrue:  newlabelr,
+		EFalse: exitla,
+		Tipo:   funcion.Tipo,
+		Func:   funcion,
+	}
+	ast.Lista_Tranferencias.PushBack(transferencia)
+
+	gen.AddTittle(v.Name)
+
+	e := listavalores.Front()
+	for i := 0; e != nil; i++ {
+		valor := e.Value.(environment.VariableFuncion)
+		symbol := environment.Symbol{
+			Lin:         valor.Symbols.Lin,
+			Col:         valor.Symbols.Col,
+			Tipo:        valor.Symbols.Tipo,
+			Scope:       ast.ObtenerAmbito(),
+			TipoDato:    environment.VARIABLE,
+			Posicion:    ast.PosicionStack,
+			ValorInt:    valor.Symbols.ValorInt,
+			ValorFloat:  valor.Symbols.ValorFloat,
+			ValorString: valor.Symbols.ValorString,
+		}
+		newtem1 := gen.NewTemp()
+		newtem2 := gen.NewTemp()
+		gen.AddExpression(newtem1, "P", strconv.Itoa(i), "+")
+		gen.AddGetStack(newtem2, "(int)"+newtem1)
+		symbol.Valor = newtem2
+
+		gen.AddSetStack(strconv.Itoa(symbol.Posicion), newtem2)
+		Variable := environment.Variable{
+			Name:        valor.Name,
+			Symbols:     symbol,
+			Mutable:     true,
+			TipoSimbolo: "Variable",
+		}
+
+		ast.GuardarVariable(Variable)
+		e = e.Next()
+	}
+
+	for _, inst := range v.Bloque {
+		if inst == nil {
+			continue
+		}
+		instruction, ok := inst.(interfaces.Instruction)
+		if !ok {
+			continue
+		}
+		if !ast.IsMain(ambitonuevo) {
+			gen.MainCodeT()
+		}
+		instruction.Ejecutar(ast, gen)
+		if !ast.IsMain(ambitonuevo) {
+			gen.MainCodeT()
+		}
+
+		rvari := ast.GetVariable("Return")
+		if rvari != nil {
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
+		}
+		revari := ast.GetVariable("ReturnExp")
+		if revari != nil {
+			if ast.Lista_Tranferencias.Len() == 0 {
+				errorgeneral = 1
+			}
+		}
+
+	}
+
+	gen.AddLabel(exitla)
+	gen.AddEnd()
+	ast.DisminuirAmbito()
+	gen.MainCodeF()
+	ast.Lista_Funciones_Var.Init()
+	ast.Lista_Tranferencias.Remove(ast.Lista_Tranferencias.Back())
+	if errorgeneral == 1 {
+		Errores := environment.Errores{
+			Descripcion: "Se han colocado sentencias de transferencia fuera de ciclos",
+			Fila:        strconv.Itoa(v.Lin),
+			Columna:     strconv.Itoa(v.Col),
+			Tipo:        "Error Semantico",
+			Ambito:      ast.ObtenerAmbito(),
+		}
+		ast.ErroresHTML(Errores)
+	}
+
 	return nil
 }
-*/
