@@ -1,0 +1,723 @@
+2023-10-22 23:06:18:891 grammar LogManager.java:25 before: (LEXER_GRAMMAR C3DLexer (RULES (RULE INT (BLOCK (ALT 'int'))) (RULE FLOAT (BLOCK (ALT 'float'))) (RULE DOUBLE (BLOCK (ALT 'double'))) (RULE CHAR (BLOCK (ALT 'char'))) (RULE VOID (BLOCK (ALT 'void'))) (RULE INCLUDE (BLOCK (ALT '#include'))) (RULE STDIO (BLOCK (ALT '<stdio.h>'))) (RULE HEAP (BLOCK (ALT 'heap'))) (RULE STACK (BLOCK (ALT 'stack'))) (RULE IF (BLOCK (ALT 'if'))) (RULE GOTO (BLOCK (ALT 'goto'))) (RULE RETURN (BLOCK (ALT 'return'))) (RULE PRINTF (BLOCK (ALT 'printf'))) (RULE PHEAD (BLOCK (ALT 'H'))) (RULE PSTACK (BLOCK (ALT 'P'))) (RULE NUMERO (BLOCK (ALT (? (BLOCK (ALT '-'))) (+ (BLOCK (ALT [0-9]))) (? (BLOCK (ALT '.' (+ (BLOCK (ALT [0-9]))))))))) (RULE CADENA (BLOCK (ALT '"' (* (BLOCK (ALT (~ (SET '"'))))) '"'))) (RULE ID_VALIDO (BLOCK (ALT (BLOCK (ALT [a-zA-Z_])) (* (BLOCK (ALT [a-zA-Z0-9_])))))) (RULE CHARACTER (BLOCK (ALT '\'' (BLOCK (ALT ESCAPE) (ALT (~ (SET ['\\\r\n])))) '\''))) (RULE ESCAPE (RULEMODIFIERS fragment) (BLOCK (ALT '\\' [\\'tnr]))) (RULE WS (BLOCK (LEXER_ALT_ACTION (ALT (+ (BLOCK (ALT [ \t\r\n])))) skip))) (RULE COMMA (BLOCK (ALT ','))) (RULE DOS_PUNTOS (BLOCK (ALT ':'))) (RULE PUNTOCOMA (BLOCK (ALT ';'))) (RULE IG (BLOCK (ALT '='))) (RULE DIF (BLOCK (ALT '!='))) (RULE IG_IG (BLOCK (ALT '=='))) (RULE NOT (BLOCK (ALT '!'))) (RULE MAY_IG (BLOCK (ALT '		>='))) (RULE MEN_IG (BLOCK (ALT '<='))) (RULE MAYOR (BLOCK (ALT '>'))) (RULE MENOR (BLOCK (ALT '<'))) (RULE MODULO (BLOCK (ALT '%'))) (RULE MUL (BLOCK (ALT '*'))) (RULE DIV (BLOCK (ALT '/'))) (RULE ADD (BLOCK (ALT '+'))) (RULE SUB (BLOCK (ALT '-'))) (RULE PARIZQ (BLOCK (ALT '('))) (RULE PARDER (BLOCK (ALT ')'))) (RULE LLAVEIZQ (BLOCK (ALT '{'))) (RULE LLAVEDER (BLOCK (ALT '}'))) (RULE CORCHIZQ (BLOCK (ALT '['))) (RULE CORCHDER (BLOCK (ALT ']'))) (RULE WHITESPACE (BLOCK (LEXER_ALT_ACTION (ALT (+ (BLOCK (ALT [ \\\r\n\t])))) skip))) (RULE COMMENT (BLOCK (LEXER_ALT_ACTION (ALT '/*' (* (BLOCK (ALT .))) '*/') skip))) (RULE LINE_COMMENT (BLOCK (LEXER_ALT_ACTION (ALT '//' (* (BLOCK (ALT (~ (SET [\r\n])))))) skip))) (RULE ESC_SEQ (RULEMODIFIERS fragment) (BLOCK (ALT '\\' (BLOCK (ALT '\\') (ALT '@') (ALT '[') (ALT ']') (ALT '.') (ALT '#') (ALT '+') (ALT '-') (ALT '!') (ALT ':') (ALT ' ')))))))
+2023-10-22 23:06:18:902 grammar LogManager.java:25 after: (LEXER_GRAMMAR C3DLexer (RULES (RULE INT (BLOCK (ALT 'int'))) (RULE FLOAT (BLOCK (ALT 'float'))) (RULE DOUBLE (BLOCK (ALT 'double'))) (RULE CHAR (BLOCK (ALT 'char'))) (RULE VOID (BLOCK (ALT 'void'))) (RULE INCLUDE (BLOCK (ALT '#include'))) (RULE STDIO (BLOCK (ALT '<stdio.h>'))) (RULE HEAP (BLOCK (ALT 'heap'))) (RULE STACK (BLOCK (ALT 'stack'))) (RULE IF (BLOCK (ALT 'if'))) (RULE GOTO (BLOCK (ALT 'goto'))) (RULE RETURN (BLOCK (ALT 'return'))) (RULE PRINTF (BLOCK (ALT 'printf'))) (RULE PHEAD (BLOCK (ALT 'H'))) (RULE PSTACK (BLOCK (ALT 'P'))) (RULE NUMERO (BLOCK (ALT (? (BLOCK (ALT '-'))) (+ (BLOCK (ALT [0-9]))) (? (BLOCK (ALT '.' (+ (BLOCK (ALT [0-9]))))))))) (RULE CADENA (BLOCK (ALT '"' (* (BLOCK (ALT (~ (SET '"'))))) '"'))) (RULE ID_VALIDO (BLOCK (ALT (BLOCK (ALT [a-zA-Z_])) (* (BLOCK (ALT [a-zA-Z0-9_])))))) (RULE CHARACTER (BLOCK (ALT '\'' (BLOCK (ALT ESCAPE) (ALT (~ (SET ['\\\r\n])))) '\''))) (RULE ESCAPE (RULEMODIFIERS fragment) (BLOCK (ALT '\\' [\\'tnr]))) (RULE WS (BLOCK (LEXER_ALT_ACTION (ALT (+ (BLOCK (ALT [ \t\r\n])))) skip))) (RULE COMMA (BLOCK (ALT ','))) (RULE DOS_PUNTOS (BLOCK (ALT ':'))) (RULE PUNTOCOMA (BLOCK (ALT ';'))) (RULE IG (BLOCK (ALT '='))) (RULE DIF (BLOCK (ALT '!='))) (RULE IG_IG (BLOCK (ALT '=='))) (RULE NOT (BLOCK (ALT '!'))) (RULE MAY_IG (BLOCK (ALT '		>='))) (RULE MEN_IG (BLOCK (ALT '<='))) (RULE MAYOR (BLOCK (ALT '>'))) (RULE MENOR (BLOCK (ALT '<'))) (RULE MODULO (BLOCK (ALT '%'))) (RULE MUL (BLOCK (ALT '*'))) (RULE DIV (BLOCK (ALT '/'))) (RULE ADD (BLOCK (ALT '+'))) (RULE SUB (BLOCK (ALT '-'))) (RULE PARIZQ (BLOCK (ALT '('))) (RULE PARDER (BLOCK (ALT ')'))) (RULE LLAVEIZQ (BLOCK (ALT '{'))) (RULE LLAVEDER (BLOCK (ALT '}'))) (RULE CORCHIZQ (BLOCK (ALT '['))) (RULE CORCHDER (BLOCK (ALT ']'))) (RULE WHITESPACE (BLOCK (LEXER_ALT_ACTION (ALT (+ (BLOCK (ALT [ \\\r\n\t])))) skip))) (RULE COMMENT (BLOCK (LEXER_ALT_ACTION (ALT '/*' (* (BLOCK (ALT .))) '*/') skip))) (RULE LINE_COMMENT (BLOCK (LEXER_ALT_ACTION (ALT '//' (* (BLOCK (ALT (~ (SET [\r\n])))))) skip))) (RULE ESC_SEQ (RULEMODIFIERS fragment) (BLOCK (ALT '\\' (SET '\\' '@' '[' ']' '.' '#' '+' '-' '!' ':' ' '))))))
+2023-10-22 23:06:19:636 grammar LogManager.java:25 before: (COMBINED_GRAMMAR C3DGrammar (OPTIONS (= tokenVocab C3DLexer)) (@ header {
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
+   
+}) (RULES (RULE z (returns []interface{} code) (BLOCK (ALT {    
+        var mySlice []interface{}
+        mySlice = make([]interface{}, 0) // Inicializa el slice vacío
+    } encabezadoa (? (BLOCK (ALT temporales PUNTOCOMA))) (? (BLOCK (ALT blockfuncions))) funcionmain EOF {
+        mySlice = append(mySlice, $encabezadoa.encaa)
+        if $PUNTOCOMA != nil {
+            mySlice = append(mySlice, $temporales.tinst)
+        }
+
+        for _, item := range $blockfuncions.blkfunc {
+            mySlice = append(mySlice, item)
+        }
+
+        mySlice = append(mySlice, $funcionmain.funmain)
+
+        $code = mySlice
+    }))) (RULE encabezadoa (returns interfacesc3d.Instruction encaa) (BLOCK (ALT INCLUDE STDIO DOUBLE HEAP CORCHIZQ (= h NUMERO) CORCHDER PUNTOCOMA DOUBLE STACK CORCHIZQ (= s NUMERO) CORCHDER PUNTOCOMA DOUBLE PSTACK PUNTOCOMA DOUBLE PHEAD PUNTOCOMA {
+        $encaa = instructionsc3d.NewAcumuladorEncabezado($h.text,$s.text)
+    }))) (RULE temporales (returns interfacesc3d.Instruction tinst) (BLOCK (ALT DOUBLE blocktemporales {
+        $tinst = instructionsc3d.NewEjecucionTemporales($blocktemporales.blktmps)
+    }))) (RULE blocktemporales (returns []interface{} blktmps) (@ init {
+    $blktmps = []interface{}{}
+    var listTemp []IBloquetempsContext
+}) (BLOCK (ALT (+ (BLOCK (ALT (+= temps bloquetemps)))) {
+    listTemp = localctx.(*BlocktemporalesContext).GetTemps()
+    for _, e := range listTemp {
+        $blktmps = append($blktmps, e.GetTemps())
+    }
+}))) (RULE bloquetemps (returns interfacesc3d.Instruction temps) (BLOCK (ALT COMMA ID_VALIDO { $temps = instructionsc3d.NewArregloTemporales($ID_VALIDO.text)}) (ALT ID_VALIDO { $temps = instructionsc3d.NewArregloTemporales($ID_VALIDO.text)}))) (RULE blockfuncions (returns []interface{} blkfunc) (@ init {
+    $blkfunc = []interface{}{}
+    var listFunc []IBloquefuncionesContext
+}) (BLOCK (ALT (+ (BLOCK (ALT (+= func bloquefunciones)))) {
+    listFunc = localctx.(*BlockfuncionsContext).GetFunc_()
+    for _, e := range listFunc {
+        $blkfunc = append($blkfunc, e.GetFunc_())
+    }
+}))) (RULE bloquefunciones (returns interfacesc3d.Instruction func) (BLOCK (ALT VOID ID_VALIDO PARIZQ PARDER LLAVEIZQ block LLAVEDER {
+    $func = instructionsc3d.NewFuncionVoid($ID_VALIDO.text,$block.blk)
+}))) (RULE funcionmain (returns interfacesc3d.Instruction funmain) (BLOCK (ALT INT ID_VALIDO PARIZQ PARDER LLAVEIZQ block RETURN NUMERO PUNTOCOMA LLAVEDER {
+    $funmain = instructionsc3d.NewFuncionMain($block.blk)
+}))) (RULE block (returns []interface{} blk) (@ init {
+    $blk = []interface{}{}
+    var listBlo []IInstructionContext
+  }) (BLOCK (ALT (+ (BLOCK (ALT (+= ins instruction)))) {
+        listBlo = localctx.(*BlockContext).GetIns()
+        for _, e := range listBlo {
+            $blk = append($blk, e.GetInstr())
+        }
+    }))) (RULE instruction (returns interfacesc3d.Instruction instr) (BLOCK (ALT head_op { $instr = $head_op.heapop}) (ALT stack_op { $instr = $stack_op.stackop}) (ALT printff { $instr = $printff.prtff }))) (RULE head_op (returns interfacesc3d.Instruction heapop) (BLOCK (ALT PHEAD IG NUMERO PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop1($NUMERO.text)
+}) (ALT ID_VALIDO IG PHEAD PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop2($ID_VALIDO.text)
+}) (ALT HEAP CORCHIZQ embebida PHEAD CORCHDER IG NUMERO PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop3($embebida.embe,$NUMERO.text)
+}) (ALT PHEAD IG PHEAD ADD NUMERO PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop4($NUMERO.text)
+}))) (RULE stack_op (returns interfacesc3d.Instruction stackop) (BLOCK (ALT PSTACK IG NUMERO PUNTOCOMA {
+    $stackop = instructionsc3d.NewStackop1($NUMERO.text)
+}) (ALT ID_VALIDO IG PSTACK PUNTOCOMA {
+    $stackop = instructionsc3d.NewStackop2($ID_VALIDO.text)
+}) (ALT STACK CORCHIZQ (BLOCK (ALT (= op1 NUMERO)) (ALT (BLOCK (ALT (= tip1 embebida) (= op2 (BLOCK (ALT PSTACK) (ALT ID_VALIDO) (ALT NUMERO))))))) CORCHDER IG (? (BLOCK (ALT PARIZQ tipodata PARDER))) (= op3 (BLOCK (ALT NUMERO) (ALT ID_VALIDO))) PUNTOCOMA {
+    if $op1 != nil {
+        if $PARIZQ != nil {
+             $stackop = instructionsc3d.NewStackop31($op1.text, $tipodata.tipdat, $op3.text)
+        }else{
+            $stackop = instructionsc3d.NewStackop32($op1.text, $op3.text)
+        }       
+    }else{
+         if $PARIZQ != nil {
+             $stackop = instructionsc3d.NewStackop33($tip1.embe, $op2.text, $tipodata.tipdat, $op3.text)
+        }else{
+            $stackop = instructionsc3d.NewStackop34($tip1.embe, $op2.text, $op3.text)
+        } 
+    }    
+}) (ALT PSTACK IG PSTACK (= op (BLOCK (ALT ADD) (ALT SUB))) NUMERO PUNTOCOMA {
+    $stackop = instructionsc3d.NewStackop4($op.text,$NUMERO.text)
+}))) (RULE printff (returns interfacesc3d.Instruction prtff) (BLOCK (ALT PRINTF PARIZQ CADENA COMMA NUMERO PARDER PUNTOCOMA {
+    $prtff = instructionsc3d.NewPrint1($CADENA.text, $NUMERO.text)
+}) (ALT PRINTF PARIZQ CADENA COMMA embebida (= op (BLOCK (ALT NUMERO) (ALT ID_VALIDO))) PARDER PUNTOCOMA {
+    $prtff = instructionsc3d.NewPrint2($CADENA.text, $embebida.embe, $op.text)
+}))) (RULE embebida (returns string embe) (BLOCK (ALT PARIZQ INT PARDER {
+    str := "(int)"
+    $embe = str
+}) (ALT PARIZQ FLOAT PARDER {
+    str := "(float)"
+    $embe = str
+}) (ALT PARIZQ CHAR PARDER {
+    str := "(char)"
+    $embe = str
+}))) (RULE tipodata (returns string tipdat) (BLOCK (ALT INT {
+    str := "int"
+    $tipdat = str
+}) (ALT FLOAT {
+    str := "float"
+    $tipdat = str
+}) (ALT CHAR {
+    str := "char"
+    $tipdat = str
+})))))
+2023-10-22 23:06:19:638 grammar LogManager.java:25 after: (COMBINED_GRAMMAR C3DGrammar (OPTIONS (= tokenVocab C3DLexer)) (@ header {
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
+   
+}) (RULES (RULE z (returns []interface{} code) (BLOCK (ALT {    
+        var mySlice []interface{}
+        mySlice = make([]interface{}, 0) // Inicializa el slice vacío
+    } encabezadoa (? (BLOCK (ALT temporales PUNTOCOMA))) (? (BLOCK (ALT blockfuncions))) funcionmain EOF {
+        mySlice = append(mySlice, $encabezadoa.encaa)
+        if $PUNTOCOMA != nil {
+            mySlice = append(mySlice, $temporales.tinst)
+        }
+
+        for _, item := range $blockfuncions.blkfunc {
+            mySlice = append(mySlice, item)
+        }
+
+        mySlice = append(mySlice, $funcionmain.funmain)
+
+        $code = mySlice
+    }))) (RULE encabezadoa (returns interfacesc3d.Instruction encaa) (BLOCK (ALT INCLUDE STDIO DOUBLE HEAP CORCHIZQ (= h NUMERO) CORCHDER PUNTOCOMA DOUBLE STACK CORCHIZQ (= s NUMERO) CORCHDER PUNTOCOMA DOUBLE PSTACK PUNTOCOMA DOUBLE PHEAD PUNTOCOMA {
+        $encaa = instructionsc3d.NewAcumuladorEncabezado($h.text,$s.text)
+    }))) (RULE temporales (returns interfacesc3d.Instruction tinst) (BLOCK (ALT DOUBLE blocktemporales {
+        $tinst = instructionsc3d.NewEjecucionTemporales($blocktemporales.blktmps)
+    }))) (RULE blocktemporales (returns []interface{} blktmps) (@ init {
+    $blktmps = []interface{}{}
+    var listTemp []IBloquetempsContext
+}) (BLOCK (ALT (+ (BLOCK (ALT (+= temps bloquetemps)))) {
+    listTemp = localctx.(*BlocktemporalesContext).GetTemps()
+    for _, e := range listTemp {
+        $blktmps = append($blktmps, e.GetTemps())
+    }
+}))) (RULE bloquetemps (returns interfacesc3d.Instruction temps) (BLOCK (ALT COMMA ID_VALIDO { $temps = instructionsc3d.NewArregloTemporales($ID_VALIDO.text)}) (ALT ID_VALIDO { $temps = instructionsc3d.NewArregloTemporales($ID_VALIDO.text)}))) (RULE blockfuncions (returns []interface{} blkfunc) (@ init {
+    $blkfunc = []interface{}{}
+    var listFunc []IBloquefuncionesContext
+}) (BLOCK (ALT (+ (BLOCK (ALT (+= func bloquefunciones)))) {
+    listFunc = localctx.(*BlockfuncionsContext).GetFunc_()
+    for _, e := range listFunc {
+        $blkfunc = append($blkfunc, e.GetFunc_())
+    }
+}))) (RULE bloquefunciones (returns interfacesc3d.Instruction func) (BLOCK (ALT VOID ID_VALIDO PARIZQ PARDER LLAVEIZQ block LLAVEDER {
+    $func = instructionsc3d.NewFuncionVoid($ID_VALIDO.text,$block.blk)
+}))) (RULE funcionmain (returns interfacesc3d.Instruction funmain) (BLOCK (ALT INT ID_VALIDO PARIZQ PARDER LLAVEIZQ block RETURN NUMERO PUNTOCOMA LLAVEDER {
+    $funmain = instructionsc3d.NewFuncionMain($block.blk)
+}))) (RULE block (returns []interface{} blk) (@ init {
+    $blk = []interface{}{}
+    var listBlo []IInstructionContext
+  }) (BLOCK (ALT (+ (BLOCK (ALT (+= ins instruction)))) {
+        listBlo = localctx.(*BlockContext).GetIns()
+        for _, e := range listBlo {
+            $blk = append($blk, e.GetInstr())
+        }
+    }))) (RULE instruction (returns interfacesc3d.Instruction instr) (BLOCK (ALT head_op { $instr = $head_op.heapop}) (ALT stack_op { $instr = $stack_op.stackop}) (ALT printff { $instr = $printff.prtff }))) (RULE head_op (returns interfacesc3d.Instruction heapop) (BLOCK (ALT PHEAD IG NUMERO PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop1($NUMERO.text)
+}) (ALT ID_VALIDO IG PHEAD PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop2($ID_VALIDO.text)
+}) (ALT HEAP CORCHIZQ embebida PHEAD CORCHDER IG NUMERO PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop3($embebida.embe,$NUMERO.text)
+}) (ALT PHEAD IG PHEAD ADD NUMERO PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop4($NUMERO.text)
+}))) (RULE stack_op (returns interfacesc3d.Instruction stackop) (BLOCK (ALT PSTACK IG NUMERO PUNTOCOMA {
+    $stackop = instructionsc3d.NewStackop1($NUMERO.text)
+}) (ALT ID_VALIDO IG PSTACK PUNTOCOMA {
+    $stackop = instructionsc3d.NewStackop2($ID_VALIDO.text)
+}) (ALT STACK CORCHIZQ (BLOCK (ALT (= op1 NUMERO)) (ALT (BLOCK (ALT (= tip1 embebida) (= op2 (SET PSTACK ID_VALIDO NUMERO)))))) CORCHDER IG (? (BLOCK (ALT PARIZQ tipodata PARDER))) (= op3 (SET NUMERO ID_VALIDO)) PUNTOCOMA {
+    if $op1 != nil {
+        if $PARIZQ != nil {
+             $stackop = instructionsc3d.NewStackop31($op1.text, $tipodata.tipdat, $op3.text)
+        }else{
+            $stackop = instructionsc3d.NewStackop32($op1.text, $op3.text)
+        }       
+    }else{
+         if $PARIZQ != nil {
+             $stackop = instructionsc3d.NewStackop33($tip1.embe, $op2.text, $tipodata.tipdat, $op3.text)
+        }else{
+            $stackop = instructionsc3d.NewStackop34($tip1.embe, $op2.text, $op3.text)
+        } 
+    }    
+}) (ALT PSTACK IG PSTACK (= op (SET ADD SUB)) NUMERO PUNTOCOMA {
+    $stackop = instructionsc3d.NewStackop4($op.text,$NUMERO.text)
+}))) (RULE printff (returns interfacesc3d.Instruction prtff) (BLOCK (ALT PRINTF PARIZQ CADENA COMMA NUMERO PARDER PUNTOCOMA {
+    $prtff = instructionsc3d.NewPrint1($CADENA.text, $NUMERO.text)
+}) (ALT PRINTF PARIZQ CADENA COMMA embebida (= op (SET NUMERO ID_VALIDO)) PARDER PUNTOCOMA {
+    $prtff = instructionsc3d.NewPrint2($CADENA.text, $embebida.embe, $op.text)
+}))) (RULE embebida (returns string embe) (BLOCK (ALT PARIZQ INT PARDER {
+    str := "(int)"
+    $embe = str
+}) (ALT PARIZQ FLOAT PARDER {
+    str := "(float)"
+    $embe = str
+}) (ALT PARIZQ CHAR PARDER {
+    str := "(char)"
+    $embe = str
+}))) (RULE tipodata (returns string tipdat) (BLOCK (ALT INT {
+    str := "int"
+    $tipdat = str
+}) (ALT FLOAT {
+    str := "float"
+    $tipdat = str
+}) (ALT CHAR {
+    str := "char"
+    $tipdat = str
+})))))
+2023-10-22 23:06:19:641 grammar LogManager.java:25 after extract implicit lexer =(COMBINED_GRAMMAR C3DGrammar (OPTIONS (= tokenVocab C3DLexer)) (@ header {
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
+   
+}) (RULES (RULE z (returns []interface{} code) (BLOCK (ALT {    
+        var mySlice []interface{}
+        mySlice = make([]interface{}, 0) // Inicializa el slice vacío
+    } encabezadoa (? (BLOCK (ALT temporales PUNTOCOMA))) (? (BLOCK (ALT blockfuncions))) funcionmain EOF {
+        mySlice = append(mySlice, $encabezadoa.encaa)
+        if $PUNTOCOMA != nil {
+            mySlice = append(mySlice, $temporales.tinst)
+        }
+
+        for _, item := range $blockfuncions.blkfunc {
+            mySlice = append(mySlice, item)
+        }
+
+        mySlice = append(mySlice, $funcionmain.funmain)
+
+        $code = mySlice
+    }))) (RULE encabezadoa (returns interfacesc3d.Instruction encaa) (BLOCK (ALT INCLUDE STDIO DOUBLE HEAP CORCHIZQ (= h NUMERO) CORCHDER PUNTOCOMA DOUBLE STACK CORCHIZQ (= s NUMERO) CORCHDER PUNTOCOMA DOUBLE PSTACK PUNTOCOMA DOUBLE PHEAD PUNTOCOMA {
+        $encaa = instructionsc3d.NewAcumuladorEncabezado($h.text,$s.text)
+    }))) (RULE temporales (returns interfacesc3d.Instruction tinst) (BLOCK (ALT DOUBLE blocktemporales {
+        $tinst = instructionsc3d.NewEjecucionTemporales($blocktemporales.blktmps)
+    }))) (RULE blocktemporales (returns []interface{} blktmps) (@ init {
+    $blktmps = []interface{}{}
+    var listTemp []IBloquetempsContext
+}) (BLOCK (ALT (+ (BLOCK (ALT (+= temps bloquetemps)))) {
+    listTemp = localctx.(*BlocktemporalesContext).GetTemps()
+    for _, e := range listTemp {
+        $blktmps = append($blktmps, e.GetTemps())
+    }
+}))) (RULE bloquetemps (returns interfacesc3d.Instruction temps) (BLOCK (ALT COMMA ID_VALIDO { $temps = instructionsc3d.NewArregloTemporales($ID_VALIDO.text)}) (ALT ID_VALIDO { $temps = instructionsc3d.NewArregloTemporales($ID_VALIDO.text)}))) (RULE blockfuncions (returns []interface{} blkfunc) (@ init {
+    $blkfunc = []interface{}{}
+    var listFunc []IBloquefuncionesContext
+}) (BLOCK (ALT (+ (BLOCK (ALT (+= func bloquefunciones)))) {
+    listFunc = localctx.(*BlockfuncionsContext).GetFunc_()
+    for _, e := range listFunc {
+        $blkfunc = append($blkfunc, e.GetFunc_())
+    }
+}))) (RULE bloquefunciones (returns interfacesc3d.Instruction func) (BLOCK (ALT VOID ID_VALIDO PARIZQ PARDER LLAVEIZQ block LLAVEDER {
+    $func = instructionsc3d.NewFuncionVoid($ID_VALIDO.text,$block.blk)
+}))) (RULE funcionmain (returns interfacesc3d.Instruction funmain) (BLOCK (ALT INT ID_VALIDO PARIZQ PARDER LLAVEIZQ block RETURN NUMERO PUNTOCOMA LLAVEDER {
+    $funmain = instructionsc3d.NewFuncionMain($block.blk)
+}))) (RULE block (returns []interface{} blk) (@ init {
+    $blk = []interface{}{}
+    var listBlo []IInstructionContext
+  }) (BLOCK (ALT (+ (BLOCK (ALT (+= ins instruction)))) {
+        listBlo = localctx.(*BlockContext).GetIns()
+        for _, e := range listBlo {
+            $blk = append($blk, e.GetInstr())
+        }
+    }))) (RULE instruction (returns interfacesc3d.Instruction instr) (BLOCK (ALT head_op { $instr = $head_op.heapop}) (ALT stack_op { $instr = $stack_op.stackop}) (ALT printff { $instr = $printff.prtff }))) (RULE head_op (returns interfacesc3d.Instruction heapop) (BLOCK (ALT PHEAD IG NUMERO PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop1($NUMERO.text)
+}) (ALT ID_VALIDO IG PHEAD PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop2($ID_VALIDO.text)
+}) (ALT HEAP CORCHIZQ embebida PHEAD CORCHDER IG NUMERO PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop3($embebida.embe,$NUMERO.text)
+}) (ALT PHEAD IG PHEAD ADD NUMERO PUNTOCOMA {
+    $heapop = instructionsc3d.NewHeapop4($NUMERO.text)
+}))) (RULE stack_op (returns interfacesc3d.Instruction stackop) (BLOCK (ALT PSTACK IG NUMERO PUNTOCOMA {
+    $stackop = instructionsc3d.NewStackop1($NUMERO.text)
+}) (ALT ID_VALIDO IG PSTACK PUNTOCOMA {
+    $stackop = instructionsc3d.NewStackop2($ID_VALIDO.text)
+}) (ALT STACK CORCHIZQ (BLOCK (ALT (= op1 NUMERO)) (ALT (BLOCK (ALT (= tip1 embebida) (= op2 (SET PSTACK ID_VALIDO NUMERO)))))) CORCHDER IG (? (BLOCK (ALT PARIZQ tipodata PARDER))) (= op3 (SET NUMERO ID_VALIDO)) PUNTOCOMA {
+    if $op1 != nil {
+        if $PARIZQ != nil {
+             $stackop = instructionsc3d.NewStackop31($op1.text, $tipodata.tipdat, $op3.text)
+        }else{
+            $stackop = instructionsc3d.NewStackop32($op1.text, $op3.text)
+        }       
+    }else{
+         if $PARIZQ != nil {
+             $stackop = instructionsc3d.NewStackop33($tip1.embe, $op2.text, $tipodata.tipdat, $op3.text)
+        }else{
+            $stackop = instructionsc3d.NewStackop34($tip1.embe, $op2.text, $op3.text)
+        } 
+    }    
+}) (ALT PSTACK IG PSTACK (= op (SET ADD SUB)) NUMERO PUNTOCOMA {
+    $stackop = instructionsc3d.NewStackop4($op.text,$NUMERO.text)
+}))) (RULE printff (returns interfacesc3d.Instruction prtff) (BLOCK (ALT PRINTF PARIZQ CADENA COMMA NUMERO PARDER PUNTOCOMA {
+    $prtff = instructionsc3d.NewPrint1($CADENA.text, $NUMERO.text)
+}) (ALT PRINTF PARIZQ CADENA COMMA embebida (= op (SET NUMERO ID_VALIDO)) PARDER PUNTOCOMA {
+    $prtff = instructionsc3d.NewPrint2($CADENA.text, $embebida.embe, $op.text)
+}))) (RULE embebida (returns string embe) (BLOCK (ALT PARIZQ INT PARDER {
+    str := "(int)"
+    $embe = str
+}) (ALT PARIZQ FLOAT PARDER {
+    str := "(float)"
+    $embe = str
+}) (ALT PARIZQ CHAR PARDER {
+    str := "(char)"
+    $embe = str
+}))) (RULE tipodata (returns string tipdat) (BLOCK (ALT INT {
+    str := "int"
+    $tipdat = str
+}) (ALT FLOAT {
+    str := "float"
+    $tipdat = str
+}) (ALT CHAR {
+    str := "char"
+    $tipdat = str
+})))))
+2023-10-22 23:06:19:641 grammar LogManager.java:25 lexer =(LEXER_GRAMMAR C3DGrammarLexer OPTIONS (@ header {
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
+   
+}) RULES)
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import INT=1
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import FLOAT=2
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import DOUBLE=3
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import CHAR=4
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import VOID=5
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import INCLUDE=6
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import STDIO=7
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import HEAP=8
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import STACK=9
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import IF=10
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import GOTO=11
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import RETURN=12
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import PRINTF=13
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import PHEAD=14
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import PSTACK=15
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import NUMERO=16
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import CADENA=17
+2023-10-22 23:06:19:665 grammar LogManager.java:25 import ID_VALIDO=18
+2023-10-22 23:06:19:666 grammar LogManager.java:25 import CHARACTER=19
+2023-10-22 23:06:19:666 grammar LogManager.java:25 import WS=20
+2023-10-22 23:06:19:666 grammar LogManager.java:25 import COMMA=21
+2023-10-22 23:06:19:666 grammar LogManager.java:25 import DOS_PUNTOS=22
+2023-10-22 23:06:19:666 grammar LogManager.java:25 import PUNTOCOMA=23
+2023-10-22 23:06:19:666 grammar LogManager.java:25 import IG=24
+2023-10-22 23:06:19:666 grammar LogManager.java:25 import DIF=25
+2023-10-22 23:06:19:666 grammar LogManager.java:25 import IG_IG=26
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import NOT=27
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import MAY_IG=28
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import MEN_IG=29
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import MAYOR=30
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import MENOR=31
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import MODULO=32
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import MUL=33
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import DIV=34
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import ADD=35
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import SUB=36
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import PARIZQ=37
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import PARDER=38
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import LLAVEIZQ=39
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import LLAVEDER=40
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import CORCHIZQ=41
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import CORCHDER=42
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import WHITESPACE=43
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import COMMENT=44
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import LINE_COMMENT=45
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import 'int'=1
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import 'float'=2
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import 'double'=3
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import 'char'=4
+2023-10-22 23:06:19:667 grammar LogManager.java:25 import 'void'=5
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '#include'=6
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '<stdio.h>'=7
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import 'heap'=8
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import 'stack'=9
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import 'if'=10
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import 'goto'=11
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import 'return'=12
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import 'printf'=13
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import 'H'=14
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import 'P'=15
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import ','=21
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import ':'=22
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import ';'=23
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '='=24
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '!='=25
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '=='=26
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '!'=27
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '		>='=28
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '<='=29
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '>'=30
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '<'=31
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '%'=32
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '*'=33
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '/'=34
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '+'=35
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '-'=36
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '('=37
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import ')'=38
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '{'=39
+2023-10-22 23:06:19:668 grammar LogManager.java:25 import '}'=40
+2023-10-22 23:06:19:669 grammar LogManager.java:25 import '['=41
+2023-10-22 23:06:19:669 grammar LogManager.java:25 import ']'=42
+2023-10-22 23:06:19:669 grammar LogManager.java:25 tokens={INT=1, FLOAT=2, DOUBLE=3, CHAR=4, VOID=5, INCLUDE=6, STDIO=7, HEAP=8, STACK=9, IF=10, GOTO=11, RETURN=12, PRINTF=13, PHEAD=14, PSTACK=15, NUMERO=16, CADENA=17, ID_VALIDO=18, CHARACTER=19, WS=20, COMMA=21, DOS_PUNTOS=22, PUNTOCOMA=23, IG=24, DIF=25, IG_IG=26, NOT=27, MAY_IG=28, MEN_IG=29, MAYOR=30, MENOR=31, MODULO=32, MUL=33, DIV=34, ADD=35, SUB=36, PARIZQ=37, PARDER=38, LLAVEIZQ=39, LLAVEDER=40, CORCHIZQ=41, CORCHDER=42, WHITESPACE=43, COMMENT=44, LINE_COMMENT=45, 'int'=1, 'float'=2, 'double'=3, 'char'=4, 'void'=5, '#include'=6, '<stdio.h>'=7, 'heap'=8, 'stack'=9, 'if'=10, 'goto'=11, 'return'=12, 'printf'=13, 'H'=14, 'P'=15, ','=21, ':'=22, ';'=23, '='=24, '!='=25, '=='=26, '!'=27, '		>='=28, '<='=29, '>'=30, '<'=31, '%'=32, '*'=33, '/'=34, '+'=35, '-'=36, '('=37, ')'=38, '{'=39, '}'=40, '['=41, ']'=42}
+2023-10-22 23:06:19:669 semantics LogManager.java:25 tokens={EOF=-1, INT=1, FLOAT=2, DOUBLE=3, CHAR=4, VOID=5, INCLUDE=6, STDIO=7, HEAP=8, STACK=9, IF=10, GOTO=11, RETURN=12, PRINTF=13, PHEAD=14, PSTACK=15, NUMERO=16, CADENA=17, ID_VALIDO=18, CHARACTER=19, WS=20, COMMA=21, DOS_PUNTOS=22, PUNTOCOMA=23, IG=24, DIF=25, IG_IG=26, NOT=27, MAY_IG=28, MEN_IG=29, MAYOR=30, MENOR=31, MODULO=32, MUL=33, DIV=34, ADD=35, SUB=36, PARIZQ=37, PARDER=38, LLAVEIZQ=39, LLAVEDER=40, CORCHIZQ=41, CORCHDER=42, WHITESPACE=43, COMMENT=44, LINE_COMMENT=45}
+2023-10-22 23:06:19:669 semantics LogManager.java:25 strings={'int'=1, 'float'=2, 'double'=3, 'char'=4, 'void'=5, '#include'=6, '<stdio.h>'=7, 'heap'=8, 'stack'=9, 'if'=10, 'goto'=11, 'return'=12, 'printf'=13, 'H'=14, 'P'=15, ','=21, ':'=22, ';'=23, '='=24, '!='=25, '=='=26, '!'=27, '		>='=28, '<='=29, '>'=30, '<'=31, '%'=32, '*'=33, '/'=34, '+'=35, '-'=36, '('=37, ')'=38, '{'=39, '}'=40, '['=41, ']'=42}
+2023-10-22 23:06:19:688 LL1 LogManager.java:25 
+DECISION 0 in rule z
+2023-10-22 23:06:19:689 LL1 LogManager.java:25 look=[3, {1, 5}]
+2023-10-22 23:06:19:689 LL1 LogManager.java:25 LL(1)? true
+2023-10-22 23:06:19:689 LL1 LogManager.java:25 
+DECISION 1 in rule z
+2023-10-22 23:06:19:689 LL1 LogManager.java:25 look=[5, 1]
+2023-10-22 23:06:19:689 LL1 LogManager.java:25 LL(1)? true
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 
+DECISION 2 in rule blocktemporales
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 look=[{18, 21}, 23]
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 LL(1)? true
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 
+DECISION 3 in rule bloquetemps
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 look=[21, 18]
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 LL(1)? true
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 
+DECISION 4 in rule blockfuncions
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 look=[5, 1]
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 LL(1)? true
+2023-10-22 23:06:19:690 LL1 LogManager.java:25 
+DECISION 5 in rule block
+2023-10-22 23:06:19:691 LL1 LogManager.java:25 look=[{8..9, 13..15, 18}, {12, 40}]
+2023-10-22 23:06:19:691 LL1 LogManager.java:25 LL(1)? true
+2023-10-22 23:06:19:691 LL1 LogManager.java:25 
+DECISION 6 in rule instruction
+2023-10-22 23:06:19:691 LL1 LogManager.java:25 look=[{8, 14, 18}, {9, 15, 18}, 13]
+2023-10-22 23:06:19:691 LL1 LogManager.java:25 LL(1)? false
+2023-10-22 23:06:19:691 LL1 LogManager.java:25 
+DECISION 7 in rule head_op
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 look=[14, 18, 8, 14]
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 LL(1)? false
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 
+DECISION 8 in rule stack_op
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 look=[16, 37]
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 LL(1)? true
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 
+DECISION 9 in rule stack_op
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 look=[37, {16, 18}]
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 LL(1)? true
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 
+DECISION 10 in rule stack_op
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 look=[15, 18, 9, 15]
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 LL(1)? false
+2023-10-22 23:06:19:692 LL1 LogManager.java:25 
+DECISION 11 in rule printff
+2023-10-22 23:06:19:693 LL1 LogManager.java:25 look=[13, 13]
+2023-10-22 23:06:19:693 LL1 LogManager.java:25 LL(1)? false
+2023-10-22 23:06:19:693 LL1 LogManager.java:25 
+DECISION 12 in rule embebida
+2023-10-22 23:06:19:693 LL1 LogManager.java:25 look=[37, 37, 37]
+2023-10-22 23:06:19:693 LL1 LogManager.java:25 LL(1)? false
+2023-10-22 23:06:19:693 LL1 LogManager.java:25 
+DECISION 13 in rule tipodata
+2023-10-22 23:06:19:693 LL1 LogManager.java:25 look=[1, 2, 4]
+2023-10-22 23:06:19:693 LL1 LogManager.java:25 LL(1)? true
+2023-10-22 23:06:19:698 action-translator LogManager.java:25 translate 
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
+   
+
+2023-10-22 23:06:19:704 action-translator LogManager.java:25 translate     
+        var mySlice []interface{}
+        mySlice = make([]interface{}, 0) // Inicializa el slice vacío
+    
+2023-10-22 23:06:19:706 action-translator LogManager.java:25 translate 
+        mySlice = append(mySlice, $encabezadoa.encaa)
+        if $PUNTOCOMA != nil {
+            mySlice = append(mySlice, $temporales.tinst)
+        }
+
+        for _, item := range $blockfuncions.blkfunc {
+            mySlice = append(mySlice, item)
+        }
+
+        mySlice = append(mySlice, $funcionmain.funmain)
+
+        $code = mySlice
+    
+2023-10-22 23:06:19:706 action-translator LogManager.java:25 qattr [@-1,37:47='encabezadoa',<0>,24:35].[@-1,49:53='encaa',<0>,24:47]
+2023-10-22 23:06:19:707 action-translator LogManager.java:25 attr [@-1,69:77='PUNTOCOMA',<0>,25:12]
+2023-10-22 23:06:19:707 action-translator LogManager.java:25 qattr [@-1,128:137='temporales',<0>,26:39].[@-1,139:143='tinst',<0>,26:50]
+2023-10-22 23:06:19:707 action-translator LogManager.java:25 qattr [@-1,190:202='blockfuncions',<0>,29:30].[@-1,204:210='blkfunc',<0>,29:44]
+2023-10-22 23:06:19:707 action-translator LogManager.java:25 qattr [@-1,308:318='funcionmain',<0>,33:35].[@-1,320:326='funmain',<0>,33:47]
+2023-10-22 23:06:19:707 action-translator LogManager.java:25 attr [@-1,341:344='code',<0>,35:9]
+2023-10-22 23:06:19:709 action-translator LogManager.java:25 translate 
+        $encaa = instructionsc3d.NewAcumuladorEncabezado($h.text,$s.text)
+    
+2023-10-22 23:06:19:709 action-translator LogManager.java:25 attr [@-1,11:15='encaa',<0>,42:9]
+2023-10-22 23:06:19:709 action-translator LogManager.java:25 qattr [@-1,60:60='h',<0>,42:58].[@-1,62:65='text',<0>,42:60]
+2023-10-22 23:06:19:710 action-translator LogManager.java:25 qattr [@-1,68:68='s',<0>,42:66].[@-1,70:73='text',<0>,42:68]
+2023-10-22 23:06:19:711 action-translator LogManager.java:25 translate 
+        $tinst = instructionsc3d.NewEjecucionTemporales($blocktemporales.blktmps)
+    
+2023-10-22 23:06:19:711 action-translator LogManager.java:25 attr [@-1,11:15='tinst',<0>,49:9]
+2023-10-22 23:06:19:711 action-translator LogManager.java:25 qattr [@-1,59:73='blocktemporales',<0>,49:57].[@-1,75:81='blktmps',<0>,49:73]
+2023-10-22 23:06:19:712 action-translator LogManager.java:25 translate 
+    $blktmps = []interface{}{}
+    var listTemp []IBloquetempsContext
+
+2023-10-22 23:06:19:712 action-translator LogManager.java:25 attr [@-1,7:13='blktmps',<0>,55:5]
+2023-10-22 23:06:19:714 action-translator LogManager.java:25 translate 
+    listTemp = localctx.(*BlocktemporalesContext).GetTemps()
+    for _, e := range listTemp {
+        $blktmps = append($blktmps, e.GetTemps())
+    }
+
+2023-10-22 23:06:19:714 action-translator LogManager.java:25 attr [@-1,107:113='blktmps',<0>,62:9]
+2023-10-22 23:06:19:714 action-translator LogManager.java:25 attr [@-1,125:131='blktmps',<0>,62:27]
+2023-10-22 23:06:19:714 action-translator LogManager.java:25 translate  $temps = instructionsc3d.NewArregloTemporales($ID_VALIDO.text)
+2023-10-22 23:06:19:714 action-translator LogManager.java:25 attr [@-1,2:6='temps',<0>,68:20]
+2023-10-22 23:06:19:715 action-translator LogManager.java:25 qattr [@-1,48:56='ID_VALIDO',<0>,68:66].[@-1,58:61='text',<0>,68:76]
+2023-10-22 23:06:19:715 action-translator LogManager.java:25 translate  $temps = instructionsc3d.NewArregloTemporales($ID_VALIDO.text)
+2023-10-22 23:06:19:715 action-translator LogManager.java:25 attr [@-1,2:6='temps',<0>,69:14]
+2023-10-22 23:06:19:715 action-translator LogManager.java:25 qattr [@-1,48:56='ID_VALIDO',<0>,69:60].[@-1,58:61='text',<0>,69:70]
+2023-10-22 23:06:19:716 action-translator LogManager.java:25 translate 
+    $blkfunc = []interface{}{}
+    var listFunc []IBloquefuncionesContext
+
+2023-10-22 23:06:19:716 action-translator LogManager.java:25 attr [@-1,7:13='blkfunc',<0>,74:5]
+2023-10-22 23:06:19:717 action-translator LogManager.java:25 translate 
+    listFunc = localctx.(*BlockfuncionsContext).GetFunc_()
+    for _, e := range listFunc {
+        $blkfunc = append($blkfunc, e.GetFunc_())
+    }
+
+2023-10-22 23:06:19:717 action-translator LogManager.java:25 attr [@-1,105:111='blkfunc',<0>,81:9]
+2023-10-22 23:06:19:717 action-translator LogManager.java:25 attr [@-1,123:129='blkfunc',<0>,81:27]
+2023-10-22 23:06:19:718 action-translator LogManager.java:25 translate 
+    $func = instructionsc3d.NewFuncionVoid($ID_VALIDO.text,$block.blk)
+
+2023-10-22 23:06:19:718 action-translator LogManager.java:25 attr [@-1,7:10='func',<0>,89:5]
+2023-10-22 23:06:19:719 action-translator LogManager.java:25 qattr [@-1,46:54='ID_VALIDO',<0>,89:44].[@-1,56:59='text',<0>,89:54]
+2023-10-22 23:06:19:719 action-translator LogManager.java:25 qattr [@-1,62:66='block',<0>,89:60].[@-1,68:70='blk',<0>,89:66]
+2023-10-22 23:06:19:721 action-translator LogManager.java:25 translate 
+    $funmain = instructionsc3d.NewFuncionMain($block.blk)
+
+2023-10-22 23:06:19:722 action-translator LogManager.java:25 attr [@-1,7:13='funmain',<0>,96:5]
+2023-10-22 23:06:19:722 action-translator LogManager.java:25 qattr [@-1,49:53='block',<0>,96:47].[@-1,55:57='blk',<0>,96:53]
+2023-10-22 23:06:19:723 action-translator LogManager.java:25 translate 
+    $blk = []interface{}{}
+    var listBlo []IInstructionContext
+  
+2023-10-22 23:06:19:723 action-translator LogManager.java:25 attr [@-1,7:9='blk',<0>,102:5]
+2023-10-22 23:06:19:723 action-translator LogManager.java:25 translate 
+        listBlo = localctx.(*BlockContext).GetIns()
+        for _, e := range listBlo {
+            $blk = append($blk, e.GetInstr())
+        }
+    
+2023-10-22 23:06:19:723 action-translator LogManager.java:25 attr [@-1,105:107='blk',<0>,109:13]
+2023-10-22 23:06:19:723 action-translator LogManager.java:25 attr [@-1,119:121='blk',<0>,109:27]
+2023-10-22 23:06:19:726 action-translator LogManager.java:25 translate  $instr = $head_op.heapop
+2023-10-22 23:06:19:726 action-translator LogManager.java:25 attr [@-1,2:6='instr',<0>,116:12]
+2023-10-22 23:06:19:727 action-translator LogManager.java:25 qattr [@-1,11:17='head_op',<0>,116:21].[@-1,19:24='heapop',<0>,116:29]
+2023-10-22 23:06:19:727 action-translator LogManager.java:25 translate  $instr = $stack_op.stackop
+2023-10-22 23:06:19:728 action-translator LogManager.java:25 attr [@-1,2:6='instr',<0>,117:13]
+2023-10-22 23:06:19:728 action-translator LogManager.java:25 qattr [@-1,11:18='stack_op',<0>,117:22].[@-1,20:26='stackop',<0>,117:31]
+2023-10-22 23:06:19:728 action-translator LogManager.java:25 translate  $instr = $printff.prtff 
+2023-10-22 23:06:19:729 action-translator LogManager.java:25 attr [@-1,2:6='instr',<0>,118:12]
+2023-10-22 23:06:19:729 action-translator LogManager.java:25 qattr [@-1,11:17='printff',<0>,118:21].[@-1,19:23='prtff',<0>,118:29]
+2023-10-22 23:06:19:730 action-translator LogManager.java:25 translate 
+    $heapop = instructionsc3d.NewHeapop1($NUMERO.text)
+
+2023-10-22 23:06:19:730 action-translator LogManager.java:25 attr [@-1,7:12='heapop',<0>,124:5]
+2023-10-22 23:06:19:730 action-translator LogManager.java:25 qattr [@-1,44:49='NUMERO',<0>,124:42].[@-1,51:54='text',<0>,124:49]
+2023-10-22 23:06:19:731 action-translator LogManager.java:25 translate 
+    $heapop = instructionsc3d.NewHeapop2($ID_VALIDO.text)
+
+2023-10-22 23:06:19:731 action-translator LogManager.java:25 attr [@-1,7:12='heapop',<0>,128:5]
+2023-10-22 23:06:19:731 action-translator LogManager.java:25 qattr [@-1,44:52='ID_VALIDO',<0>,128:42].[@-1,54:57='text',<0>,128:52]
+2023-10-22 23:06:19:733 action-translator LogManager.java:25 translate 
+    $heapop = instructionsc3d.NewHeapop3($embebida.embe,$NUMERO.text)
+
+2023-10-22 23:06:19:733 action-translator LogManager.java:25 attr [@-1,7:12='heapop',<0>,132:5]
+2023-10-22 23:06:19:733 action-translator LogManager.java:25 qattr [@-1,44:51='embebida',<0>,132:42].[@-1,53:56='embe',<0>,132:51]
+2023-10-22 23:06:19:733 action-translator LogManager.java:25 qattr [@-1,59:64='NUMERO',<0>,132:57].[@-1,66:69='text',<0>,132:64]
+2023-10-22 23:06:19:733 action-translator LogManager.java:25 translate 
+    $heapop = instructionsc3d.NewHeapop4($NUMERO.text)
+
+2023-10-22 23:06:19:734 action-translator LogManager.java:25 attr [@-1,7:12='heapop',<0>,136:5]
+2023-10-22 23:06:19:734 action-translator LogManager.java:25 qattr [@-1,44:49='NUMERO',<0>,136:42].[@-1,51:54='text',<0>,136:49]
+2023-10-22 23:06:19:735 action-translator LogManager.java:25 translate 
+    $stackop = instructionsc3d.NewStackop1($NUMERO.text)
+
+2023-10-22 23:06:19:737 action-translator LogManager.java:25 attr [@-1,7:13='stackop',<0>,143:5]
+2023-10-22 23:06:19:737 action-translator LogManager.java:25 qattr [@-1,46:51='NUMERO',<0>,143:44].[@-1,53:56='text',<0>,143:51]
+2023-10-22 23:06:19:738 action-translator LogManager.java:25 translate 
+    $stackop = instructionsc3d.NewStackop2($ID_VALIDO.text)
+
+2023-10-22 23:06:19:738 action-translator LogManager.java:25 attr [@-1,7:13='stackop',<0>,147:5]
+2023-10-22 23:06:19:738 action-translator LogManager.java:25 qattr [@-1,46:54='ID_VALIDO',<0>,147:44].[@-1,56:59='text',<0>,147:54]
+2023-10-22 23:06:19:739 action-translator LogManager.java:25 translate 
+    if $op1 != nil {
+        if $PARIZQ != nil {
+             $stackop = instructionsc3d.NewStackop31($op1.text, $tipodata.tipdat, $op3.text)
+        }else{
+            $stackop = instructionsc3d.NewStackop32($op1.text, $op3.text)
+        }       
+    }else{
+         if $PARIZQ != nil {
+             $stackop = instructionsc3d.NewStackop33($tip1.embe, $op2.text, $tipodata.tipdat, $op3.text)
+        }else{
+            $stackop = instructionsc3d.NewStackop34($tip1.embe, $op2.text, $op3.text)
+        } 
+    }    
+
+2023-10-22 23:06:19:739 action-translator LogManager.java:25 attr [@-1,10:12='op1',<0>,151:8]
+2023-10-22 23:06:19:739 action-translator LogManager.java:25 attr [@-1,36:41='PARIZQ',<0>,152:12]
+2023-10-22 23:06:19:739 action-translator LogManager.java:25 attr [@-1,67:73='stackop',<0>,153:14]
+2023-10-22 23:06:19:739 action-translator LogManager.java:25 qattr [@-1,107:109='op1',<0>,153:54].[@-1,111:114='text',<0>,153:58]
+2023-10-22 23:06:19:739 action-translator LogManager.java:25 qattr [@-1,118:125='tipodata',<0>,153:65].[@-1,127:132='tipdat',<0>,153:74]
+2023-10-22 23:06:19:739 action-translator LogManager.java:25 qattr [@-1,136:138='op3',<0>,153:83].[@-1,140:143='text',<0>,153:87]
+2023-10-22 23:06:19:740 action-translator LogManager.java:25 attr [@-1,176:182='stackop',<0>,155:13]
+2023-10-22 23:06:19:740 action-translator LogManager.java:25 qattr [@-1,216:218='op1',<0>,155:53].[@-1,220:223='text',<0>,155:57]
+2023-10-22 23:06:19:740 action-translator LogManager.java:25 qattr [@-1,227:229='op3',<0>,155:64].[@-1,231:234='text',<0>,155:68]
+2023-10-22 23:06:19:740 action-translator LogManager.java:25 attr [@-1,281:286='PARIZQ',<0>,158:13]
+2023-10-22 23:06:19:740 action-translator LogManager.java:25 attr [@-1,312:318='stackop',<0>,159:14]
+2023-10-22 23:06:19:740 action-translator LogManager.java:25 qattr [@-1,352:355='tip1',<0>,159:54].[@-1,357:360='embe',<0>,159:59]
+2023-10-22 23:06:19:740 action-translator LogManager.java:25 qattr [@-1,364:366='op2',<0>,159:66].[@-1,368:371='text',<0>,159:70]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 qattr [@-1,375:382='tipodata',<0>,159:77].[@-1,384:389='tipdat',<0>,159:86]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 qattr [@-1,393:395='op3',<0>,159:95].[@-1,397:400='text',<0>,159:99]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 attr [@-1,433:439='stackop',<0>,161:13]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 qattr [@-1,473:476='tip1',<0>,161:53].[@-1,478:481='embe',<0>,161:58]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 qattr [@-1,485:487='op2',<0>,161:65].[@-1,489:492='text',<0>,161:69]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 qattr [@-1,496:498='op3',<0>,161:76].[@-1,500:503='text',<0>,161:80]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 translate 
+    $stackop = instructionsc3d.NewStackop4($op.text,$NUMERO.text)
+
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 attr [@-1,7:13='stackop',<0>,167:5]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 qattr [@-1,46:47='op',<0>,167:44].[@-1,49:52='text',<0>,167:47]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 qattr [@-1,55:60='NUMERO',<0>,167:53].[@-1,62:65='text',<0>,167:60]
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 translate 
+    $prtff = instructionsc3d.NewPrint1($CADENA.text, $NUMERO.text)
+
+2023-10-22 23:06:19:742 action-translator LogManager.java:25 attr [@-1,7:11='prtff',<0>,174:5]
+2023-10-22 23:06:19:743 action-translator LogManager.java:25 qattr [@-1,42:47='CADENA',<0>,174:40].[@-1,49:52='text',<0>,174:47]
+2023-10-22 23:06:19:743 action-translator LogManager.java:25 qattr [@-1,56:61='NUMERO',<0>,174:54].[@-1,63:66='text',<0>,174:61]
+2023-10-22 23:06:19:743 action-translator LogManager.java:25 translate 
+    $prtff = instructionsc3d.NewPrint2($CADENA.text, $embebida.embe, $op.text)
+
+2023-10-22 23:06:19:743 action-translator LogManager.java:25 attr [@-1,7:11='prtff',<0>,178:5]
+2023-10-22 23:06:19:743 action-translator LogManager.java:25 qattr [@-1,42:47='CADENA',<0>,178:40].[@-1,49:52='text',<0>,178:47]
+2023-10-22 23:06:19:743 action-translator LogManager.java:25 qattr [@-1,56:63='embebida',<0>,178:54].[@-1,65:68='embe',<0>,178:63]
+2023-10-22 23:06:19:743 action-translator LogManager.java:25 qattr [@-1,72:73='op',<0>,178:70].[@-1,75:78='text',<0>,178:73]
+2023-10-22 23:06:19:745 action-translator LogManager.java:25 translate 
+    str := "(int)"
+    $embe = str
+
+2023-10-22 23:06:19:745 action-translator LogManager.java:25 attr [@-1,27:30='embe',<0>,186:5]
+2023-10-22 23:06:19:745 action-translator LogManager.java:25 translate 
+    str := "(float)"
+    $embe = str
+
+2023-10-22 23:06:19:746 action-translator LogManager.java:25 attr [@-1,29:32='embe',<0>,191:5]
+2023-10-22 23:06:19:746 action-translator LogManager.java:25 translate 
+    str := "(char)"
+    $embe = str
+
+2023-10-22 23:06:19:746 action-translator LogManager.java:25 attr [@-1,28:31='embe',<0>,196:5]
+2023-10-22 23:06:19:746 action-translator LogManager.java:25 translate 
+    str := "int"
+    $tipdat = str
+
+2023-10-22 23:06:19:746 action-translator LogManager.java:25 attr [@-1,25:30='tipdat',<0>,204:5]
+2023-10-22 23:06:19:746 action-translator LogManager.java:25 translate 
+    str := "float"
+    $tipdat = str
+
+2023-10-22 23:06:19:746 action-translator LogManager.java:25 attr [@-1,27:32='tipdat',<0>,209:5]
+2023-10-22 23:06:19:746 action-translator LogManager.java:25 translate 
+    str := "char"
+    $tipdat = str
+
+2023-10-22 23:06:19:746 action-translator LogManager.java:25 attr [@-1,26:31='tipdat',<0>,214:5]
+2023-10-22 23:06:20:146 action-translator LogManager.java:25 translate 
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
+   
+
+2023-10-22 23:06:20:146 action-translator LogManager.java:25 translate 
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
+   
+
+2023-10-22 23:06:20:661 action-translator LogManager.java:25 translate 
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
+   
+
+2023-10-22 23:06:20:661 action-translator LogManager.java:25 translate 
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
+   
+
