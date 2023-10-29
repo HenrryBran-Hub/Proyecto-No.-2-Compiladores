@@ -217,8 +217,22 @@ tipodata returns [string tipdat]
 ;
  
 operaritme returns [interfacesc3d.Instruction oparit]
-: ID_VALIDO IG NUMERO PUNTOCOMA
+: ID_VALIDO IG op=(NUMERO|ID_VALIDO) PUNTOCOMA
 {
-    $heapop = instructionsc3d.NewOparit1($NUMERO.text)
+    $oparit = instructionsc3d.NewOparit1($ID_VALIDO.text, $op.text)
+}
+| opp=ID_VALIDO IG (tip1=PARIZQ tip11=tipodata PARIZQ)? val1=(NUMERO|ID_VALIDO) op=(ADD|SUB|MUL|DIV|MODULO) (tip2=PARIZQ tip22=tipodata PARIZQ)? val2=(NUMERO|ID_VALIDO) PUNTOCOMA
+{
+    if $tip1 != nil && $tip2 != nil{
+        $oparit = instructionsc3d.NewOparit21($opp.text, $tip11.tipdat, $val1.text, $op.text, $tip22.tipdat, $val2.text)
+    }else if $tip1 == nil && $tip2 == nil{
+        $oparit = instructionsc3d.NewOparit22($opp.text, $val1.text, $op.text, $val2.text)
+    }else if $tip1 != nil && $tip2 == nil{
+        $oparit = instructionsc3d.NewOparit24($opp.text, $tip11.tipdat, $val1.text, $op.text, $val2.text)
+    }else if $tip1 == nil && $tip2 != nil{
+        $oparit = instructionsc3d.NewOparit23($opp.text, $val1.text, $op.text, $tip22.tipdat, $val2.text)                
+    }    
 }
 ;
+
+

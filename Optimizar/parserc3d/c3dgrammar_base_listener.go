@@ -109,3 +109,9 @@ func (s *BaseC3DGrammarListener) EnterTipodata(ctx *TipodataContext) {}
 
 // ExitTipodata is called when production tipodata is exited.
 func (s *BaseC3DGrammarListener) ExitTipodata(ctx *TipodataContext) {}
+
+// EnterOperaritme is called when production operaritme is entered.
+func (s *BaseC3DGrammarListener) EnterOperaritme(ctx *OperaritmeContext) {}
+
+// ExitOperaritme is called when production operaritme is exited.
+func (s *BaseC3DGrammarListener) ExitOperaritme(ctx *OperaritmeContext) {}

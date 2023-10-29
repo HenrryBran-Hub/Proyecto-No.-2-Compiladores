@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/skratchdot/open-golang/open"
 )
@@ -20,6 +21,8 @@ type Temporal struct {
 	Id    string
 	Valor interface{}
 	Tipo  TipoExpresion
+	IsNeg bool
+	IsOp  bool
 }
 
 type Optimizacion struct {
@@ -42,10 +45,11 @@ func (a *AST) Iniciar() {
 
 func (a *AST) ActualizarTemporal(temp *Temporal) {
 	for elem := a.Lista_Temporales.Front(); elem != nil; elem = elem.Next() {
-		t := elem.Value.(*Temporal)
+		t := elem.Value.(Temporal)
 		if t.Id == temp.Id {
 			t.Valor = temp.Valor
 			t.Tipo = temp.Tipo
+			elem.Value = t
 			return
 		}
 	}
@@ -53,25 +57,26 @@ func (a *AST) ActualizarTemporal(temp *Temporal) {
 
 func (a *AST) ObtenerTemporal(id string) *Temporal {
 	for elem := a.Lista_Temporales.Front(); elem != nil; elem = elem.Next() {
-		temp := elem.Value.(*Temporal)
+		temp := elem.Value.(Temporal)
 		if temp.Id == id {
-			return temp
+			return &temp
 		}
 	}
 	return nil
 }
 
-func (a *AST) DeterminarTipo(valor interface{}) int {
-	switch valor.(type) {
-	case int:
-		return 0
-	case float64:
-		return 0
-	case string:
+func (a *AST) DeterminarTipo(valor interface{}) TipoExpresion {
+	cadena := valor.(string)
+	if strings.Contains(cadena, ".") {
 		return 1
-	default:
+	}
+
+	if strings.Contains(cadena, "t") {
 		return 2
 	}
+
+	return 0
+
 }
 
 func (a *AST) TablaOptimizacion() {

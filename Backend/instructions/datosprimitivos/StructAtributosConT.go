@@ -2,6 +2,7 @@ package datosprimitivos
 
 import (
 	"Backend/environment"
+	"Backend/generator"
 )
 
 type StructAtributosConT struct {
@@ -21,24 +22,7 @@ func NewStructAtributosConT2(line, col int, tipo string, name string, typet stri
 	return StructAtributosConT{line, col, tipo, name, environment.STRUCT, typet}
 }
 
-/*
-func (v StructAtributosConT) Ejecutar(ast *environment.AST) interface{} {
-
-	// var tipoexpstr environment.TipoExpresion
-	// switch v.Type {
-	// case "Int":
-	// 	tipoexpstr = environment.INTEGER
-	// case "Float":
-	// 	tipoexpstr = environment.FLOAT
-	// case "String":
-	// 	tipoexpstr = environment.STRING
-	// case "Bool":
-	// 	tipoexpstr = environment.BOOLEAN
-	// case "Character":
-	// 	tipoexpstr = environment.CHARACTER
-	// default:
-	// 	tipoexpstr = environment.NULL
-	// }
+func (v StructAtributosConT) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 
 	symbol := environment.Symbol{
 		Lin:    v.Line,
@@ -62,5 +46,3 @@ func (v StructAtributosConT) Ejecutar(ast *environment.AST) interface{} {
 	ast.AtributosStruct.PushBack(Variable)
 	return nil
 }
-
-*/

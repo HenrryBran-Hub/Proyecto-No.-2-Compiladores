@@ -52,6 +52,9 @@ type C3DGrammarListener interface {
 	// EnterTipodata is called when entering the tipodata production.
 	EnterTipodata(c *TipodataContext)
 
+	// EnterOperaritme is called when entering the operaritme production.
+	EnterOperaritme(c *OperaritmeContext)
+
 	// ExitZ is called when exiting the z production.
 	ExitZ(c *ZContext)
 
@@ -96,4 +99,7 @@ type C3DGrammarListener interface {
 
 	// ExitTipodata is called when exiting the tipodata production.
 	ExitTipodata(c *TipodataContext)
+
+	// ExitOperaritme is called when exiting the operaritme production.
+	ExitOperaritme(c *OperaritmeContext)
 }

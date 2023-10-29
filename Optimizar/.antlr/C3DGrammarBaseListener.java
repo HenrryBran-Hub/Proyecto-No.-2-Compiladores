@@ -1,13 +1,10 @@
 // Generated from c:/Users/Henrr/OneDrive/Escritorio/Compiladores/Proyecto No. 2/Proyecto No. 2 Compiladores/Optimizar/C3DGrammar.g4 by ANTLR 4.13.1
 
-    import "Optimizar/interfaces"
-    import "Optimizar/environment"
-    import "Optimizar/expressions"
-    import "Optimizar/instructions/datoscompuestos"
-    import "Optimizar/instructions/datosprimitivos"
-    import "Optimizar/instructions/funciones"
-    import "Optimizar/instructions/sentencias"
-    import "strings"
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
    
 
 
@@ -27,25 +24,37 @@ public class C3DGrammarBaseListener implements C3DGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStart(C3DGrammarParser.StartContext ctx) { }
+	@Override public void enterZ(C3DGrammarParser.ZContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStart(C3DGrammarParser.StartContext ctx) { }
+	@Override public void exitZ(C3DGrammarParser.ZContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEncabezado(C3DGrammarParser.EncabezadoContext ctx) { }
+	@Override public void enterEncabezadoa(C3DGrammarParser.EncabezadoaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEncabezado(C3DGrammarParser.EncabezadoContext ctx) { }
+	@Override public void exitEncabezadoa(C3DGrammarParser.EncabezadoaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTemporales(C3DGrammarParser.TemporalesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTemporales(C3DGrammarParser.TemporalesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -135,217 +144,73 @@ public class C3DGrammarBaseListener implements C3DGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssign_stack(C3DGrammarParser.Assign_stackContext ctx) { }
+	@Override public void enterHead_op(C3DGrammarParser.Head_opContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssign_stack(C3DGrammarParser.Assign_stackContext ctx) { }
+	@Override public void exitHead_op(C3DGrammarParser.Head_opContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssign_heap(C3DGrammarParser.Assign_heapContext ctx) { }
+	@Override public void enterStack_op(C3DGrammarParser.Stack_opContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssign_heap(C3DGrammarParser.Assign_heapContext ctx) { }
+	@Override public void exitStack_op(C3DGrammarParser.Stack_opContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssign(C3DGrammarParser.AssignContext ctx) { }
+	@Override public void enterPrintff(C3DGrammarParser.PrintffContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssign(C3DGrammarParser.AssignContext ctx) { }
+	@Override public void exitPrintff(C3DGrammarParser.PrintffContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIf_instr(C3DGrammarParser.If_instrContext ctx) { }
+	@Override public void enterEmbebida(C3DGrammarParser.EmbebidaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIf_instr(C3DGrammarParser.If_instrContext ctx) { }
+	@Override public void exitEmbebida(C3DGrammarParser.EmbebidaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGoto_instr(C3DGrammarParser.Goto_instrContext ctx) { }
+	@Override public void enterTipodata(C3DGrammarParser.TipodataContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitGoto_instr(C3DGrammarParser.Goto_instrContext ctx) { }
+	@Override public void exitTipodata(C3DGrammarParser.TipodataContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLabel_instr(C3DGrammarParser.Label_instrContext ctx) { }
+	@Override public void enterOperaritme(C3DGrammarParser.OperaritmeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLabel_instr(C3DGrammarParser.Label_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPrintf_instr(C3DGrammarParser.Printf_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPrintf_instr(C3DGrammarParser.Printf_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterReturn_instr(C3DGrammarParser.Return_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReturn_instr(C3DGrammarParser.Return_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterGetHeap_instr(C3DGrammarParser.GetHeap_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitGetHeap_instr(C3DGrammarParser.GetHeap_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterGetStack_instr(C3DGrammarParser.GetStack_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitGetStack_instr(C3DGrammarParser.GetStack_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCall_instr(C3DGrammarParser.Call_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCall_instr(C3DGrammarParser.Call_instrContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExpr_print(C3DGrammarParser.Expr_printContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpr_print(C3DGrammarParser.Expr_printContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterConvert(C3DGrammarParser.ConvertContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConvert(C3DGrammarParser.ConvertContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExpression(C3DGrammarParser.ExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpression(C3DGrammarParser.ExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExpr_rel(C3DGrammarParser.Expr_relContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpr_rel(C3DGrammarParser.Expr_relContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExpr_arit(C3DGrammarParser.Expr_aritContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpr_arit(C3DGrammarParser.Expr_aritContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterData_type(C3DGrammarParser.Data_typeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitData_type(C3DGrammarParser.Data_typeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExpr_valor(C3DGrammarParser.Expr_valorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpr_valor(C3DGrammarParser.Expr_valorContext ctx) { }
+	@Override public void exitOperaritme(C3DGrammarParser.OperaritmeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

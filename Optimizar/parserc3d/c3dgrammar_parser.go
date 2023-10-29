@@ -56,110 +56,115 @@ func c3dgrammarParserInit() {
 	staticData.RuleNames = []string{
 		"z", "encabezadoa", "temporales", "blocktemporales", "bloquetemps",
 		"blockfuncions", "bloquefunciones", "funcionmain", "block", "instruction",
-		"head_op", "stack_op", "printff", "embebida", "tipodata",
+		"head_op", "stack_op", "printff", "embebida", "tipodata", "operaritme",
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 45, 240, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 45, 251, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
-		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 1, 0, 1, 0,
-		1, 0, 1, 0, 1, 0, 3, 0, 36, 8, 0, 1, 0, 3, 0, 39, 8, 0, 1, 0, 1, 0, 1,
-		0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
+		1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 0, 38, 8, 0, 1, 0, 3, 0, 41, 8, 0, 1,
+		0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		2, 1, 2, 1, 2, 1, 2, 1, 3, 4, 3, 72, 8, 3, 11, 3, 12, 3, 73, 1, 3, 1, 3,
-		1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 3, 4, 83, 8, 4, 1, 5, 4, 5, 86, 8, 5, 11,
-		5, 12, 5, 87, 1, 5, 1, 5, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1,
-		6, 1, 6, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1,
-		7, 1, 7, 1, 8, 4, 8, 114, 8, 8, 11, 8, 12, 8, 115, 1, 8, 1, 8, 1, 9, 1,
-		9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 3, 9, 129, 8, 9, 1, 10, 1,
-		10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10,
+		1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 4, 3, 74, 8, 3, 11, 3, 12, 3, 75,
+		1, 3, 1, 3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 3, 4, 85, 8, 4, 1, 5, 4, 5, 88,
+		8, 5, 11, 5, 12, 5, 89, 1, 5, 1, 5, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6,
+		1, 6, 1, 6, 1, 6, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
+		1, 7, 1, 7, 1, 7, 1, 8, 4, 8, 116, 8, 8, 11, 8, 12, 8, 117, 1, 8, 1, 8,
+		1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9,
+		3, 9, 134, 8, 9, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10,
 		1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1,
-		10, 1, 10, 1, 10, 1, 10, 1, 10, 3, 10, 158, 8, 10, 1, 11, 1, 11, 1, 11,
-		1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1,
-		11, 1, 11, 1, 11, 3, 11, 176, 8, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11,
-		1, 11, 3, 11, 184, 8, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1,
-		11, 1, 11, 1, 11, 1, 11, 3, 11, 196, 8, 11, 1, 12, 1, 12, 1, 12, 1, 12,
+		10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 3, 10, 163,
+		8, 10, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1,
+		11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 3, 11, 181, 8, 11, 1, 11,
+		1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 3, 11, 189, 8, 11, 1, 11, 1, 11, 1,
+		11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 3, 11, 201, 8, 11,
 		1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1,
-		12, 1, 12, 1, 12, 1, 12, 3, 12, 216, 8, 12, 1, 13, 1, 13, 1, 13, 1, 13,
-		1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 3, 13, 230, 8,
-		13, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 3, 14, 238, 8, 14, 1, 14,
-		0, 0, 15, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 0, 3,
-		2, 0, 16, 16, 18, 18, 2, 0, 15, 16, 18, 18, 1, 0, 35, 36, 245, 0, 30, 1,
-		0, 0, 0, 2, 44, 1, 0, 0, 0, 4, 66, 1, 0, 0, 0, 6, 71, 1, 0, 0, 0, 8, 82,
-		1, 0, 0, 0, 10, 85, 1, 0, 0, 0, 12, 91, 1, 0, 0, 0, 14, 100, 1, 0, 0, 0,
-		16, 113, 1, 0, 0, 0, 18, 128, 1, 0, 0, 0, 20, 157, 1, 0, 0, 0, 22, 195,
-		1, 0, 0, 0, 24, 215, 1, 0, 0, 0, 26, 229, 1, 0, 0, 0, 28, 237, 1, 0, 0,
-		0, 30, 31, 6, 0, -1, 0, 31, 35, 3, 2, 1, 0, 32, 33, 3, 4, 2, 0, 33, 34,
-		5, 23, 0, 0, 34, 36, 1, 0, 0, 0, 35, 32, 1, 0, 0, 0, 35, 36, 1, 0, 0, 0,
-		36, 38, 1, 0, 0, 0, 37, 39, 3, 10, 5, 0, 38, 37, 1, 0, 0, 0, 38, 39, 1,
-		0, 0, 0, 39, 40, 1, 0, 0, 0, 40, 41, 3, 14, 7, 0, 41, 42, 5, 0, 0, 1, 42,
-		43, 6, 0, -1, 0, 43, 1, 1, 0, 0, 0, 44, 45, 5, 6, 0, 0, 45, 46, 5, 7, 0,
-		0, 46, 47, 5, 3, 0, 0, 47, 48, 5, 8, 0, 0, 48, 49, 5, 41, 0, 0, 49, 50,
-		5, 16, 0, 0, 50, 51, 5, 42, 0, 0, 51, 52, 5, 23, 0, 0, 52, 53, 5, 3, 0,
-		0, 53, 54, 5, 9, 0, 0, 54, 55, 5, 41, 0, 0, 55, 56, 5, 16, 0, 0, 56, 57,
-		5, 42, 0, 0, 57, 58, 5, 23, 0, 0, 58, 59, 5, 3, 0, 0, 59, 60, 5, 15, 0,
-		0, 60, 61, 5, 23, 0, 0, 61, 62, 5, 3, 0, 0, 62, 63, 5, 14, 0, 0, 63, 64,
-		5, 23, 0, 0, 64, 65, 6, 1, -1, 0, 65, 3, 1, 0, 0, 0, 66, 67, 5, 3, 0, 0,
-		67, 68, 3, 6, 3, 0, 68, 69, 6, 2, -1, 0, 69, 5, 1, 0, 0, 0, 70, 72, 3,
-		8, 4, 0, 71, 70, 1, 0, 0, 0, 72, 73, 1, 0, 0, 0, 73, 71, 1, 0, 0, 0, 73,
-		74, 1, 0, 0, 0, 74, 75, 1, 0, 0, 0, 75, 76, 6, 3, -1, 0, 76, 7, 1, 0, 0,
-		0, 77, 78, 5, 21, 0, 0, 78, 79, 5, 18, 0, 0, 79, 83, 6, 4, -1, 0, 80, 81,
-		5, 18, 0, 0, 81, 83, 6, 4, -1, 0, 82, 77, 1, 0, 0, 0, 82, 80, 1, 0, 0,
-		0, 83, 9, 1, 0, 0, 0, 84, 86, 3, 12, 6, 0, 85, 84, 1, 0, 0, 0, 86, 87,
-		1, 0, 0, 0, 87, 85, 1, 0, 0, 0, 87, 88, 1, 0, 0, 0, 88, 89, 1, 0, 0, 0,
-		89, 90, 6, 5, -1, 0, 90, 11, 1, 0, 0, 0, 91, 92, 5, 5, 0, 0, 92, 93, 5,
-		18, 0, 0, 93, 94, 5, 37, 0, 0, 94, 95, 5, 38, 0, 0, 95, 96, 5, 39, 0, 0,
-		96, 97, 3, 16, 8, 0, 97, 98, 5, 40, 0, 0, 98, 99, 6, 6, -1, 0, 99, 13,
-		1, 0, 0, 0, 100, 101, 5, 1, 0, 0, 101, 102, 5, 18, 0, 0, 102, 103, 5, 37,
-		0, 0, 103, 104, 5, 38, 0, 0, 104, 105, 5, 39, 0, 0, 105, 106, 3, 16, 8,
-		0, 106, 107, 5, 12, 0, 0, 107, 108, 5, 16, 0, 0, 108, 109, 5, 23, 0, 0,
-		109, 110, 5, 40, 0, 0, 110, 111, 6, 7, -1, 0, 111, 15, 1, 0, 0, 0, 112,
-		114, 3, 18, 9, 0, 113, 112, 1, 0, 0, 0, 114, 115, 1, 0, 0, 0, 115, 113,
-		1, 0, 0, 0, 115, 116, 1, 0, 0, 0, 116, 117, 1, 0, 0, 0, 117, 118, 6, 8,
-		-1, 0, 118, 17, 1, 0, 0, 0, 119, 120, 3, 20, 10, 0, 120, 121, 6, 9, -1,
-		0, 121, 129, 1, 0, 0, 0, 122, 123, 3, 22, 11, 0, 123, 124, 6, 9, -1, 0,
-		124, 129, 1, 0, 0, 0, 125, 126, 3, 24, 12, 0, 126, 127, 6, 9, -1, 0, 127,
-		129, 1, 0, 0, 0, 128, 119, 1, 0, 0, 0, 128, 122, 1, 0, 0, 0, 128, 125,
-		1, 0, 0, 0, 129, 19, 1, 0, 0, 0, 130, 131, 5, 14, 0, 0, 131, 132, 5, 24,
-		0, 0, 132, 133, 5, 16, 0, 0, 133, 134, 5, 23, 0, 0, 134, 158, 6, 10, -1,
-		0, 135, 136, 5, 18, 0, 0, 136, 137, 5, 24, 0, 0, 137, 138, 5, 14, 0, 0,
-		138, 139, 5, 23, 0, 0, 139, 158, 6, 10, -1, 0, 140, 141, 5, 8, 0, 0, 141,
-		142, 5, 41, 0, 0, 142, 143, 3, 26, 13, 0, 143, 144, 5, 14, 0, 0, 144, 145,
-		5, 42, 0, 0, 145, 146, 5, 24, 0, 0, 146, 147, 7, 0, 0, 0, 147, 148, 5,
-		23, 0, 0, 148, 149, 6, 10, -1, 0, 149, 158, 1, 0, 0, 0, 150, 151, 5, 14,
-		0, 0, 151, 152, 5, 24, 0, 0, 152, 153, 5, 14, 0, 0, 153, 154, 5, 35, 0,
-		0, 154, 155, 5, 16, 0, 0, 155, 156, 5, 23, 0, 0, 156, 158, 6, 10, -1, 0,
-		157, 130, 1, 0, 0, 0, 157, 135, 1, 0, 0, 0, 157, 140, 1, 0, 0, 0, 157,
-		150, 1, 0, 0, 0, 158, 21, 1, 0, 0, 0, 159, 160, 5, 15, 0, 0, 160, 161,
-		5, 24, 0, 0, 161, 162, 5, 16, 0, 0, 162, 163, 5, 23, 0, 0, 163, 196, 6,
-		11, -1, 0, 164, 165, 5, 18, 0, 0, 165, 166, 5, 24, 0, 0, 166, 167, 5, 15,
-		0, 0, 167, 168, 5, 23, 0, 0, 168, 196, 6, 11, -1, 0, 169, 170, 5, 9, 0,
-		0, 170, 175, 5, 41, 0, 0, 171, 176, 5, 16, 0, 0, 172, 173, 3, 26, 13, 0,
-		173, 174, 7, 1, 0, 0, 174, 176, 1, 0, 0, 0, 175, 171, 1, 0, 0, 0, 175,
-		172, 1, 0, 0, 0, 176, 177, 1, 0, 0, 0, 177, 178, 5, 42, 0, 0, 178, 183,
-		5, 24, 0, 0, 179, 180, 5, 37, 0, 0, 180, 181, 3, 28, 14, 0, 181, 182, 5,
-		38, 0, 0, 182, 184, 1, 0, 0, 0, 183, 179, 1, 0, 0, 0, 183, 184, 1, 0, 0,
-		0, 184, 185, 1, 0, 0, 0, 185, 186, 7, 0, 0, 0, 186, 187, 5, 23, 0, 0, 187,
-		196, 6, 11, -1, 0, 188, 189, 5, 15, 0, 0, 189, 190, 5, 24, 0, 0, 190, 191,
-		5, 15, 0, 0, 191, 192, 7, 2, 0, 0, 192, 193, 5, 16, 0, 0, 193, 194, 5,
-		23, 0, 0, 194, 196, 6, 11, -1, 0, 195, 159, 1, 0, 0, 0, 195, 164, 1, 0,
-		0, 0, 195, 169, 1, 0, 0, 0, 195, 188, 1, 0, 0, 0, 196, 23, 1, 0, 0, 0,
-		197, 198, 5, 13, 0, 0, 198, 199, 5, 37, 0, 0, 199, 200, 5, 17, 0, 0, 200,
-		201, 5, 21, 0, 0, 201, 202, 5, 16, 0, 0, 202, 203, 5, 38, 0, 0, 203, 204,
-		5, 23, 0, 0, 204, 216, 6, 12, -1, 0, 205, 206, 5, 13, 0, 0, 206, 207, 5,
-		37, 0, 0, 207, 208, 5, 17, 0, 0, 208, 209, 5, 21, 0, 0, 209, 210, 3, 26,
-		13, 0, 210, 211, 7, 0, 0, 0, 211, 212, 5, 38, 0, 0, 212, 213, 5, 23, 0,
-		0, 213, 214, 6, 12, -1, 0, 214, 216, 1, 0, 0, 0, 215, 197, 1, 0, 0, 0,
-		215, 205, 1, 0, 0, 0, 216, 25, 1, 0, 0, 0, 217, 218, 5, 37, 0, 0, 218,
-		219, 5, 1, 0, 0, 219, 220, 5, 38, 0, 0, 220, 230, 6, 13, -1, 0, 221, 222,
-		5, 37, 0, 0, 222, 223, 5, 2, 0, 0, 223, 224, 5, 38, 0, 0, 224, 230, 6,
-		13, -1, 0, 225, 226, 5, 37, 0, 0, 226, 227, 5, 4, 0, 0, 227, 228, 5, 38,
-		0, 0, 228, 230, 6, 13, -1, 0, 229, 217, 1, 0, 0, 0, 229, 221, 1, 0, 0,
-		0, 229, 225, 1, 0, 0, 0, 230, 27, 1, 0, 0, 0, 231, 232, 5, 1, 0, 0, 232,
-		238, 6, 14, -1, 0, 233, 234, 5, 2, 0, 0, 234, 238, 6, 14, -1, 0, 235, 236,
-		5, 4, 0, 0, 236, 238, 6, 14, -1, 0, 237, 231, 1, 0, 0, 0, 237, 233, 1,
-		0, 0, 0, 237, 235, 1, 0, 0, 0, 238, 29, 1, 0, 0, 0, 14, 35, 38, 73, 82,
-		87, 115, 128, 157, 175, 183, 195, 215, 229, 237,
+		12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 3, 12, 221, 8, 12,
+		1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 1,
+		13, 1, 13, 3, 13, 235, 8, 13, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14,
+		3, 14, 243, 8, 14, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 0,
+		0, 16, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 0, 3,
+		2, 0, 16, 16, 18, 18, 2, 0, 15, 16, 18, 18, 1, 0, 35, 36, 256, 0, 32, 1,
+		0, 0, 0, 2, 46, 1, 0, 0, 0, 4, 68, 1, 0, 0, 0, 6, 73, 1, 0, 0, 0, 8, 84,
+		1, 0, 0, 0, 10, 87, 1, 0, 0, 0, 12, 93, 1, 0, 0, 0, 14, 102, 1, 0, 0, 0,
+		16, 115, 1, 0, 0, 0, 18, 133, 1, 0, 0, 0, 20, 162, 1, 0, 0, 0, 22, 200,
+		1, 0, 0, 0, 24, 220, 1, 0, 0, 0, 26, 234, 1, 0, 0, 0, 28, 242, 1, 0, 0,
+		0, 30, 244, 1, 0, 0, 0, 32, 33, 6, 0, -1, 0, 33, 37, 3, 2, 1, 0, 34, 35,
+		3, 4, 2, 0, 35, 36, 5, 23, 0, 0, 36, 38, 1, 0, 0, 0, 37, 34, 1, 0, 0, 0,
+		37, 38, 1, 0, 0, 0, 38, 40, 1, 0, 0, 0, 39, 41, 3, 10, 5, 0, 40, 39, 1,
+		0, 0, 0, 40, 41, 1, 0, 0, 0, 41, 42, 1, 0, 0, 0, 42, 43, 3, 14, 7, 0, 43,
+		44, 5, 0, 0, 1, 44, 45, 6, 0, -1, 0, 45, 1, 1, 0, 0, 0, 46, 47, 5, 6, 0,
+		0, 47, 48, 5, 7, 0, 0, 48, 49, 5, 3, 0, 0, 49, 50, 5, 8, 0, 0, 50, 51,
+		5, 41, 0, 0, 51, 52, 5, 16, 0, 0, 52, 53, 5, 42, 0, 0, 53, 54, 5, 23, 0,
+		0, 54, 55, 5, 3, 0, 0, 55, 56, 5, 9, 0, 0, 56, 57, 5, 41, 0, 0, 57, 58,
+		5, 16, 0, 0, 58, 59, 5, 42, 0, 0, 59, 60, 5, 23, 0, 0, 60, 61, 5, 3, 0,
+		0, 61, 62, 5, 15, 0, 0, 62, 63, 5, 23, 0, 0, 63, 64, 5, 3, 0, 0, 64, 65,
+		5, 14, 0, 0, 65, 66, 5, 23, 0, 0, 66, 67, 6, 1, -1, 0, 67, 3, 1, 0, 0,
+		0, 68, 69, 5, 3, 0, 0, 69, 70, 3, 6, 3, 0, 70, 71, 6, 2, -1, 0, 71, 5,
+		1, 0, 0, 0, 72, 74, 3, 8, 4, 0, 73, 72, 1, 0, 0, 0, 74, 75, 1, 0, 0, 0,
+		75, 73, 1, 0, 0, 0, 75, 76, 1, 0, 0, 0, 76, 77, 1, 0, 0, 0, 77, 78, 6,
+		3, -1, 0, 78, 7, 1, 0, 0, 0, 79, 80, 5, 21, 0, 0, 80, 81, 5, 18, 0, 0,
+		81, 85, 6, 4, -1, 0, 82, 83, 5, 18, 0, 0, 83, 85, 6, 4, -1, 0, 84, 79,
+		1, 0, 0, 0, 84, 82, 1, 0, 0, 0, 85, 9, 1, 0, 0, 0, 86, 88, 3, 12, 6, 0,
+		87, 86, 1, 0, 0, 0, 88, 89, 1, 0, 0, 0, 89, 87, 1, 0, 0, 0, 89, 90, 1,
+		0, 0, 0, 90, 91, 1, 0, 0, 0, 91, 92, 6, 5, -1, 0, 92, 11, 1, 0, 0, 0, 93,
+		94, 5, 5, 0, 0, 94, 95, 5, 18, 0, 0, 95, 96, 5, 37, 0, 0, 96, 97, 5, 38,
+		0, 0, 97, 98, 5, 39, 0, 0, 98, 99, 3, 16, 8, 0, 99, 100, 5, 40, 0, 0, 100,
+		101, 6, 6, -1, 0, 101, 13, 1, 0, 0, 0, 102, 103, 5, 1, 0, 0, 103, 104,
+		5, 18, 0, 0, 104, 105, 5, 37, 0, 0, 105, 106, 5, 38, 0, 0, 106, 107, 5,
+		39, 0, 0, 107, 108, 3, 16, 8, 0, 108, 109, 5, 12, 0, 0, 109, 110, 5, 16,
+		0, 0, 110, 111, 5, 23, 0, 0, 111, 112, 5, 40, 0, 0, 112, 113, 6, 7, -1,
+		0, 113, 15, 1, 0, 0, 0, 114, 116, 3, 18, 9, 0, 115, 114, 1, 0, 0, 0, 116,
+		117, 1, 0, 0, 0, 117, 115, 1, 0, 0, 0, 117, 118, 1, 0, 0, 0, 118, 119,
+		1, 0, 0, 0, 119, 120, 6, 8, -1, 0, 120, 17, 1, 0, 0, 0, 121, 122, 3, 20,
+		10, 0, 122, 123, 6, 9, -1, 0, 123, 134, 1, 0, 0, 0, 124, 125, 3, 22, 11,
+		0, 125, 126, 6, 9, -1, 0, 126, 134, 1, 0, 0, 0, 127, 128, 3, 24, 12, 0,
+		128, 129, 6, 9, -1, 0, 129, 134, 1, 0, 0, 0, 130, 131, 3, 30, 15, 0, 131,
+		132, 6, 9, -1, 0, 132, 134, 1, 0, 0, 0, 133, 121, 1, 0, 0, 0, 133, 124,
+		1, 0, 0, 0, 133, 127, 1, 0, 0, 0, 133, 130, 1, 0, 0, 0, 134, 19, 1, 0,
+		0, 0, 135, 136, 5, 14, 0, 0, 136, 137, 5, 24, 0, 0, 137, 138, 5, 16, 0,
+		0, 138, 139, 5, 23, 0, 0, 139, 163, 6, 10, -1, 0, 140, 141, 5, 18, 0, 0,
+		141, 142, 5, 24, 0, 0, 142, 143, 5, 14, 0, 0, 143, 144, 5, 23, 0, 0, 144,
+		163, 6, 10, -1, 0, 145, 146, 5, 8, 0, 0, 146, 147, 5, 41, 0, 0, 147, 148,
+		3, 26, 13, 0, 148, 149, 5, 14, 0, 0, 149, 150, 5, 42, 0, 0, 150, 151, 5,
+		24, 0, 0, 151, 152, 7, 0, 0, 0, 152, 153, 5, 23, 0, 0, 153, 154, 6, 10,
+		-1, 0, 154, 163, 1, 0, 0, 0, 155, 156, 5, 14, 0, 0, 156, 157, 5, 24, 0,
+		0, 157, 158, 5, 14, 0, 0, 158, 159, 5, 35, 0, 0, 159, 160, 5, 16, 0, 0,
+		160, 161, 5, 23, 0, 0, 161, 163, 6, 10, -1, 0, 162, 135, 1, 0, 0, 0, 162,
+		140, 1, 0, 0, 0, 162, 145, 1, 0, 0, 0, 162, 155, 1, 0, 0, 0, 163, 21, 1,
+		0, 0, 0, 164, 165, 5, 15, 0, 0, 165, 166, 5, 24, 0, 0, 166, 167, 5, 16,
+		0, 0, 167, 168, 5, 23, 0, 0, 168, 201, 6, 11, -1, 0, 169, 170, 5, 18, 0,
+		0, 170, 171, 5, 24, 0, 0, 171, 172, 5, 15, 0, 0, 172, 173, 5, 23, 0, 0,
+		173, 201, 6, 11, -1, 0, 174, 175, 5, 9, 0, 0, 175, 180, 5, 41, 0, 0, 176,
+		181, 5, 16, 0, 0, 177, 178, 3, 26, 13, 0, 178, 179, 7, 1, 0, 0, 179, 181,
+		1, 0, 0, 0, 180, 176, 1, 0, 0, 0, 180, 177, 1, 0, 0, 0, 181, 182, 1, 0,
+		0, 0, 182, 183, 5, 42, 0, 0, 183, 188, 5, 24, 0, 0, 184, 185, 5, 37, 0,
+		0, 185, 186, 3, 28, 14, 0, 186, 187, 5, 38, 0, 0, 187, 189, 1, 0, 0, 0,
+		188, 184, 1, 0, 0, 0, 188, 189, 1, 0, 0, 0, 189, 190, 1, 0, 0, 0, 190,
+		191, 7, 0, 0, 0, 191, 192, 5, 23, 0, 0, 192, 201, 6, 11, -1, 0, 193, 194,
+		5, 15, 0, 0, 194, 195, 5, 24, 0, 0, 195, 196, 5, 15, 0, 0, 196, 197, 7,
+		2, 0, 0, 197, 198, 5, 16, 0, 0, 198, 199, 5, 23, 0, 0, 199, 201, 6, 11,
+		-1, 0, 200, 164, 1, 0, 0, 0, 200, 169, 1, 0, 0, 0, 200, 174, 1, 0, 0, 0,
+		200, 193, 1, 0, 0, 0, 201, 23, 1, 0, 0, 0, 202, 203, 5, 13, 0, 0, 203,
+		204, 5, 37, 0, 0, 204, 205, 5, 17, 0, 0, 205, 206, 5, 21, 0, 0, 206, 207,
+		5, 16, 0, 0, 207, 208, 5, 38, 0, 0, 208, 209, 5, 23, 0, 0, 209, 221, 6,
+		12, -1, 0, 210, 211, 5, 13, 0, 0, 211, 212, 5, 37, 0, 0, 212, 213, 5, 17,
+		0, 0, 213, 214, 5, 21, 0, 0, 214, 215, 3, 26, 13, 0, 215, 216, 7, 0, 0,
+		0, 216, 217, 5, 38, 0, 0, 217, 218, 5, 23, 0, 0, 218, 219, 6, 12, -1, 0,
+		219, 221, 1, 0, 0, 0, 220, 202, 1, 0, 0, 0, 220, 210, 1, 0, 0, 0, 221,
+		25, 1, 0, 0, 0, 222, 223, 5, 37, 0, 0, 223, 224, 5, 1, 0, 0, 224, 225,
+		5, 38, 0, 0, 225, 235, 6, 13, -1, 0, 226, 227, 5, 37, 0, 0, 227, 228, 5,
+		2, 0, 0, 228, 229, 5, 38, 0, 0, 229, 235, 6, 13, -1, 0, 230, 231, 5, 37,
+		0, 0, 231, 232, 5, 4, 0, 0, 232, 233, 5, 38, 0, 0, 233, 235, 6, 13, -1,
+		0, 234, 222, 1, 0, 0, 0, 234, 226, 1, 0, 0, 0, 234, 230, 1, 0, 0, 0, 235,
+		27, 1, 0, 0, 0, 236, 237, 5, 1, 0, 0, 237, 243, 6, 14, -1, 0, 238, 239,
+		5, 2, 0, 0, 239, 243, 6, 14, -1, 0, 240, 241, 5, 4, 0, 0, 241, 243, 6,
+		14, -1, 0, 242, 236, 1, 0, 0, 0, 242, 238, 1, 0, 0, 0, 242, 240, 1, 0,
+		0, 0, 243, 29, 1, 0, 0, 0, 244, 245, 5, 18, 0, 0, 245, 246, 5, 24, 0, 0,
+		246, 247, 7, 0, 0, 0, 247, 248, 5, 23, 0, 0, 248, 249, 6, 15, -1, 0, 249,
+		31, 1, 0, 0, 0, 14, 37, 40, 75, 84, 89, 117, 133, 162, 180, 188, 200, 220,
+		234, 242,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -262,6 +267,7 @@ const (
 	C3DGrammarParserRULE_printff         = 12
 	C3DGrammarParserRULE_embebida        = 13
 	C3DGrammarParserRULE_tipodata        = 14
+	C3DGrammarParserRULE_operaritme      = 15
 )
 
 // IZContext is an interface to support dynamic dispatch.
@@ -484,13 +490,13 @@ func (p *C3DGrammarParser) Z() (localctx IZContext) {
 	mySlice = make([]interface{}, 0) // Inicializa el slice vacío
 
 	{
-		p.SetState(31)
+		p.SetState(33)
 
 		var _x = p.Encabezadoa()
 
 		localctx.(*ZContext)._encabezadoa = _x
 	}
-	p.SetState(35)
+	p.SetState(37)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -499,14 +505,14 @@ func (p *C3DGrammarParser) Z() (localctx IZContext) {
 
 	if _la == C3DGrammarParserDOUBLE {
 		{
-			p.SetState(32)
+			p.SetState(34)
 
 			var _x = p.Temporales()
 
 			localctx.(*ZContext)._temporales = _x
 		}
 		{
-			p.SetState(33)
+			p.SetState(35)
 
 			var _m = p.Match(C3DGrammarParserPUNTOCOMA)
 
@@ -518,7 +524,7 @@ func (p *C3DGrammarParser) Z() (localctx IZContext) {
 		}
 
 	}
-	p.SetState(38)
+	p.SetState(40)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -527,7 +533,7 @@ func (p *C3DGrammarParser) Z() (localctx IZContext) {
 
 	if _la == C3DGrammarParserVOID {
 		{
-			p.SetState(37)
+			p.SetState(39)
 
 			var _x = p.Blockfuncions()
 
@@ -536,14 +542,14 @@ func (p *C3DGrammarParser) Z() (localctx IZContext) {
 
 	}
 	{
-		p.SetState(40)
+		p.SetState(42)
 
 		var _x = p.Funcionmain()
 
 		localctx.(*ZContext)._funcionmain = _x
 	}
 	{
-		p.SetState(41)
+		p.SetState(43)
 		p.Match(C3DGrammarParserEOF)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -760,7 +766,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 	p.EnterRule(localctx, 2, C3DGrammarParserRULE_encabezadoa)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(44)
+		p.SetState(46)
 		p.Match(C3DGrammarParserINCLUDE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -768,7 +774,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(45)
+		p.SetState(47)
 		p.Match(C3DGrammarParserSTDIO)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -776,7 +782,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(46)
+		p.SetState(48)
 		p.Match(C3DGrammarParserDOUBLE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -784,7 +790,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(47)
+		p.SetState(49)
 		p.Match(C3DGrammarParserHEAP)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -792,7 +798,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(48)
+		p.SetState(50)
 		p.Match(C3DGrammarParserCORCHIZQ)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -800,7 +806,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(49)
+		p.SetState(51)
 
 		var _m = p.Match(C3DGrammarParserNUMERO)
 
@@ -811,7 +817,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(50)
+		p.SetState(52)
 		p.Match(C3DGrammarParserCORCHDER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -819,7 +825,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(51)
+		p.SetState(53)
 		p.Match(C3DGrammarParserPUNTOCOMA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -827,7 +833,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(52)
+		p.SetState(54)
 		p.Match(C3DGrammarParserDOUBLE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -835,7 +841,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(53)
+		p.SetState(55)
 		p.Match(C3DGrammarParserSTACK)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -843,7 +849,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(54)
+		p.SetState(56)
 		p.Match(C3DGrammarParserCORCHIZQ)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -851,7 +857,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(55)
+		p.SetState(57)
 
 		var _m = p.Match(C3DGrammarParserNUMERO)
 
@@ -862,7 +868,7 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(56)
+		p.SetState(58)
 		p.Match(C3DGrammarParserCORCHDER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -870,24 +876,8 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
-		p.SetState(57)
-		p.Match(C3DGrammarParserPUNTOCOMA)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
-		p.SetState(58)
-		p.Match(C3DGrammarParserDOUBLE)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
 		p.SetState(59)
-		p.Match(C3DGrammarParserPSTACK)
+		p.Match(C3DGrammarParserPUNTOCOMA)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
@@ -895,14 +885,6 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 	}
 	{
 		p.SetState(60)
-		p.Match(C3DGrammarParserPUNTOCOMA)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
-		p.SetState(61)
 		p.Match(C3DGrammarParserDOUBLE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -910,8 +892,16 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 		}
 	}
 	{
+		p.SetState(61)
+		p.Match(C3DGrammarParserPSTACK)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
 		p.SetState(62)
-		p.Match(C3DGrammarParserPHEAD)
+		p.Match(C3DGrammarParserPUNTOCOMA)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
@@ -919,6 +909,22 @@ func (p *C3DGrammarParser) Encabezadoa() (localctx IEncabezadoaContext) {
 	}
 	{
 		p.SetState(63)
+		p.Match(C3DGrammarParserDOUBLE)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
+		p.SetState(64)
+		p.Match(C3DGrammarParserPHEAD)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
+		p.SetState(65)
 		p.Match(C3DGrammarParserPUNTOCOMA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1067,7 +1073,7 @@ func (p *C3DGrammarParser) Temporales() (localctx ITemporalesContext) {
 	p.EnterRule(localctx, 4, C3DGrammarParserRULE_temporales)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(66)
+		p.SetState(68)
 		p.Match(C3DGrammarParserDOUBLE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1075,7 +1081,7 @@ func (p *C3DGrammarParser) Temporales() (localctx ITemporalesContext) {
 		}
 	}
 	{
-		p.SetState(67)
+		p.SetState(69)
 
 		var _x = p.Blocktemporales()
 
@@ -1248,7 +1254,7 @@ func (p *C3DGrammarParser) Blocktemporales() (localctx IBlocktemporalesContext) 
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(71)
+	p.SetState(73)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1257,7 +1263,7 @@ func (p *C3DGrammarParser) Blocktemporales() (localctx IBlocktemporalesContext) 
 
 	for ok := true; ok; ok = _la == C3DGrammarParserID_VALIDO || _la == C3DGrammarParserCOMMA {
 		{
-			p.SetState(70)
+			p.SetState(72)
 
 			var _x = p.Bloquetemps()
 
@@ -1265,7 +1271,7 @@ func (p *C3DGrammarParser) Blocktemporales() (localctx IBlocktemporalesContext) 
 		}
 		localctx.(*BlocktemporalesContext).temps = append(localctx.(*BlocktemporalesContext).temps, localctx.(*BlocktemporalesContext)._bloquetemps)
 
-		p.SetState(73)
+		p.SetState(75)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -1391,7 +1397,7 @@ func (s *BloquetempsContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *C3DGrammarParser) Bloquetemps() (localctx IBloquetempsContext) {
 	localctx = NewBloquetempsContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 8, C3DGrammarParserRULE_bloquetemps)
-	p.SetState(82)
+	p.SetState(84)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1401,7 +1407,7 @@ func (p *C3DGrammarParser) Bloquetemps() (localctx IBloquetempsContext) {
 	case C3DGrammarParserCOMMA:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(77)
+			p.SetState(79)
 			p.Match(C3DGrammarParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1409,7 +1415,7 @@ func (p *C3DGrammarParser) Bloquetemps() (localctx IBloquetempsContext) {
 			}
 		}
 		{
-			p.SetState(78)
+			p.SetState(80)
 
 			var _m = p.Match(C3DGrammarParserID_VALIDO)
 
@@ -1430,7 +1436,7 @@ func (p *C3DGrammarParser) Bloquetemps() (localctx IBloquetempsContext) {
 	case C3DGrammarParserID_VALIDO:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(80)
+			p.SetState(82)
 
 			var _m = p.Match(C3DGrammarParserID_VALIDO)
 
@@ -1619,7 +1625,7 @@ func (p *C3DGrammarParser) Blockfuncions() (localctx IBlockfuncionsContext) {
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(85)
+	p.SetState(87)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1628,7 +1634,7 @@ func (p *C3DGrammarParser) Blockfuncions() (localctx IBlockfuncionsContext) {
 
 	for ok := true; ok; ok = _la == C3DGrammarParserVOID {
 		{
-			p.SetState(84)
+			p.SetState(86)
 
 			var _x = p.Bloquefunciones()
 
@@ -1636,7 +1642,7 @@ func (p *C3DGrammarParser) Blockfuncions() (localctx IBlockfuncionsContext) {
 		}
 		localctx.(*BlockfuncionsContext).func_ = append(localctx.(*BlockfuncionsContext).func_, localctx.(*BlockfuncionsContext)._bloquefunciones)
 
-		p.SetState(87)
+		p.SetState(89)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -1812,7 +1818,7 @@ func (p *C3DGrammarParser) Bloquefunciones() (localctx IBloquefuncionesContext) 
 	p.EnterRule(localctx, 12, C3DGrammarParserRULE_bloquefunciones)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(91)
+		p.SetState(93)
 		p.Match(C3DGrammarParserVOID)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1820,7 +1826,7 @@ func (p *C3DGrammarParser) Bloquefunciones() (localctx IBloquefuncionesContext) 
 		}
 	}
 	{
-		p.SetState(92)
+		p.SetState(94)
 
 		var _m = p.Match(C3DGrammarParserID_VALIDO)
 
@@ -1831,7 +1837,7 @@ func (p *C3DGrammarParser) Bloquefunciones() (localctx IBloquefuncionesContext) 
 		}
 	}
 	{
-		p.SetState(93)
+		p.SetState(95)
 		p.Match(C3DGrammarParserPARIZQ)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1839,7 +1845,7 @@ func (p *C3DGrammarParser) Bloquefunciones() (localctx IBloquefuncionesContext) 
 		}
 	}
 	{
-		p.SetState(94)
+		p.SetState(96)
 		p.Match(C3DGrammarParserPARDER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1847,7 +1853,7 @@ func (p *C3DGrammarParser) Bloquefunciones() (localctx IBloquefuncionesContext) 
 		}
 	}
 	{
-		p.SetState(95)
+		p.SetState(97)
 		p.Match(C3DGrammarParserLLAVEIZQ)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1855,14 +1861,14 @@ func (p *C3DGrammarParser) Bloquefunciones() (localctx IBloquefuncionesContext) 
 		}
 	}
 	{
-		p.SetState(96)
+		p.SetState(98)
 
 		var _x = p.Block()
 
 		localctx.(*BloquefuncionesContext)._block = _x
 	}
 	{
-		p.SetState(97)
+		p.SetState(99)
 		p.Match(C3DGrammarParserLLAVEDER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2045,7 +2051,7 @@ func (p *C3DGrammarParser) Funcionmain() (localctx IFuncionmainContext) {
 	p.EnterRule(localctx, 14, C3DGrammarParserRULE_funcionmain)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(100)
+		p.SetState(102)
 		p.Match(C3DGrammarParserINT)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2053,7 +2059,7 @@ func (p *C3DGrammarParser) Funcionmain() (localctx IFuncionmainContext) {
 		}
 	}
 	{
-		p.SetState(101)
+		p.SetState(103)
 		p.Match(C3DGrammarParserID_VALIDO)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2061,7 +2067,7 @@ func (p *C3DGrammarParser) Funcionmain() (localctx IFuncionmainContext) {
 		}
 	}
 	{
-		p.SetState(102)
+		p.SetState(104)
 		p.Match(C3DGrammarParserPARIZQ)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2069,7 +2075,7 @@ func (p *C3DGrammarParser) Funcionmain() (localctx IFuncionmainContext) {
 		}
 	}
 	{
-		p.SetState(103)
+		p.SetState(105)
 		p.Match(C3DGrammarParserPARDER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2077,7 +2083,7 @@ func (p *C3DGrammarParser) Funcionmain() (localctx IFuncionmainContext) {
 		}
 	}
 	{
-		p.SetState(104)
+		p.SetState(106)
 		p.Match(C3DGrammarParserLLAVEIZQ)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2085,14 +2091,14 @@ func (p *C3DGrammarParser) Funcionmain() (localctx IFuncionmainContext) {
 		}
 	}
 	{
-		p.SetState(105)
+		p.SetState(107)
 
 		var _x = p.Block()
 
 		localctx.(*FuncionmainContext)._block = _x
 	}
 	{
-		p.SetState(106)
+		p.SetState(108)
 		p.Match(C3DGrammarParserRETURN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2100,7 +2106,7 @@ func (p *C3DGrammarParser) Funcionmain() (localctx IFuncionmainContext) {
 		}
 	}
 	{
-		p.SetState(107)
+		p.SetState(109)
 		p.Match(C3DGrammarParserNUMERO)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2108,7 +2114,7 @@ func (p *C3DGrammarParser) Funcionmain() (localctx IFuncionmainContext) {
 		}
 	}
 	{
-		p.SetState(108)
+		p.SetState(110)
 		p.Match(C3DGrammarParserPUNTOCOMA)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2116,7 +2122,7 @@ func (p *C3DGrammarParser) Funcionmain() (localctx IFuncionmainContext) {
 		}
 	}
 	{
-		p.SetState(109)
+		p.SetState(111)
 		p.Match(C3DGrammarParserLLAVEDER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2290,7 +2296,7 @@ func (p *C3DGrammarParser) Block() (localctx IBlockContext) {
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(113)
+	p.SetState(115)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2299,7 +2305,7 @@ func (p *C3DGrammarParser) Block() (localctx IBlockContext) {
 
 	for ok := true; ok; ok = ((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&320256) != 0) {
 		{
-			p.SetState(112)
+			p.SetState(114)
 
 			var _x = p.Instruction()
 
@@ -2307,7 +2313,7 @@ func (p *C3DGrammarParser) Block() (localctx IBlockContext) {
 		}
 		localctx.(*BlockContext).ins = append(localctx.(*BlockContext).ins, localctx.(*BlockContext)._instruction)
 
-		p.SetState(115)
+		p.SetState(117)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -2349,6 +2355,9 @@ type IInstructionContext interface {
 	// Get_printff returns the _printff rule contexts.
 	Get_printff() IPrintffContext
 
+	// Get_operaritme returns the _operaritme rule contexts.
+	Get_operaritme() IOperaritmeContext
+
 	// Set_head_op sets the _head_op rule contexts.
 	Set_head_op(IHead_opContext)
 
@@ -2357,6 +2366,9 @@ type IInstructionContext interface {
 
 	// Set_printff sets the _printff rule contexts.
 	Set_printff(IPrintffContext)
+
+	// Set_operaritme sets the _operaritme rule contexts.
+	Set_operaritme(IOperaritmeContext)
 
 	// GetInstr returns the instr attribute.
 	GetInstr() interfacesc3d.Instruction
@@ -2368,6 +2380,7 @@ type IInstructionContext interface {
 	Head_op() IHead_opContext
 	Stack_op() IStack_opContext
 	Printff() IPrintffContext
+	Operaritme() IOperaritmeContext
 
 	// IsInstructionContext differentiates from other interfaces.
 	IsInstructionContext()
@@ -2375,11 +2388,12 @@ type IInstructionContext interface {
 
 type InstructionContext struct {
 	antlr.BaseParserRuleContext
-	parser    antlr.Parser
-	instr     interfacesc3d.Instruction
-	_head_op  IHead_opContext
-	_stack_op IStack_opContext
-	_printff  IPrintffContext
+	parser      antlr.Parser
+	instr       interfacesc3d.Instruction
+	_head_op    IHead_opContext
+	_stack_op   IStack_opContext
+	_printff    IPrintffContext
+	_operaritme IOperaritmeContext
 }
 
 func NewEmptyInstructionContext() *InstructionContext {
@@ -2415,11 +2429,15 @@ func (s *InstructionContext) Get_stack_op() IStack_opContext { return s._stack_o
 
 func (s *InstructionContext) Get_printff() IPrintffContext { return s._printff }
 
+func (s *InstructionContext) Get_operaritme() IOperaritmeContext { return s._operaritme }
+
 func (s *InstructionContext) Set_head_op(v IHead_opContext) { s._head_op = v }
 
 func (s *InstructionContext) Set_stack_op(v IStack_opContext) { s._stack_op = v }
 
 func (s *InstructionContext) Set_printff(v IPrintffContext) { s._printff = v }
+
+func (s *InstructionContext) Set_operaritme(v IOperaritmeContext) { s._operaritme = v }
 
 func (s *InstructionContext) GetInstr() interfacesc3d.Instruction { return s.instr }
 
@@ -2473,6 +2491,22 @@ func (s *InstructionContext) Printff() IPrintffContext {
 	return t.(IPrintffContext)
 }
 
+func (s *InstructionContext) Operaritme() IOperaritmeContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IOperaritmeContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IOperaritmeContext)
+}
+
 func (s *InstructionContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -2496,7 +2530,7 @@ func (s *InstructionContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *C3DGrammarParser) Instruction() (localctx IInstructionContext) {
 	localctx = NewInstructionContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 18, C3DGrammarParserRULE_instruction)
-	p.SetState(128)
+	p.SetState(133)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2506,7 +2540,7 @@ func (p *C3DGrammarParser) Instruction() (localctx IInstructionContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(119)
+			p.SetState(121)
 
 			var _x = p.Head_op()
 
@@ -2517,7 +2551,7 @@ func (p *C3DGrammarParser) Instruction() (localctx IInstructionContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(122)
+			p.SetState(124)
 
 			var _x = p.Stack_op()
 
@@ -2528,13 +2562,24 @@ func (p *C3DGrammarParser) Instruction() (localctx IInstructionContext) {
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(125)
+			p.SetState(127)
 
 			var _x = p.Printff()
 
 			localctx.(*InstructionContext)._printff = _x
 		}
 		localctx.(*InstructionContext).instr = localctx.(*InstructionContext).Get_printff().GetPrtff()
+
+	case 4:
+		p.EnterOuterAlt(localctx, 4)
+		{
+			p.SetState(130)
+
+			var _x = p.Operaritme()
+
+			localctx.(*InstructionContext)._operaritme = _x
+		}
+		localctx.(*InstructionContext).instr = localctx.(*InstructionContext).Get_operaritme().GetOparit()
 
 	case antlr.ATNInvalidAltNumber:
 		goto errorExit
@@ -2745,7 +2790,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 	p.EnterRule(localctx, 20, C3DGrammarParserRULE_head_op)
 	var _la int
 
-	p.SetState(157)
+	p.SetState(162)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2755,7 +2800,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(130)
+			p.SetState(135)
 			p.Match(C3DGrammarParserPHEAD)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2763,7 +2808,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(131)
+			p.SetState(136)
 			p.Match(C3DGrammarParserIG)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2771,7 +2816,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(132)
+			p.SetState(137)
 
 			var _m = p.Match(C3DGrammarParserNUMERO)
 
@@ -2782,7 +2827,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(133)
+			p.SetState(138)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2801,7 +2846,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(135)
+			p.SetState(140)
 
 			var _m = p.Match(C3DGrammarParserID_VALIDO)
 
@@ -2812,7 +2857,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(136)
+			p.SetState(141)
 			p.Match(C3DGrammarParserIG)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2820,7 +2865,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(137)
+			p.SetState(142)
 			p.Match(C3DGrammarParserPHEAD)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2828,7 +2873,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(138)
+			p.SetState(143)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2847,7 +2892,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(140)
+			p.SetState(145)
 			p.Match(C3DGrammarParserHEAP)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2855,7 +2900,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(141)
+			p.SetState(146)
 			p.Match(C3DGrammarParserCORCHIZQ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2863,14 +2908,14 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(142)
+			p.SetState(147)
 
 			var _x = p.Embebida()
 
 			localctx.(*Head_opContext)._embebida = _x
 		}
 		{
-			p.SetState(143)
+			p.SetState(148)
 			p.Match(C3DGrammarParserPHEAD)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2878,7 +2923,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(144)
+			p.SetState(149)
 			p.Match(C3DGrammarParserCORCHDER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2886,7 +2931,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(145)
+			p.SetState(150)
 			p.Match(C3DGrammarParserIG)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2894,7 +2939,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(146)
+			p.SetState(151)
 
 			var _lt = p.GetTokenStream().LT(1)
 
@@ -2912,7 +2957,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(147)
+			p.SetState(152)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2931,7 +2976,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 	case 4:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(150)
+			p.SetState(155)
 			p.Match(C3DGrammarParserPHEAD)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2939,7 +2984,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(151)
+			p.SetState(156)
 			p.Match(C3DGrammarParserIG)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2947,7 +2992,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(152)
+			p.SetState(157)
 			p.Match(C3DGrammarParserPHEAD)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2955,7 +3000,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(153)
+			p.SetState(158)
 			p.Match(C3DGrammarParserADD)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2963,7 +3008,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(154)
+			p.SetState(159)
 
 			var _m = p.Match(C3DGrammarParserNUMERO)
 
@@ -2974,7 +3019,7 @@ func (p *C3DGrammarParser) Head_op() (localctx IHead_opContext) {
 			}
 		}
 		{
-			p.SetState(155)
+			p.SetState(160)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3296,7 +3341,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 	p.EnterRule(localctx, 22, C3DGrammarParserRULE_stack_op)
 	var _la int
 
-	p.SetState(195)
+	p.SetState(200)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3306,7 +3351,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(159)
+			p.SetState(164)
 			p.Match(C3DGrammarParserPSTACK)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3314,7 +3359,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(160)
+			p.SetState(165)
 			p.Match(C3DGrammarParserIG)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3322,7 +3367,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(161)
+			p.SetState(166)
 
 			var _m = p.Match(C3DGrammarParserNUMERO)
 
@@ -3333,7 +3378,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(162)
+			p.SetState(167)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3352,7 +3397,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(164)
+			p.SetState(169)
 
 			var _m = p.Match(C3DGrammarParserID_VALIDO)
 
@@ -3363,7 +3408,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(165)
+			p.SetState(170)
 			p.Match(C3DGrammarParserIG)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3371,7 +3416,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(166)
+			p.SetState(171)
 			p.Match(C3DGrammarParserPSTACK)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3379,7 +3424,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(167)
+			p.SetState(172)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3398,7 +3443,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(169)
+			p.SetState(174)
 			p.Match(C3DGrammarParserSTACK)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3406,14 +3451,14 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(170)
+			p.SetState(175)
 			p.Match(C3DGrammarParserCORCHIZQ)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
 			}
 		}
-		p.SetState(175)
+		p.SetState(180)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -3422,7 +3467,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 		switch p.GetTokenStream().LA(1) {
 		case C3DGrammarParserNUMERO:
 			{
-				p.SetState(171)
+				p.SetState(176)
 
 				var _m = p.Match(C3DGrammarParserNUMERO)
 
@@ -3435,14 +3480,14 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 
 		case C3DGrammarParserPARIZQ:
 			{
-				p.SetState(172)
+				p.SetState(177)
 
 				var _x = p.Embebida()
 
 				localctx.(*Stack_opContext).tip1 = _x
 			}
 			{
-				p.SetState(173)
+				p.SetState(178)
 
 				var _lt = p.GetTokenStream().LT(1)
 
@@ -3465,7 +3510,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			goto errorExit
 		}
 		{
-			p.SetState(177)
+			p.SetState(182)
 			p.Match(C3DGrammarParserCORCHDER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3473,14 +3518,14 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(178)
+			p.SetState(183)
 			p.Match(C3DGrammarParserIG)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
 			}
 		}
-		p.SetState(183)
+		p.SetState(188)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -3489,7 +3534,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 
 		if _la == C3DGrammarParserPARIZQ {
 			{
-				p.SetState(179)
+				p.SetState(184)
 
 				var _m = p.Match(C3DGrammarParserPARIZQ)
 
@@ -3500,14 +3545,14 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 				}
 			}
 			{
-				p.SetState(180)
+				p.SetState(185)
 
 				var _x = p.Tipodata()
 
 				localctx.(*Stack_opContext)._tipodata = _x
 			}
 			{
-				p.SetState(181)
+				p.SetState(186)
 				p.Match(C3DGrammarParserPARDER)
 				if p.HasError() {
 					// Recognition error - abort rule
@@ -3517,7 +3562,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 
 		}
 		{
-			p.SetState(185)
+			p.SetState(190)
 
 			var _lt = p.GetTokenStream().LT(1)
 
@@ -3535,7 +3580,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(186)
+			p.SetState(191)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3608,7 +3653,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 	case 4:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(188)
+			p.SetState(193)
 			p.Match(C3DGrammarParserPSTACK)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3616,7 +3661,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(189)
+			p.SetState(194)
 			p.Match(C3DGrammarParserIG)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3624,7 +3669,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(190)
+			p.SetState(195)
 			p.Match(C3DGrammarParserPSTACK)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3632,7 +3677,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(191)
+			p.SetState(196)
 
 			var _lt = p.GetTokenStream().LT(1)
 
@@ -3650,7 +3695,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(192)
+			p.SetState(197)
 
 			var _m = p.Match(C3DGrammarParserNUMERO)
 
@@ -3661,7 +3706,7 @@ func (p *C3DGrammarParser) Stack_op() (localctx IStack_opContext) {
 			}
 		}
 		{
-			p.SetState(193)
+			p.SetState(198)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3882,7 +3927,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 	p.EnterRule(localctx, 24, C3DGrammarParserRULE_printff)
 	var _la int
 
-	p.SetState(215)
+	p.SetState(220)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3892,7 +3937,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(197)
+			p.SetState(202)
 			p.Match(C3DGrammarParserPRINTF)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3900,7 +3945,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(198)
+			p.SetState(203)
 			p.Match(C3DGrammarParserPARIZQ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3908,7 +3953,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(199)
+			p.SetState(204)
 
 			var _m = p.Match(C3DGrammarParserCADENA)
 
@@ -3919,7 +3964,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(200)
+			p.SetState(205)
 			p.Match(C3DGrammarParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3927,7 +3972,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(201)
+			p.SetState(206)
 
 			var _m = p.Match(C3DGrammarParserNUMERO)
 
@@ -3938,7 +3983,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(202)
+			p.SetState(207)
 			p.Match(C3DGrammarParserPARDER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3946,7 +3991,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(203)
+			p.SetState(208)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3971,7 +4016,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(205)
+			p.SetState(210)
 			p.Match(C3DGrammarParserPRINTF)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3979,7 +4024,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(206)
+			p.SetState(211)
 			p.Match(C3DGrammarParserPARIZQ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3987,7 +4032,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(207)
+			p.SetState(212)
 
 			var _m = p.Match(C3DGrammarParserCADENA)
 
@@ -3998,7 +4043,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(208)
+			p.SetState(213)
 			p.Match(C3DGrammarParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4006,14 +4051,14 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(209)
+			p.SetState(214)
 
 			var _x = p.Embebida()
 
 			localctx.(*PrintffContext)._embebida = _x
 		}
 		{
-			p.SetState(210)
+			p.SetState(215)
 
 			var _lt = p.GetTokenStream().LT(1)
 
@@ -4031,7 +4076,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(211)
+			p.SetState(216)
 			p.Match(C3DGrammarParserPARDER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4039,7 +4084,7 @@ func (p *C3DGrammarParser) Printff() (localctx IPrintffContext) {
 			}
 		}
 		{
-			p.SetState(212)
+			p.SetState(217)
 			p.Match(C3DGrammarParserPUNTOCOMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4182,7 +4227,7 @@ func (s *EmbebidaContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 	localctx = NewEmbebidaContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 26, C3DGrammarParserRULE_embebida)
-	p.SetState(229)
+	p.SetState(234)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -4192,7 +4237,7 @@ func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(217)
+			p.SetState(222)
 			p.Match(C3DGrammarParserPARIZQ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4200,7 +4245,7 @@ func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 			}
 		}
 		{
-			p.SetState(218)
+			p.SetState(223)
 			p.Match(C3DGrammarParserINT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4208,7 +4253,7 @@ func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 			}
 		}
 		{
-			p.SetState(219)
+			p.SetState(224)
 			p.Match(C3DGrammarParserPARDER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4222,7 +4267,7 @@ func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(221)
+			p.SetState(226)
 			p.Match(C3DGrammarParserPARIZQ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4230,7 +4275,7 @@ func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 			}
 		}
 		{
-			p.SetState(222)
+			p.SetState(227)
 			p.Match(C3DGrammarParserFLOAT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4238,7 +4283,7 @@ func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 			}
 		}
 		{
-			p.SetState(223)
+			p.SetState(228)
 			p.Match(C3DGrammarParserPARDER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4252,7 +4297,7 @@ func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(225)
+			p.SetState(230)
 			p.Match(C3DGrammarParserPARIZQ)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4260,7 +4305,7 @@ func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 			}
 		}
 		{
-			p.SetState(226)
+			p.SetState(231)
 			p.Match(C3DGrammarParserCHAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4268,7 +4313,7 @@ func (p *C3DGrammarParser) Embebida() (localctx IEmbebidaContext) {
 			}
 		}
 		{
-			p.SetState(227)
+			p.SetState(232)
 			p.Match(C3DGrammarParserPARDER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4390,7 +4435,7 @@ func (s *TipodataContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *C3DGrammarParser) Tipodata() (localctx ITipodataContext) {
 	localctx = NewTipodataContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 28, C3DGrammarParserRULE_tipodata)
-	p.SetState(237)
+	p.SetState(242)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -4400,7 +4445,7 @@ func (p *C3DGrammarParser) Tipodata() (localctx ITipodataContext) {
 	case C3DGrammarParserINT:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(231)
+			p.SetState(236)
 			p.Match(C3DGrammarParserINT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4414,7 +4459,7 @@ func (p *C3DGrammarParser) Tipodata() (localctx ITipodataContext) {
 	case C3DGrammarParserFLOAT:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(233)
+			p.SetState(238)
 			p.Match(C3DGrammarParserFLOAT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4428,7 +4473,7 @@ func (p *C3DGrammarParser) Tipodata() (localctx ITipodataContext) {
 	case C3DGrammarParserCHAR:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(235)
+			p.SetState(240)
 			p.Match(C3DGrammarParserCHAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4443,6 +4488,208 @@ func (p *C3DGrammarParser) Tipodata() (localctx ITipodataContext) {
 		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 		goto errorExit
 	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// IOperaritmeContext is an interface to support dynamic dispatch.
+type IOperaritmeContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Get_ID_VALIDO returns the _ID_VALIDO token.
+	Get_ID_VALIDO() antlr.Token
+
+	// GetOp returns the op token.
+	GetOp() antlr.Token
+
+	// Set_ID_VALIDO sets the _ID_VALIDO token.
+	Set_ID_VALIDO(antlr.Token)
+
+	// SetOp sets the op token.
+	SetOp(antlr.Token)
+
+	// GetOparit returns the oparit attribute.
+	GetOparit() interfacesc3d.Instruction
+
+	// SetOparit sets the oparit attribute.
+	SetOparit(interfacesc3d.Instruction)
+
+	// Getter signatures
+	AllID_VALIDO() []antlr.TerminalNode
+	ID_VALIDO(i int) antlr.TerminalNode
+	IG() antlr.TerminalNode
+	PUNTOCOMA() antlr.TerminalNode
+	NUMERO() antlr.TerminalNode
+
+	// IsOperaritmeContext differentiates from other interfaces.
+	IsOperaritmeContext()
+}
+
+type OperaritmeContext struct {
+	antlr.BaseParserRuleContext
+	parser     antlr.Parser
+	oparit     interfacesc3d.Instruction
+	_ID_VALIDO antlr.Token
+	op         antlr.Token
+}
+
+func NewEmptyOperaritmeContext() *OperaritmeContext {
+	var p = new(OperaritmeContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = C3DGrammarParserRULE_operaritme
+	return p
+}
+
+func InitEmptyOperaritmeContext(p *OperaritmeContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = C3DGrammarParserRULE_operaritme
+}
+
+func (*OperaritmeContext) IsOperaritmeContext() {}
+
+func NewOperaritmeContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *OperaritmeContext {
+	var p = new(OperaritmeContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = C3DGrammarParserRULE_operaritme
+
+	return p
+}
+
+func (s *OperaritmeContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *OperaritmeContext) Get_ID_VALIDO() antlr.Token { return s._ID_VALIDO }
+
+func (s *OperaritmeContext) GetOp() antlr.Token { return s.op }
+
+func (s *OperaritmeContext) Set_ID_VALIDO(v antlr.Token) { s._ID_VALIDO = v }
+
+func (s *OperaritmeContext) SetOp(v antlr.Token) { s.op = v }
+
+func (s *OperaritmeContext) GetOparit() interfacesc3d.Instruction { return s.oparit }
+
+func (s *OperaritmeContext) SetOparit(v interfacesc3d.Instruction) { s.oparit = v }
+
+func (s *OperaritmeContext) AllID_VALIDO() []antlr.TerminalNode {
+	return s.GetTokens(C3DGrammarParserID_VALIDO)
+}
+
+func (s *OperaritmeContext) ID_VALIDO(i int) antlr.TerminalNode {
+	return s.GetToken(C3DGrammarParserID_VALIDO, i)
+}
+
+func (s *OperaritmeContext) IG() antlr.TerminalNode {
+	return s.GetToken(C3DGrammarParserIG, 0)
+}
+
+func (s *OperaritmeContext) PUNTOCOMA() antlr.TerminalNode {
+	return s.GetToken(C3DGrammarParserPUNTOCOMA, 0)
+}
+
+func (s *OperaritmeContext) NUMERO() antlr.TerminalNode {
+	return s.GetToken(C3DGrammarParserNUMERO, 0)
+}
+
+func (s *OperaritmeContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *OperaritmeContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *OperaritmeContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(C3DGrammarListener); ok {
+		listenerT.EnterOperaritme(s)
+	}
+}
+
+func (s *OperaritmeContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(C3DGrammarListener); ok {
+		listenerT.ExitOperaritme(s)
+	}
+}
+
+func (p *C3DGrammarParser) Operaritme() (localctx IOperaritmeContext) {
+	localctx = NewOperaritmeContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 30, C3DGrammarParserRULE_operaritme)
+	var _la int
+
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(244)
+
+		var _m = p.Match(C3DGrammarParserID_VALIDO)
+
+		localctx.(*OperaritmeContext)._ID_VALIDO = _m
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
+		p.SetState(245)
+		p.Match(C3DGrammarParserIG)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
+		p.SetState(246)
+
+		var _lt = p.GetTokenStream().LT(1)
+
+		localctx.(*OperaritmeContext).op = _lt
+
+		_la = p.GetTokenStream().LA(1)
+
+		if !(_la == C3DGrammarParserNUMERO || _la == C3DGrammarParserID_VALIDO) {
+			var _ri = p.GetErrorHandler().RecoverInline(p)
+
+			localctx.(*OperaritmeContext).op = _ri
+		} else {
+			p.GetErrorHandler().ReportMatch(p)
+			p.Consume()
+		}
+	}
+	{
+		p.SetState(247)
+		p.Match(C3DGrammarParserPUNTOCOMA)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+
+	localctx.(*OperaritmeContext).oparit = instructionsc3d.NewOparit1((func() string {
+		if localctx.(*OperaritmeContext).Get_ID_VALIDO() == nil {
+			return ""
+		} else {
+			return localctx.(*OperaritmeContext).Get_ID_VALIDO().GetText()
+		}
+	}()), (func() string {
+		if localctx.(*OperaritmeContext).GetOp() == nil {
+			return ""
+		} else {
+			return localctx.(*OperaritmeContext).GetOp().GetText()
+		}
+	}()))
 
 errorExit:
 	if p.HasError() {

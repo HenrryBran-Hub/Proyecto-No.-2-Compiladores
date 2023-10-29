@@ -1,13 +1,10 @@
 // Generated from c:/Users/Henrr/OneDrive/Escritorio/Compiladores/Proyecto No. 2/Proyecto No. 2 Compiladores/Optimizar/C3DGrammar.g4 by ANTLR 4.13.1
 
-    import "Optimizar/interfaces"
-    import "Optimizar/environment"
-    import "Optimizar/expressions"
-    import "Optimizar/instructions/datoscompuestos"
-    import "Optimizar/instructions/datosprimitivos"
-    import "Optimizar/instructions/funciones"
-    import "Optimizar/instructions/sentencias"
-    import "strings"
+    import "Optimizar/interfacesc3d"    
+    import "Optimizar/instructionsc3d"
+    // import "Optimizar/environmentc3d"
+    // import "Optimizar/expressionsc3d"
+    // import "strings"
    
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -18,25 +15,35 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface C3DGrammarListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#start}.
+	 * Enter a parse tree produced by {@link C3DGrammarParser#z}.
 	 * @param ctx the parse tree
 	 */
-	void enterStart(C3DGrammarParser.StartContext ctx);
+	void enterZ(C3DGrammarParser.ZContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#start}.
+	 * Exit a parse tree produced by {@link C3DGrammarParser#z}.
 	 * @param ctx the parse tree
 	 */
-	void exitStart(C3DGrammarParser.StartContext ctx);
+	void exitZ(C3DGrammarParser.ZContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#encabezado}.
+	 * Enter a parse tree produced by {@link C3DGrammarParser#encabezadoa}.
 	 * @param ctx the parse tree
 	 */
-	void enterEncabezado(C3DGrammarParser.EncabezadoContext ctx);
+	void enterEncabezadoa(C3DGrammarParser.EncabezadoaContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#encabezado}.
+	 * Exit a parse tree produced by {@link C3DGrammarParser#encabezadoa}.
 	 * @param ctx the parse tree
 	 */
-	void exitEncabezado(C3DGrammarParser.EncabezadoContext ctx);
+	void exitEncabezadoa(C3DGrammarParser.EncabezadoaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link C3DGrammarParser#temporales}.
+	 * @param ctx the parse tree
+	 */
+	void enterTemporales(C3DGrammarParser.TemporalesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link C3DGrammarParser#temporales}.
+	 * @param ctx the parse tree
+	 */
+	void exitTemporales(C3DGrammarParser.TemporalesContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link C3DGrammarParser#blocktemporales}.
 	 * @param ctx the parse tree
@@ -108,183 +115,63 @@ public interface C3DGrammarListener extends ParseTreeListener {
 	 */
 	void exitInstruction(C3DGrammarParser.InstructionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#assign_stack}.
+	 * Enter a parse tree produced by {@link C3DGrammarParser#head_op}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssign_stack(C3DGrammarParser.Assign_stackContext ctx);
+	void enterHead_op(C3DGrammarParser.Head_opContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#assign_stack}.
+	 * Exit a parse tree produced by {@link C3DGrammarParser#head_op}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssign_stack(C3DGrammarParser.Assign_stackContext ctx);
+	void exitHead_op(C3DGrammarParser.Head_opContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#assign_heap}.
+	 * Enter a parse tree produced by {@link C3DGrammarParser#stack_op}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssign_heap(C3DGrammarParser.Assign_heapContext ctx);
+	void enterStack_op(C3DGrammarParser.Stack_opContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#assign_heap}.
+	 * Exit a parse tree produced by {@link C3DGrammarParser#stack_op}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssign_heap(C3DGrammarParser.Assign_heapContext ctx);
+	void exitStack_op(C3DGrammarParser.Stack_opContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#assign}.
+	 * Enter a parse tree produced by {@link C3DGrammarParser#printff}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssign(C3DGrammarParser.AssignContext ctx);
+	void enterPrintff(C3DGrammarParser.PrintffContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#assign}.
+	 * Exit a parse tree produced by {@link C3DGrammarParser#printff}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssign(C3DGrammarParser.AssignContext ctx);
+	void exitPrintff(C3DGrammarParser.PrintffContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#if_instr}.
+	 * Enter a parse tree produced by {@link C3DGrammarParser#embebida}.
 	 * @param ctx the parse tree
 	 */
-	void enterIf_instr(C3DGrammarParser.If_instrContext ctx);
+	void enterEmbebida(C3DGrammarParser.EmbebidaContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#if_instr}.
+	 * Exit a parse tree produced by {@link C3DGrammarParser#embebida}.
 	 * @param ctx the parse tree
 	 */
-	void exitIf_instr(C3DGrammarParser.If_instrContext ctx);
+	void exitEmbebida(C3DGrammarParser.EmbebidaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#goto_instr}.
+	 * Enter a parse tree produced by {@link C3DGrammarParser#tipodata}.
 	 * @param ctx the parse tree
 	 */
-	void enterGoto_instr(C3DGrammarParser.Goto_instrContext ctx);
+	void enterTipodata(C3DGrammarParser.TipodataContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#goto_instr}.
+	 * Exit a parse tree produced by {@link C3DGrammarParser#tipodata}.
 	 * @param ctx the parse tree
 	 */
-	void exitGoto_instr(C3DGrammarParser.Goto_instrContext ctx);
+	void exitTipodata(C3DGrammarParser.TipodataContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#label_instr}.
+	 * Enter a parse tree produced by {@link C3DGrammarParser#operaritme}.
 	 * @param ctx the parse tree
 	 */
-	void enterLabel_instr(C3DGrammarParser.Label_instrContext ctx);
+	void enterOperaritme(C3DGrammarParser.OperaritmeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#label_instr}.
+	 * Exit a parse tree produced by {@link C3DGrammarParser#operaritme}.
 	 * @param ctx the parse tree
 	 */
-	void exitLabel_instr(C3DGrammarParser.Label_instrContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#printf_instr}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrintf_instr(C3DGrammarParser.Printf_instrContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#printf_instr}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrintf_instr(C3DGrammarParser.Printf_instrContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#return_instr}.
-	 * @param ctx the parse tree
-	 */
-	void enterReturn_instr(C3DGrammarParser.Return_instrContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#return_instr}.
-	 * @param ctx the parse tree
-	 */
-	void exitReturn_instr(C3DGrammarParser.Return_instrContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#getHeap_instr}.
-	 * @param ctx the parse tree
-	 */
-	void enterGetHeap_instr(C3DGrammarParser.GetHeap_instrContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#getHeap_instr}.
-	 * @param ctx the parse tree
-	 */
-	void exitGetHeap_instr(C3DGrammarParser.GetHeap_instrContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#getStack_instr}.
-	 * @param ctx the parse tree
-	 */
-	void enterGetStack_instr(C3DGrammarParser.GetStack_instrContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#getStack_instr}.
-	 * @param ctx the parse tree
-	 */
-	void exitGetStack_instr(C3DGrammarParser.GetStack_instrContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#call_instr}.
-	 * @param ctx the parse tree
-	 */
-	void enterCall_instr(C3DGrammarParser.Call_instrContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#call_instr}.
-	 * @param ctx the parse tree
-	 */
-	void exitCall_instr(C3DGrammarParser.Call_instrContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#expr_print}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpr_print(C3DGrammarParser.Expr_printContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#expr_print}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpr_print(C3DGrammarParser.Expr_printContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#convert}.
-	 * @param ctx the parse tree
-	 */
-	void enterConvert(C3DGrammarParser.ConvertContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#convert}.
-	 * @param ctx the parse tree
-	 */
-	void exitConvert(C3DGrammarParser.ConvertContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpression(C3DGrammarParser.ExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpression(C3DGrammarParser.ExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#expr_rel}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpr_rel(C3DGrammarParser.Expr_relContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#expr_rel}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpr_rel(C3DGrammarParser.Expr_relContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#expr_arit}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpr_arit(C3DGrammarParser.Expr_aritContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#expr_arit}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpr_arit(C3DGrammarParser.Expr_aritContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#data_type}.
-	 * @param ctx the parse tree
-	 */
-	void enterData_type(C3DGrammarParser.Data_typeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#data_type}.
-	 * @param ctx the parse tree
-	 */
-	void exitData_type(C3DGrammarParser.Data_typeContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link C3DGrammarParser#expr_valor}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpr_valor(C3DGrammarParser.Expr_valorContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link C3DGrammarParser#expr_valor}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpr_valor(C3DGrammarParser.Expr_valorContext ctx);
+	void exitOperaritme(C3DGrammarParser.OperaritmeContext ctx);
 }

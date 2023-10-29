@@ -113,6 +113,10 @@ func Optimizar(code string) string {
 		valor := e.Value
 		ConsoleOut += valor.(string)
 	}
+	// for e := Ast.Lista_Temporales.Front(); e != nil; e = e.Next() {
+	// 	valor := e.Value.(environmentc3d.Temporal)
+	// 	fmt.Printf("valor de temporal: %v", valor)
+	// }
 	//fmt.Println(ConsoleOut)
 	return ConsoleOut
 }
