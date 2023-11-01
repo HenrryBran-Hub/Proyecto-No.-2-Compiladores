@@ -398,6 +398,36 @@ public interface SwiftGrammarListener extends ParseTreeListener {
 	 */
 	void exitListamatrizaddsub(SwiftGrammarParser.ListamatrizaddsubContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SwiftGrammarParser#structcontrol}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructcontrol(SwiftGrammarParser.StructcontrolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SwiftGrammarParser#structcontrol}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructcontrol(SwiftGrammarParser.StructcontrolContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SwiftGrammarParser#listaatributos}.
+	 * @param ctx the parse tree
+	 */
+	void enterListaatributos(SwiftGrammarParser.ListaatributosContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SwiftGrammarParser#listaatributos}.
+	 * @param ctx the parse tree
+	 */
+	void exitListaatributos(SwiftGrammarParser.ListaatributosContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SwiftGrammarParser#listaatributo}.
+	 * @param ctx the parse tree
+	 */
+	void enterListaatributo(SwiftGrammarParser.ListaatributoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SwiftGrammarParser#listaatributo}.
+	 * @param ctx the parse tree
+	 */
+	void exitListaatributo(SwiftGrammarParser.ListaatributoContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SwiftGrammarParser#funciondeclaracioncontrol}.
 	 * @param ctx the parse tree
 	 */
@@ -427,6 +457,26 @@ public interface SwiftGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFuncionllamadacontrol(SwiftGrammarParser.FuncionllamadacontrolContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SwiftGrammarParser#funcionllamadacontrolConRetorno}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncionllamadacontrolConRetorno(SwiftGrammarParser.FuncionllamadacontrolConRetornoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SwiftGrammarParser#funcionllamadacontrolConRetorno}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncionllamadacontrolConRetorno(SwiftGrammarParser.FuncionllamadacontrolConRetornoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SwiftGrammarParser#listaparametrosllamada}.
+	 * @param ctx the parse tree
+	 */
+	void enterListaparametrosllamada(SwiftGrammarParser.ListaparametrosllamadaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SwiftGrammarParser#listaparametrosllamada}.
+	 * @param ctx the parse tree
+	 */
+	void exitListaparametrosllamada(SwiftGrammarParser.ListaparametrosllamadaContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SwiftGrammarParser#printstmt}.
 	 * @param ctx the parse tree

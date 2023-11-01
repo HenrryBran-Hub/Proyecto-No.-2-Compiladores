@@ -68,7 +68,6 @@ func (v ArregloAppend) Ejecutar(ast *environment.AST, gen *generator.Generator) 
 	gen.AddGetStack(tmp2, "(int)P")
 	gen.AddExpression("P", "P", envSize, "-")
 
-	arreglo.Elements.PushBack(expre)
 	newTemp := gen.NewTemp()
 	gen.AddAssign(newTemp, "H")           //Creamos un nuevo puntero Head para que en este vayan los valores
 	gen.AddSetHeap("(int)H", expre.Value) // Agregamos el caracter de escape

@@ -449,62 +449,54 @@ listamatrizaddsub returns [interfaces.Expression lmas]
 }
 ;
 
-// //CREACION DEL STRUCT
+//CREACION DEL STRUCT
 
-// structcontrol returns [interfaces.Instruction struck]
-// : STRUCT ID_VALIDO LLAVEIZQ listaatributos LLAVEDER 
-// {
-//     $struck = instructions.NewStruck($STRUCT.line, $STRUCT.pos, $ID_VALIDO.text, $listaatributos.blkstlt);
-// };
+structcontrol returns [interfaces.Instruction struck]
+: STRUCT ID_VALIDO LLAVEIZQ listaatributos LLAVEDER 
+{
+    $struck = instructions.NewStruck($STRUCT.line, $STRUCT.pos, $ID_VALIDO.text, $listaatributos.blkstlt);
+};
 
-// listaatributos returns [[]interface{} blkstlt]
-// @init{
-//     $blkstlt = []interface{}{}
-//     var listInt []IListaatributoContext
-// }
-// : listatstr+=listaatributo+
-// {
-//     listInt = localctx.(*ListaatributosContext).GetListatstr()
-//     for _, e := range listInt {
-//         $blkstlt = append($blkstlt, e.GetListatstr())
-//     }
-// }
-// ;
+listaatributos returns [[]interface{} blkstlt]
+@init{
+    $blkstlt = []interface{}{}
+    var listInt []IListaatributoContext
+}
+: listatstr+=listaatributo+
+{
+    listInt = localctx.(*ListaatributosContext).GetListatstr()
+    for _, e := range listInt {
+        $blkstlt = append($blkstlt, e.GetListatstr())
+    }
+}
+;
 
-// listaatributo returns [interfaces.Instruction listatstr]
-// : tip1=(LET | VAR) tip4=ID_VALIDO DOS_PUNTOS (tip2=tipodato|tip3=ID_VALIDO) (IG expr)? (PUNTOCOMA)? 
-// {
-//     if $IG != nil{
-//         if $tip3.text != "" {
-//             $listatstr = instructions.NewStructAtributosConTE2($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip3.text, $expr.e)
-//         }else{                        
-//             $listatstr = instructions.NewStructAtributosConTE($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip2.tipo, $expr.e)
-//         }        
-//     }else{ 
-//         if $tip3.text != "" {                        
-//             $listatstr = instructions.NewStructAtributosConT2($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip3.text) 
-//         }else{            
-//             $listatstr = instructions.NewStructAtributosConT($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip2.tipo) 
-//         }
-//     }
-// }
-// | tipo=(LET | VAR) ID_VALIDO (IG expr)? (PUNTOCOMA)? 
-// {
-//     if $IG != nil{
-//         $listatstr = instructions.NewStructAtributosConE($tipo.line, $tipo.pos, $tipo.text, $ID_VALIDO.text, $expr.e)
-//     }else{
-//         $listatstr = instructions.NewStructAtributos($tipo.line, $tipo.pos, $tipo.text, $ID_VALIDO.text)
-//     }
-// }
-// | (MUTATING)?  funciondeclaracioncontrol 
-// {
-//     if $MUTATING != nil{
-//         $listatstr = instructions.NewStruckFunctionMutating($funciondeclaracioncontrol.fdc)
-//     } else {
-//         $listatstr = instructions.NewStruckFunction($funciondeclaracioncontrol.fdc)
-//     }
-// }
-// ;
+listaatributo returns [interfaces.Instruction listatstr]
+: tip1=(LET | VAR) tip4=ID_VALIDO DOS_PUNTOS (tip2=tipodato|tip3=ID_VALIDO) (IG expr)? (PUNTOCOMA)? 
+{
+    if $IG != nil{
+        if $tip3.text != "" {
+            $listatstr = datosprimitivos.NewStructAtributosConTE2($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip3.text, $expr.e)
+        }else{                        
+            $listatstr = datosprimitivos.NewStructAtributosConTE($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip2.tipo, $expr.e)
+        }        
+    }else{ 
+        if $tip3.text != "" {                        
+            $listatstr = datosprimitivos.NewStructAtributosConT2($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip3.text) 
+        }else{            
+            $listatstr = datosprimitivos.NewStructAtributosConT($tip1.line, $tip1.pos, $tip1.text, $tip4.text, $tip2.tipo) 
+        }
+    }
+}
+| tipo=(LET | VAR) ID_VALIDO (IG expr)? (PUNTOCOMA)? 
+{
+    if $IG != nil{
+        $listatstr = datosprimitivos.NewStructAtributosConE($tipo.line, $tipo.pos, $tipo.text, $ID_VALIDO.text, $expr.e)
+    }else{
+        $listatstr = datosprimitivos.NewStructAtributos($tipo.line, $tipo.pos, $tipo.text, $ID_VALIDO.text)
+    }
+}
+;
 
 // //asignacion del struct
 // structexpr returns [interfaces.Instruction strexpr]
@@ -539,27 +531,6 @@ listamatrizaddsub returns [interfaces.Expression lmas]
 //     $llmstruasig = instructions.NewStruckAsignacionExpr($op.line, $op.pos, $op.text, $op1.text, $expr.e)
 // }
 // ;
-
-// // funciones struc
-// llamadafuncionstructcontrol returns [interfaces.Instruction llmstrufun]
-// : op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ listaparametrosllamada PARDER 
-// {
-//     $llmstrufun = instructions.NewStruckFuncionesControlP($op.line, $op.pos, $op.text, $op1.text, $listaparametrosllamada.lpll)
-// }
-// | op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ PARDER 
-// {
-//     $llmstrufun = instructions.NewStruckFuncionesControl($op.line, $op.pos, $op.text, $op1.text)
-// };
-
-// llamadafuncionstructcontrolret returns [interfaces.Expression llmstrufunret]
-// : op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ listaparametrosllamada PARDER 
-// {
-//     $llmstrufunret = instructions.NewStruckFuncionesControlPR($op.line, $op.pos, $op.text, $op1.text, $listaparametrosllamada.lpll)
-// }
-// | op=ID_VALIDO PUNTO op1=ID_VALIDO PARIZQ PARDER 
-// {
-//     $llmstrufunret = instructions.NewStruckFuncionesControlR($op.line, $op.pos, $op.text, $op1.text)
-// };
 
 
 //CREACION DE FUNCIONES
