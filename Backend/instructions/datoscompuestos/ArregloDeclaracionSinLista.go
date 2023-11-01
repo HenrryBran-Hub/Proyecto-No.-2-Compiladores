@@ -1,0 +1,48 @@
+package datoscompuestos
+
+import (
+	"Backend/environment"
+	"Backend/generator"
+	"container/list"
+)
+
+type ArregloDeclaracionSinLista struct {
+	Lin  int
+	Col  int
+	Name string
+	Type environment.TipoExpresion
+}
+
+func NewArregloDeclaracionSinLista(lin int, col int, name string, tipo environment.TipoExpresion) ArregloDeclaracionSinLista {
+	return ArregloDeclaracionSinLista{lin, col, name, tipo}
+}
+
+func (v ArregloDeclaracionSinLista) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	gen.AddComment("Datos Compuestos Arreglo-Declaracion-Sin-Lista")
+	listavalores := list.New()
+	listavalorespt := list.New()
+	symbol := environment.Symbol{
+		Lin:      v.Lin,
+		Col:      v.Col,
+		Tipo:     v.Type,
+		Valor:    nil,
+		Scope:    ast.ObtenerAmbito(),
+		Posicion: ast.PosicionStack,
+	}
+	vector := environment.Vector{
+		Name:        v.Name,
+		Symbols:     symbol,
+		Mutable:     true,
+		Elements:    listavalores,
+		ElementsPt:  listavalorespt,
+		TipoSimbolo: "Vector",
+	}
+
+	ast.GuardarArreglo(vector)
+	gen.AddBr()
+	gen.MainCodeF()
+	return nil
+}

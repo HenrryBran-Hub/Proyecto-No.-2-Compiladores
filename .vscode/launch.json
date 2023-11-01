@@ -11,7 +11,7 @@
             "type": "go",
             "request": "launch",
             "mode": "debug",            
-            "program": "${workspaceFolder}/Backend/main.go",
+            "program": "${workspaceFolder}/Optimizar/main.go",
             "env":{},
             "args": [],
             "showLog": true

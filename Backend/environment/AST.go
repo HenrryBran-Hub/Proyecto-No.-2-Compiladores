@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 
 	"github.com/skratchdot/open-golang/open"
 )
@@ -44,6 +45,11 @@ type AST struct {
 	Pila_Variables_Struct  *list.List
 	ListaParametrosStruct  *list.List
 	Lista_Struct_HTML      *list.List
+	PosicionStack          int
+	Lista_Tranferencias    *list.List
+	Lista_Switch_Case      *list.List
+	Lista_Switch_Case_Eti  *list.List
+	Lista_For_Rango        *list.List
 }
 
 type Variable struct {
@@ -51,6 +57,8 @@ type Variable struct {
 	Symbols     Symbol
 	Mutable     bool
 	TipoSimbolo string
+	FEti        string
+	TEti        string
 }
 
 type Vector struct {
@@ -59,6 +67,7 @@ type Vector struct {
 	Mutable     bool
 	TipoSimbolo string
 	Elements    *list.List
+	ElementsPt  *list.List
 }
 
 type Matriz struct {
@@ -104,6 +113,7 @@ type Funcion struct {
 	Parametros    *list.List
 	CodigoFuncion []interface{}
 	Mutating      bool
+	Inicio        int
 }
 
 type VariableFuncion struct {
@@ -136,6 +146,14 @@ type VariableStruct struct {
 type Parametrostruct struct {
 	Name    string
 	Symbolo Symbol
+}
+
+type SentenciasdeTransferencia struct {
+	Scope  string
+	ETrue  string
+	EFalse string
+	Tipo   TipoExpresion
+	Func   Funcion
 }
 
 func NewAST(inst []interface{}, print string, err string) AST {
@@ -195,6 +213,15 @@ func (a *AST) IniciarAmbito() {
 	a.Pila_Variables_Struct.PushBack(a.Lista_Variables_Struct)
 	a.ListaParametrosStruct = list.New()
 	a.Lista_Struct_HTML = list.New()
+
+	a.PosicionStack = 1
+	a.Lista_Tranferencias = list.New()
+
+	a.Lista_Switch_Case = list.New()
+	a.Lista_Switch_Case_Eti = list.New()
+
+	a.Lista_For_Rango = list.New()
+
 }
 
 func (a *AST) AumentarAmbito(ambito string) {
@@ -264,6 +291,7 @@ func (a *AST) GuardarVariable(variable Variable) {
 		}
 	}
 	a.Lista_Variables.PushBack(variable)
+	a.PosicionStack = a.PosicionStack + 1
 	if variable.Name == "Break" || variable.Name == "Continue" || variable.Name == "Return" || variable.Name == "ReturnExp" {
 		return
 	}
@@ -294,6 +322,7 @@ func (a *AST) GuardarArreglo(vector Vector) {
 	}
 	a.Lista_Arreglos.PushBack(vector)
 	a.Lista_VectorHTML.PushBack(vector)
+	a.PosicionStack = a.PosicionStack + 1
 }
 
 func (a *AST) GuardarMatriz(matriz Matriz) {
@@ -326,6 +355,7 @@ func (a *AST) GuardarMatriz(matriz Matriz) {
 
 	a.Lista_Matriz.PushBack(matriz)
 	a.Lista_MatrizHTML.PushBack(matriz)
+	a.PosicionStack = a.PosicionStack + 1
 }
 
 func (a *AST) ActualizarVariable(mariable *Variable) {
@@ -339,6 +369,7 @@ func (a *AST) ActualizarVariable(mariable *Variable) {
 				variable.Symbols.Scope = mariable.Symbols.Scope
 				variable.Symbols.Tipo = mariable.Symbols.Tipo
 				variable.Symbols.Valor = mariable.Symbols.Valor
+				variable.Symbols.ValorInt = mariable.Symbols.ValorInt
 				v.Value = variable // Actualizar la variable en la lista
 				for j := a.Lista_VariablesHTML.Front(); j != nil; j = j.Next() {
 					if j.Value.(Variable).Name == mariable.Name && mariable.Mutable && j.Value.(Variable).Symbols.Scope == mariable.Symbols.Scope {
@@ -348,6 +379,7 @@ func (a *AST) ActualizarVariable(mariable *Variable) {
 						variablej.Symbols.Scope = mariable.Symbols.Scope
 						variablej.Symbols.Tipo = mariable.Symbols.Tipo
 						variablej.Symbols.Valor = mariable.Symbols.Valor
+						variablej.Symbols.ValorInt = mariable.Symbols.ValorInt
 						j.Value = variable // Actualizar la variable en la lista
 					}
 				}
@@ -389,6 +421,7 @@ func (a *AST) ActualizarArreglo(nombre string, nuevoValor *Vector) {
 					if i.Value.(Vector).Name == nombre && i.Value.(Vector).Mutable && i.Value.(Vector).Symbols.Scope == nuevoValor.Symbols.Scope {
 						vectorj := i.Value.(Vector)
 						vectorj.Elements = nuevoValor.Elements
+						vectorj.ElementsPt = nuevoValor.ElementsPt
 					}
 				}
 				return
@@ -551,8 +584,8 @@ func (a *AST) TablaVariablesHTML() {
 
 		var acumulado string
 		for element := vector.Elements.Front(); element != nil; element = element.Next() {
-			symbolo := element.Value.(Symbol)
-			stringValue := fmt.Sprintf("%v", symbolo.Valor)
+			symbolo := element.Value.(Value)
+			stringValue := fmt.Sprintf("%v", symbolo.Value)
 			acumulado += stringValue
 			if element.Next() != nil {
 				acumulado += ","
@@ -1166,4 +1199,14 @@ func (a *AST) ActualizarVariableStruc(mariable *VariableStruct) {
 		Ambito:      mariable.Scope,
 	}
 	a.ErroresHTML(Errores)
+}
+
+func (a *AST) IsMain(cadena string) bool {
+	cadena = strings.ToLower(cadena)
+	return strings.Contains(cadena, "funcion")
+}
+
+func (a *AST) IsTempT(cadena string) bool {
+	cadena = strings.ToLower(cadena)
+	return strings.Contains(cadena, "t")
 }

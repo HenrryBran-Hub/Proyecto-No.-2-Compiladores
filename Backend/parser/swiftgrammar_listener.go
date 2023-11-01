@@ -121,33 +121,6 @@ type SwiftGrammarListener interface {
 	// EnterListamatrizaddsub is called when entering the listamatrizaddsub production.
 	EnterListamatrizaddsub(c *ListamatrizaddsubContext)
 
-	// EnterStructcontrol is called when entering the structcontrol production.
-	EnterStructcontrol(c *StructcontrolContext)
-
-	// EnterListaatributos is called when entering the listaatributos production.
-	EnterListaatributos(c *ListaatributosContext)
-
-	// EnterListaatributo is called when entering the listaatributo production.
-	EnterListaatributo(c *ListaatributoContext)
-
-	// EnterStructexpr is called when entering the structexpr production.
-	EnterStructexpr(c *StructexprContext)
-
-	// EnterLdupla is called when entering the ldupla production.
-	EnterLdupla(c *LduplaContext)
-
-	// EnterLlamadastruct is called when entering the llamadastruct production.
-	EnterLlamadastruct(c *LlamadastructContext)
-
-	// EnterAsignacionparametrostruct is called when entering the asignacionparametrostruct production.
-	EnterAsignacionparametrostruct(c *AsignacionparametrostructContext)
-
-	// EnterLlamadafuncionstructcontrol is called when entering the llamadafuncionstructcontrol production.
-	EnterLlamadafuncionstructcontrol(c *LlamadafuncionstructcontrolContext)
-
-	// EnterLlamadafuncionstructcontrolret is called when entering the llamadafuncionstructcontrolret production.
-	EnterLlamadafuncionstructcontrolret(c *LlamadafuncionstructcontrolretContext)
-
 	// EnterFunciondeclaracioncontrol is called when entering the funciondeclaracioncontrol production.
 	EnterFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
 
@@ -288,33 +261,6 @@ type SwiftGrammarListener interface {
 
 	// ExitListamatrizaddsub is called when exiting the listamatrizaddsub production.
 	ExitListamatrizaddsub(c *ListamatrizaddsubContext)
-
-	// ExitStructcontrol is called when exiting the structcontrol production.
-	ExitStructcontrol(c *StructcontrolContext)
-
-	// ExitListaatributos is called when exiting the listaatributos production.
-	ExitListaatributos(c *ListaatributosContext)
-
-	// ExitListaatributo is called when exiting the listaatributo production.
-	ExitListaatributo(c *ListaatributoContext)
-
-	// ExitStructexpr is called when exiting the structexpr production.
-	ExitStructexpr(c *StructexprContext)
-
-	// ExitLdupla is called when exiting the ldupla production.
-	ExitLdupla(c *LduplaContext)
-
-	// ExitLlamadastruct is called when exiting the llamadastruct production.
-	ExitLlamadastruct(c *LlamadastructContext)
-
-	// ExitAsignacionparametrostruct is called when exiting the asignacionparametrostruct production.
-	ExitAsignacionparametrostruct(c *AsignacionparametrostructContext)
-
-	// ExitLlamadafuncionstructcontrol is called when exiting the llamadafuncionstructcontrol production.
-	ExitLlamadafuncionstructcontrol(c *LlamadafuncionstructcontrolContext)
-
-	// ExitLlamadafuncionstructcontrolret is called when exiting the llamadafuncionstructcontrolret production.
-	ExitLlamadafuncionstructcontrolret(c *LlamadafuncionstructcontrolretContext)
 
 	// ExitFunciondeclaracioncontrol is called when exiting the funciondeclaracioncontrol production.
 	ExitFunciondeclaracioncontrol(c *FunciondeclaracioncontrolContext)
