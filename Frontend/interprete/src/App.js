@@ -76,7 +76,7 @@ const App = () => {
 
   const handleCstClick = async () => {
     try {
-      const response = await fetch('http://localhost:8080/arbol', {
+      const response = await fetch('http://localhost:8081/optimizar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: textarea1Ref.current.value }),
@@ -176,7 +176,6 @@ const App = () => {
               className="form-control bg-secondary text-light"
               rows="22"
               style={{ resize: 'none' }}
-              readOnly
               value={result}
             ></textarea>
           </div>

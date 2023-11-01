@@ -1,5 +1,10 @@
 package datosprimitivos
 
+import (
+	"Backend/environment"
+	"Backend/generator"
+)
+
 type StructAtributos struct {
 	Line int
 	Col  int
@@ -11,8 +16,7 @@ func NewStructAtributos(line, col int, tipo, name string) StructAtributos {
 	return StructAtributos{line, col, tipo, name}
 }
 
-/*
-func (v StructAtributos) Ejecutar(ast *environment.AST) interface{} {
+func (v StructAtributos) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 
 	symbol := environment.Symbol{
 		Lin:   v.Line,
@@ -36,4 +40,3 @@ func (v StructAtributos) Ejecutar(ast *environment.AST) interface{} {
 	ast.AtributosStruct.PushBack(Variable)
 	return nil
 }
-*/

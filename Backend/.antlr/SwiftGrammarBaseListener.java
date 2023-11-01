@@ -483,6 +483,42 @@ public class SwiftGrammarBaseListener implements SwiftGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterStructcontrol(SwiftGrammarParser.StructcontrolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStructcontrol(SwiftGrammarParser.StructcontrolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterListaatributos(SwiftGrammarParser.ListaatributosContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitListaatributos(SwiftGrammarParser.ListaatributosContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterListaatributo(SwiftGrammarParser.ListaatributoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitListaatributo(SwiftGrammarParser.ListaatributoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunciondeclaracioncontrol(SwiftGrammarParser.FunciondeclaracioncontrolContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -514,6 +550,30 @@ public class SwiftGrammarBaseListener implements SwiftGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFuncionllamadacontrol(SwiftGrammarParser.FuncionllamadacontrolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFuncionllamadacontrolConRetorno(SwiftGrammarParser.FuncionllamadacontrolConRetornoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFuncionllamadacontrolConRetorno(SwiftGrammarParser.FuncionllamadacontrolConRetornoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterListaparametrosllamada(SwiftGrammarParser.ListaparametrosllamadaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitListaparametrosllamada(SwiftGrammarParser.ListaparametrosllamadaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

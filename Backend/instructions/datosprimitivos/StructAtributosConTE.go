@@ -2,7 +2,9 @@ package datosprimitivos
 
 import (
 	"Backend/environment"
+	"Backend/generator"
 	"Backend/interfaces"
+	"strconv"
 )
 
 type StructAtributosConTE struct {
@@ -23,35 +25,29 @@ func NewStructAtributosConTE2(line, col int, tipo string, name string, typet str
 	return StructAtributosConTE{line, col, tipo, name, environment.STRUCT, expr, typet}
 }
 
-/*
-func (v StructAtributosConTE) Ejecutar(ast *environment.AST) interface{} {
+func (v StructAtributosConTE) Ejecutar(ast *environment.AST, gen *generator.Generator) interface{} {
 
-	// var tipoexpstr environment.TipoExpresion
-	// switch v.Type {
-	// case "Int":
-	// 	tipoexpstr = environment.INTEGER
-	// case "Float":
-	// 	tipoexpstr = environment.FLOAT
-	// case "String":
-	// 	tipoexpstr = environment.STRING
-	// case "Bool":
-	// 	tipoexpstr = environment.BOOLEAN
-	// case "Character":
-	// 	tipoexpstr = environment.CHARACTER
-	// default:
-	// 	tipoexpstr = environment.NULL
-	// }
-
-	valor := v.Expr.Ejecutar(ast)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
+	valor := v.Expr.Ejecutar(ast, gen)
+	if !ast.IsMain(ast.ObtenerAmbito()) {
+		gen.MainCodeT()
+	}
 	symbol := environment.Symbol{
-		Lin:   v.Line,
-		Col:   v.Col,
-		Tipo:  v.Type,
-		Valor: valor.Valor,
-		Scope: ast.ObtenerAmbito(),
+		Lin:         v.Line,
+		Col:         v.Col,
+		Tipo:        v.Type,
+		Scope:       ast.ObtenerAmbito(),
+		TipoDato:    environment.VARIABLE,
+		Posicion:    ast.PosicionStack,
+		Valor:       valor.Value,
+		ValorInt:    valor.IntValue,
+		ValorFloat:  valor.FloatValue,
+		ValorString: valor.StringValue,
 	}
 
-	if valor.Tipo != v.Type {
+	if valor.Val.Symbols.Tipo != v.Type {
 		Errores := environment.Errores{
 			Descripcion: "Se ha querido asignar un valor no correspondiente a el tipo de dato: \nTipo de dato:" + v.Tipo,
 			Fila:        strconv.Itoa(v.Line),
@@ -60,7 +56,7 @@ func (v StructAtributosConTE) Ejecutar(ast *environment.AST) interface{} {
 			Ambito:      ast.ObtenerAmbito(),
 		}
 		ast.ErroresHTML(Errores)
-		symbol.Tipo = valor.Tipo
+		symbol.Tipo = valor.Val.Symbols.Tipo
 		symbol.Valor = nil
 	}
 
@@ -78,4 +74,3 @@ func (v StructAtributosConTE) Ejecutar(ast *environment.AST) interface{} {
 	ast.AtributosStruct.PushBack(Variable)
 	return nil
 }
-*/
